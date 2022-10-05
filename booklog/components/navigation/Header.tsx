@@ -11,7 +11,7 @@ const Header = () => {
   return (
     <header>
       <div className="container">
-        <div className="logo">BOOKLOG.</div>
+        <Link href="/" ><div className="logo">BOOKLOG.</div></Link>
         <Link href="/" ><div className={`link ${className("/")}`}>HOME</div></Link>
         <Link href="/portfolio"><div className={`link ${className("/portfolio")}`}>MY PORTFOLIO</div></Link>
         <Link href="/bookclub"><div className={`link ${className("/bookclub")}`}>BOOK CLUB</div></Link>
@@ -32,6 +32,7 @@ const Header = () => {
           font-weight: 900;
           margin: 20px 0;
           text-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+          cursor: pointer;
         }
         .link {
           font-size: 20px;
@@ -39,6 +40,7 @@ const Header = () => {
           margin: 8px 0;   
           width: fit-content;
           padding: 5px 10px;   
+          cursor: pointer;
         }
         .active {
           background-color: #125B50;
