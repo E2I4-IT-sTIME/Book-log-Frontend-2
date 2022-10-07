@@ -80,11 +80,7 @@ const BookSearch = () => {
       .sub {
         font-size: 16px;
         margin: 12px 0;
-      }
-
-
-
-      
+      }    
       `}</style>
     </>
   );
