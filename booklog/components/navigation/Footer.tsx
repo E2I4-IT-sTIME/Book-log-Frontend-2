@@ -15,11 +15,12 @@ const Footer = () => {
         padding: 5%;
         color: white;
         font-size: 24px;
-        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
       }
       div {
-        position: absolute;
-        bottom: 10%;
+        
       }
       `}</style>
     </>
