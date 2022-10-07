@@ -21,7 +21,8 @@ const BookReviewForm = () => {
         display: flex;
         flex-direction: column;
         border-radius: 10px;
-        width: 65%;
+        background: white;
+        width: 100%;
         padding: 50px;
         box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
       }
