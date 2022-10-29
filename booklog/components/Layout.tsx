@@ -30,6 +30,7 @@ const Layout = (props: any) => {
           top: 0;
           left: 0;
           padding: 40px 50px 0px 50px;
+          z-index: 100;
         }
         .content {
           flex: 1;
