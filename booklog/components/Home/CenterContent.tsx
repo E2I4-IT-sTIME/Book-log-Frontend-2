@@ -13,7 +13,6 @@ export default function CenterContent() {
   const [theme, setTheme] = useState(Theme.Green);
   const content =
     "책을 찾아서 서평을 작성해보세요.\n내가 어떤 사람인지 보여줄 수 있도록, 유사한 테마끼리 묶어 포트폴리오로 제작할 수 있습니다.\n생성된 포트폴리오 링크를 공유해보세요!";
-  console.log(theme);
   return (
     <div className="container">
       <div className="title-box">
@@ -134,6 +133,8 @@ export default function CenterContent() {
           border-right: 80px solid transparent;
           border-radius:0px 0px 0px 30px;
           position:absolute;
+          cursor:pointer;
+          transition:all 0.25s;
         }
         .left-down, .right-up{
           width: 0;
@@ -148,26 +149,40 @@ export default function CenterContent() {
           border-right: 80px solid transparent;
           border-radius: 0px 0px 0px 30px;
           position:absolute;
+          cursor:pointer;
+          transition:all 0.25s;
         }
         .left-up{
           top: 75px;
           left: -105px;
           transform: rotate(45deg);
         }
+        .left-up:hover{
+          transform: rotate(45deg) scale(1.05);
+        }
         .left-down{
           transform: rotate(-45deg);
           left: 75px;
           bottom: -105px;
+        }
+        .left-down:hover{
+          transform: rotate(-45deg) scale(1.05);
         }
         .right-up{
           transform: rotate(135deg);
           right: 65px;
           top: -105px;
         }
+        .right-up:hover{
+          transform: rotate(135deg) scale(1.05);
+        }
         .right-down{
           transform: rotate(-135deg);
           right: -105px;
           bottom: 65px;
+        }
+        .right-down:hover{
+          transform: rotate(-135deg) scale(1.05);
         }
         .img-box{
           position:relative;

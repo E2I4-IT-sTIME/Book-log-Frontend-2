@@ -99,6 +99,7 @@ export default function MainBanner() {
         .btns {
           display: flex;
           gap: 10px;
+          margin-top: 10px;
         }
         .btns button {
           border: 3px solid #265042;

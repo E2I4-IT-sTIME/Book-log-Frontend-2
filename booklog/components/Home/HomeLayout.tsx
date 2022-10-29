@@ -1,6 +1,7 @@
 import MainBanner from "./MainBanner";
 import PartnerShip from "./PartnerShip";
 import CenterContent from "./CenterContent";
+import ClubCarousel from "./ClubCarousel";
 
 export default function HomeLayout() {
   return (
@@ -10,6 +11,7 @@ export default function HomeLayout() {
         <PartnerShip />
       </div>
       <CenterContent />
+      <ClubCarousel />
       <style jsx>{`
         .container {
           width: 100vw;
