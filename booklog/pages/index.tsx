@@ -1,11 +1,47 @@
-import type { NextPage } from 'next'
+import { GetServerSideProps } from "next";
+import HomeLayout from "../components/Home/HomeLayout";
 
-const Home: NextPage = () => {
-  return (
-    <div>
-      <h1>북로그 리뉴얼!!!!!!</h1>
-    </div>
-  )
+interface clubInfo {
+  id: number;
+  image: string;
+  info: string;
+  max_num: number;
+  cur_num: number;
+  name: string;
+  onoff: boolean;
+  tags: Array<string>;
 }
 
-export default Home
+interface ServersideProps {
+  clubs: Array<clubInfo>;
+}
+
+export default function Home(props: ServersideProps) {
+  const { clubs } = props;
+  console.log(clubs);
+  return (
+    <>
+      <HomeLayout />
+    </>
+  );
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  try {
+    const tmpClub: clubInfo = {
+      id: 0,
+      image: "",
+      info: "dd",
+      max_num: 10,
+      cur_num: 1,
+      name: "이준규",
+      onoff: false,
+      tags: ["경기", "개발자", "취업"],
+    };
+    const tmpArray = [tmpClub, tmpClub, tmpClub, tmpClub];
+    return { props: { tmpArray } };
+  } catch (err) {
+    console.log(err);
+    return { props: {} };
+  }
+};
