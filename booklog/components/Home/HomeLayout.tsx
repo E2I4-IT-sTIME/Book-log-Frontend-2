@@ -24,6 +24,7 @@ export default function HomeLayout(props: homeProps) {
           display: flex;
           flex-direction: column;
           gap: 100px;
+          padding-bottom: 100px;
         }
         .first-box {
           display: flex;

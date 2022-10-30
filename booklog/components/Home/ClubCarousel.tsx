@@ -21,6 +21,7 @@ export default function ClubCarousel(props: carouselProps) {
       <div className="scroll-area">
         <Carousel clubs={clubs} />
       </div>
+      <button className="go-btn">더 많은 독서모임 보러가기</button>
       <style jsx>{`
         .container {
           width: 100%;
@@ -57,6 +58,24 @@ export default function ClubCarousel(props: carouselProps) {
           overflow: hidden;
           height: 430px;
           align-self: flex-start;
+        }
+        .go-btn {
+          font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+            Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic",
+            "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+          font-size: 18px;
+          color: #125b50;
+          font-weight: 800;
+          background-color: white;
+          border: 3px solid #125b50;
+          border-radius: 10px;
+          padding: 10px 15px;
+          cursor: pointer;
+          transition: all 0.25s;
+        }
+        .go-btn:hover {
+          background-color: #125b50;
+          color: white;
         }
       `}</style>
     </div>
