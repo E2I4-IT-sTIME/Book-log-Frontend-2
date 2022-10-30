@@ -1,27 +1,16 @@
 import { GetServerSideProps } from "next";
 import HomeLayout from "../components/Home/HomeLayout";
+import { clubInfo } from "../res/interface/HomeInterface";
 
-interface clubInfo {
-  id: number;
-  image: string;
-  info: string;
-  max_num: number;
-  cur_num: number;
-  name: string;
-  onoff: boolean;
-  tags: Array<string>;
-}
-
-interface ServersideProps {
+interface serversideProps {
   clubs: Array<clubInfo>;
 }
 
-export default function Home(props: ServersideProps) {
+export default function Home(props: serversideProps) {
   const { clubs } = props;
-  console.log(clubs);
   return (
     <>
-      <HomeLayout />
+      <HomeLayout clubs={clubs} />
     </>
   );
 }
@@ -30,16 +19,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const tmpClub: clubInfo = {
       id: 0,
-      image: "",
-      info: "dd",
+      image:
+        "https://i.pinimg.com/564x/b5/78/03/b57803fc499cbcd05d28277d6810ce4f.jpg",
+      info: "라브리 그림책 독서모임",
       max_num: 10,
       cur_num: 1,
       name: "이준규",
       onoff: false,
       tags: ["경기", "개발자", "취업"],
     };
-    const tmpArray = [tmpClub, tmpClub, tmpClub, tmpClub];
-    return { props: { tmpArray } };
+    const tmpArray = [
+      tmpClub,
+      tmpClub,
+      tmpClub,
+      tmpClub,
+      tmpClub,
+      tmpClub,
+      tmpClub,
+      tmpClub,
+    ];
+    return { props: { clubs: tmpArray } };
   } catch (err) {
     console.log(err);
     return { props: {} };
