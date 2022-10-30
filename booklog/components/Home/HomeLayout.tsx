@@ -2,8 +2,14 @@ import MainBanner from "./MainBanner";
 import PartnerShip from "./PartnerShip";
 import CenterContent from "./CenterContent";
 import ClubCarousel from "./ClubCarousel";
+import { clubInfo } from "../../res/interface/HomeInterface";
 
-export default function HomeLayout() {
+interface homeProps {
+  clubs: Array<clubInfo>;
+}
+
+export default function HomeLayout(props: homeProps) {
+  const { clubs } = props;
   return (
     <div className="container">
       <div className="first-box">
@@ -11,7 +17,7 @@ export default function HomeLayout() {
         <PartnerShip />
       </div>
       <CenterContent />
-      <ClubCarousel />
+      <ClubCarousel clubs={clubs} />
       <style jsx>{`
         .container {
           width: 100vw;

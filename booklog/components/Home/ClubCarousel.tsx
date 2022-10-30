@@ -1,4 +1,12 @@
-export default function ClubCarousel() {
+import { clubInfo } from "../../res/interface/HomeInterface";
+import Carousel from "./Carousel/Carousel";
+
+interface carouselProps {
+  clubs: Array<clubInfo>;
+}
+
+export default function ClubCarousel(props: carouselProps) {
+  const { clubs } = props;
   const content =
     "함께하면 두배로 재미있는 법.\n독서도 마찬가지죠. 나와 독서 취향이 맞는 사람들을 구해서 함께 책을 읽어봐요.\n분명 의지력도 향상되고, 훨씬 즐거울 거예요.";
   return (
@@ -9,6 +17,9 @@ export default function ClubCarousel() {
           <span className="title">취향 맞는 사람끼리 모여 같이 읽자!</span>
         </div>
         <span className="content">{content}</span>
+      </div>
+      <div className="scroll-area">
+        <Carousel clubs={clubs} />
       </div>
       <style jsx>{`
         .container {
@@ -41,6 +52,11 @@ export default function ClubCarousel() {
         }
         .content {
           line-height: 22px;
+        }
+        .scroll-area {
+          overflow: hidden;
+          height: 430px;
+          align-self: flex-start;
         }
       `}</style>
     </div>
