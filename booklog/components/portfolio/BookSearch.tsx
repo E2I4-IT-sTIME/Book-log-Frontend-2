@@ -1,4 +1,16 @@
+import { useState } from "react";
+import BookSearchModal from "./BookSearchModal";
+
 const BookSearch = () => {
+  const [isSearch, setIsSearch] = useState(false);
+  const onChangeIsSearch = () =>{
+    setIsSearch((prevState) => !prevState);
+  }
+  const closeModal = () => {
+
+  }
+
+
   return (
     <>
     <div>
@@ -6,7 +18,7 @@ const BookSearch = () => {
       <div className="book-search">
         <div className="book-img">
           <p>책을<br/>등록해주세요</p>
-          <p className="book-regist">책 등록하기</p>
+          <p className="book-regist" onClick={() => {setIsSearch(true)}}>책 등록하기</p>
           </div>
         <div className="book-info">
           <div>
@@ -23,6 +35,7 @@ const BookSearch = () => {
           </div>
         </div>
       </div>
+      {isSearch && <BookSearchModal closeModal={() => setIsSearch(!isSearch)}/> }
     </div>
     <style jsx>{`
       .container{
@@ -53,6 +66,7 @@ const BookSearch = () => {
         font-size: 16px;
         font-weight: bold;
         margin-top: 10px;
+        cursor: pointer;
       }
       .book-img{
         display: flex;
