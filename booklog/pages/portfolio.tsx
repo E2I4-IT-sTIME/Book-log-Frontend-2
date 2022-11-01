@@ -5,9 +5,7 @@ const portfolio: NextPage = () => {
   //portfolio 페이지
   return (
     <>
-      <div className="container">
-      <BookReviewForm />
-      </div>
+      
       <style jsx>{`
         .container {
           padding-left: 30%;
