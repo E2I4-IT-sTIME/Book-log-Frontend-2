@@ -2,12 +2,14 @@ import { clubInfo } from "../../res/interface/BookClubInterface";
 import Image from "next/image";
 import club from "../../res/club.svg";
 import UpperBox from "./UpperBox";
+import BottomBox from "./BottomBox";
 
 interface clubProps {
   clubs: Array<clubInfo>;
 }
 
 export default function ClubLayout(props: clubProps) {
+  const { clubs } = props;
   return (
     <div className="container">
       <div className="upper-box">
@@ -19,7 +21,9 @@ export default function ClubLayout(props: clubProps) {
         </div>
         <UpperBox />
       </div>
-      <div className="bottom-box"></div>
+      <div className="bottom-box">
+        <BottomBox clubs={clubs} />
+      </div>
       <style jsx>{`
         .container {
           width: 100vw;
@@ -27,6 +31,7 @@ export default function ClubLayout(props: clubProps) {
           flex-direction: column;
           align-items: center;
           justify-content: flex-start;
+          padding-bottom: 200px;
         }
         .upper-box {
           width: 100%;
@@ -57,6 +62,10 @@ export default function ClubLayout(props: clubProps) {
           width: 400px;
           height: 380px;
           position: relative;
+        }
+        .bottom-box {
+          width: 90%;
+          padding-top: 30px;
         }
       `}</style>
     </div>
