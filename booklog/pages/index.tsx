@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import HomeLayout from "../components/Home/HomeLayout";
 import { clubInfo } from "../res/interface/HomeInterface";
+import Seo from "../components/Seo";
 
 interface serversideProps {
   clubs: Array<clubInfo>;
@@ -10,6 +11,7 @@ export default function Home(props: serversideProps) {
   const { clubs } = props;
   return (
     <>
+      <Seo title="Home" />
       <HomeLayout clubs={clubs} />
     </>
   );
