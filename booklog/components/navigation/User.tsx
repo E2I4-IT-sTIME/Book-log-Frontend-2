@@ -26,8 +26,11 @@ export default function User() {
         </div>
       ) : (
         <div className="sign-box">
-          <button onClick={() => setIsLogined(true)}>Sign In</button>
-          <span>{induceSign}</span>
+          <button onClick={() => null}>
+            <span className="no-hover">Sign In</span>
+            <span className="hover">Login with Kakao</span>
+          </button>
+          <span className="induce">{induceSign}</span>
         </div>
       )}
       <style jsx>{`
@@ -42,16 +45,43 @@ export default function User() {
           background-color: #125b50;
           color: white;
           font-weight: 700;
-          padding: 10px 15px;
           font-size: 14px;
           border-radius: 20px;
           cursor: pointer;
+          width: 76.5px;
+          height: 36.8px;
+          transition: all 0.25s;
+          position: relative;
+        }
+        .hover,
+        .no-hover {
+          width: 100%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          text-align: center;
+        }
+        .hover {
+          opacity: 0;
+          transition: all 0.25s;
+          color: #000000;
+        }
+        .no-hover {
+          opacity: 1;
           transition: all 0.25s;
         }
         .sign-box button:hover {
-          transform: scale(1.02);
+          width: 150px;
+          background-color: #fee500;
         }
-        .sign-box span {
+        .sign-box button:hover .hover {
+          opacity: 1;
+        }
+        .sign-box button:hover .no-hover {
+          opacity: 0;
+        }
+        .induce {
           text-align: end;
           color: black;
           font-size: 14px;
