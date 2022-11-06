@@ -1,7 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRecoilState } from "recoil";
+import {
+  nameKeywordState,
+  tagKeywordState,
+  onoffState,
+} from "../../states/recoilClubSearch";
 
 export default function UpperBox() {
-  const [onoff, setOnoff] = useState(true);
+  const [onoff, setOnoff] = useRecoilState(onoffState);
+  const [nameKeyword, setNameKeyword] = useRecoilState(nameKeywordState);
+  const [tagKeyword, setTagKeyword] = useRecoilState(tagKeywordState);
+  const [searchName, setSearchName] = useState("");
+  const [searchTag, setSearchTag] = useState("");
+
+  const onSearchByName = () => {
+    setNameKeyword(searchName);
+    setSearchName("");
+    setTagKeyword("");
+  };
+
+  const onSearchByTag = () => {
+    setTagKeyword(searchTag);
+    setSearchTag("");
+    setNameKeyword("");
+  };
+
+  useEffect(() => {
+    console.log(onoff);
+  }, [onoff]);
+
   return (
     <div className="container">
       <span className="title">{`독서는, 함께할 때 진짜니까!`}</span>
@@ -17,8 +44,10 @@ export default function UpperBox() {
             id="name"
             type="text"
             placeholder="찾고싶은 독서모임 이름을 입력해주세요."
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
           />
-          <button>검색</button>
+          <button onClick={() => onSearchByName()}>검색</button>
         </div>
         <label htmlFor="tag">독서모임 태그로 검색하기</label>
         <div className="input-line">
@@ -26,14 +55,17 @@ export default function UpperBox() {
             id="tag"
             type="text"
             placeholder="찾고싶은 독서모임 태그를 입력해주세요."
+            value={searchTag}
+            onChange={(e) => setSearchTag(e.target.value)}
           />
-          <button>검색</button>
+          <button onClick={() => onSearchByTag()}>검색</button>
         </div>
         <div className="onoff-box">
           <span>{onoff ? `대면 모임` : `비대면 모임`}</span>
           <label className="switch-button">
             <input
               type="checkbox"
+              checked={onoff}
               onChange={(e) => setOnoff(e.target.checked)}
             />
             <span className="onoff-switch"></span>

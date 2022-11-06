@@ -36,6 +36,7 @@ export default function BottomBoxItem(props: itemProps) {
           box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
             rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
           position: relative;
+          cursor: pointer;
         }
         .img-box {
           width: 100%;
@@ -74,7 +75,7 @@ export default function BottomBoxItem(props: itemProps) {
         }
         .tag-box {
           font-size: 14px;
-          font-weight: 500;
+          font-weight: 300;
           display: flex;
           flex-direction: row;
           gap: 5px;
