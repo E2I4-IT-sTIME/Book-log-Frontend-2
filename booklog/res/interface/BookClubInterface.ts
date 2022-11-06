@@ -10,3 +10,17 @@ export interface clubInfo {
   info: string;
   tags: Array<string>;
 }
+
+export interface clubQuestions {
+  name: string;
+  questions: Array<string>;
+  createDate: string;
+}
+
+
+
+export enum Stage {
+  Introduce, //소개
+  Join, //가입신청
+  Complete, //가입신청 완료
+}
