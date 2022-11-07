@@ -4,14 +4,25 @@ import {
   nameKeywordState,
   tagKeywordState,
   onoffState,
+  ClubState,
+  clubState,
 } from "../../states/recoilClubSearch";
+import { clubInfo } from "../../res/interface/BookClubInterface";
+import Router from "next/router";
 
-export default function UpperBox() {
+interface upperProps {
+  setClubs: (state: boolean) => void;
+}
+
+export default function UpperBox(props: upperProps) {
+  const { setClubs } = props;
   const [onoff, setOnoff] = useRecoilState(onoffState);
   const [nameKeyword, setNameKeyword] = useRecoilState(nameKeywordState);
   const [tagKeyword, setTagKeyword] = useRecoilState(tagKeywordState);
+  const [clubStatus, setClubStatus] = useRecoilState(clubState);
   const [searchName, setSearchName] = useState("");
   const [searchTag, setSearchTag] = useState("");
+  const router = Router;
 
   const onSearchByName = () => {
     setNameKeyword(searchName);
@@ -25,6 +36,16 @@ export default function UpperBox() {
     setNameKeyword("");
   };
 
+  const onChangeStatus = () => {
+    if (clubStatus === ClubState.AllClubs) {
+      setClubStatus(ClubState.MyClubs);
+      setClubs(false);
+    } else {
+      setClubStatus(ClubState.AllClubs);
+      setClubs(true);
+    }
+  };
+
   useEffect(() => {
     console.log(onoff);
   }, [onoff]);
@@ -34,8 +55,17 @@ export default function UpperBox() {
       <span className="title">{`독서는, 함께할 때 진짜니까!`}</span>
       <span className="subtitle">{`북로그에서 나만의 독서모임을 만들고 찾아보세요 !`}</span>
       <div className="btn-box">
-        <button className="my-club">내 모임</button>
-        <button className="make-club">독서모임 만들기</button>
+        <button className="my-club" onClick={() => onChangeStatus()}>
+          {clubStatus === ClubState.AllClubs
+            ? "내 모임 보기"
+            : "전체 모임 보기"}
+        </button>
+        <button
+          className="make-club"
+          onClick={() => router.push("/makebookclub")}
+        >
+          독서모임 만들기
+        </button>
       </div>
       <div className="search-box">
         <label htmlFor="name">독서모임 명으로 검색하기</label>
@@ -97,7 +127,6 @@ export default function UpperBox() {
         .btn-box button {
           border: none;
           font-size: 16px;
-          color: white;
           font-weight: 900;
           padding: 10px 15px;
           border-radius: 15px 0px 15px 15px;
@@ -105,8 +134,14 @@ export default function UpperBox() {
           cursor: pointer;
           transition: all 0.25s;
         }
+        .btn-box button:not(.my-club) {
+          color: white;
+        }
         .my-club {
-          background-color: #f94c66;
+          background-color: ${clubStatus === ClubState.AllClubs
+            ? "#f94c66"
+            : "#F8B400"};
+          color: ${clubStatus === ClubState.AllClubs ? "#fff" : "#141414"};
         }
         .make-club {
           background-color: #125b50;

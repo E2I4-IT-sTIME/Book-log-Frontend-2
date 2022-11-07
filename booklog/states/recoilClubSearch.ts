@@ -1,5 +1,15 @@
 import { atom } from "recoil";
 
+export enum ClubState {
+  AllClubs,
+  MyClubs,
+}
+
+export const clubState = atom<ClubState>({
+  key: "myClub",
+  default: ClubState.AllClubs,
+});
+
 export const nameKeywordState = atom<string>({
   key: "nameKeyword",
   default: "",

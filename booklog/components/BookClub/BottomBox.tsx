@@ -5,6 +5,8 @@ import {
   nameKeywordState,
   tagKeywordState,
   onoffState,
+  ClubState,
+  clubState,
 } from "../../states/recoilClubSearch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
@@ -18,6 +20,7 @@ export default function BottomBox(props: boxProps) {
   const [onoff, setOnoff] = useRecoilState(onoffState);
   const [nameKeyword, setNameKeyword] = useRecoilState(nameKeywordState);
   const [tagKeyword, setTagKeyword] = useRecoilState(tagKeywordState);
+  const [clubStatus, setClubStatus] = useRecoilState(clubState);
 
   const resetKeyword = () => {
     setNameKeyword("");
@@ -27,7 +30,10 @@ export default function BottomBox(props: boxProps) {
   return (
     <div className="container">
       <div className="title-box">
-        <span className="title">모집 중인 독서모임 {clubs.length}개</span>
+        <span className="title">
+          {clubStatus === ClubState.AllClubs ? "모집 중인" : "나의"} 독서모임{" "}
+          {clubs.length}개
+        </span>
         <span className="tag">{onoff ? "대면 모임" : "비대면 모임"}</span>
       </div>
       {nameKeyword !== "" ? (
