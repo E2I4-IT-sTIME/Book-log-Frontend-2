@@ -1,4 +1,5 @@
 import { clubInfo } from "../../res/interface/BookClubInterface";
+import { useState } from "react";
 import Image from "next/image";
 import club from "../../res/club.svg";
 import UpperBox from "./UpperBox";
@@ -10,6 +11,13 @@ interface clubProps {
 
 export default function ClubLayout(props: clubProps) {
   const { clubs } = props;
+  const [curClubs, setClubs] = useState(clubs);
+
+  const resetClubs = (state: boolean) => {
+    //내 모임을 보여주거나 전체 모임 보여주거나
+    //true 이면 전체모임 보여주기 - false이면 내 모임 보여주기
+  };
+
   return (
     <div className="container">
       <div className="upper-box">
@@ -19,10 +27,10 @@ export default function ClubLayout(props: clubProps) {
             <Image src={club} layout="fill" objectFit="cover" />
           </div>
         </div>
-        <UpperBox />
+        <UpperBox setClubs={resetClubs} />
       </div>
       <div className="bottom-box">
-        <BottomBox clubs={clubs} />
+        <BottomBox clubs={curClubs} />
       </div>
       <style jsx>{`
         .container {
