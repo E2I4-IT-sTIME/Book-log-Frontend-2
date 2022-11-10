@@ -2,6 +2,9 @@ import { GetServerSideProps } from "next";
 import HomeLayout from "../components/Home/HomeLayout";
 import { clubInfo } from "../res/interface/HomeInterface";
 import Seo from "../components/Seo";
+import { useRecoilState } from "recoil";
+import { CurrentLayout, ClubLayoutState } from "../states/recoilLayoutState";
+import { useEffect } from "react";
 
 interface serversideProps {
   clubs: Array<clubInfo>;
@@ -9,6 +12,11 @@ interface serversideProps {
 
 export default function Home(props: serversideProps) {
   const { clubs } = props;
+  const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
+
+  useEffect(() => {
+    setLayoutState(CurrentLayout.Header);
+  }, []);
   return (
     <>
       <Seo title="Home" />

@@ -2,6 +2,9 @@ import { GetServerSideProps } from "next";
 import ClubLayout from "../components/BookClub/ClubLayout";
 import Seo from "../components/Seo";
 import { clubInfo } from "../res/interface/BookClubInterface";
+import { useRecoilState } from "recoil";
+import { CurrentLayout, ClubLayoutState } from "../states/recoilLayoutState";
+import { useEffect } from "react";
 
 interface serversideProps {
   clubs: Array<clubInfo>;
@@ -9,6 +12,12 @@ interface serversideProps {
 
 export default function BookClub(props: serversideProps) {
   const { clubs } = props;
+  const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
+
+  useEffect(() => {
+    setLayoutState(CurrentLayout.Header);
+  }, []);
+
   return (
     <>
       <Seo title="Book Club" />

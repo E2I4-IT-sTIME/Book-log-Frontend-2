@@ -42,10 +42,6 @@ export default function Carousel(props: carouselProps) {
     clubArray.length > 10 ? setClubArray((prev) => prev.slice(0, 10)) : null;
   }, []);
 
-  useEffect(() => {
-    console.log(moveX);
-  }, [moveX]);
-
   return (
     <div className="container">
       <div className="btns">
