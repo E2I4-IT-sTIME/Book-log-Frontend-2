@@ -39,7 +39,7 @@ export default function ClubModalToMember(props: itemProps) {
           </button>
           <button
             className="enter-btn"
-            onClick={() => router.push("/portfolio")}
+            onClick={() => router.push(`/bookclub/${item.id}`)}
           >
             입장하기
           </button>
