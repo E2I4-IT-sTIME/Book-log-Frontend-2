@@ -1,6 +1,6 @@
 import { clubInfo } from "../../res/interface/BookClubInterface";
 import BottomBoxItem from "./BottomBoxItem";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import {
   nameKeywordState,
   tagKeywordState,
