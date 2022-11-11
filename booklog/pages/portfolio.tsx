@@ -3,6 +3,13 @@ import BookReviewForm from "../components/portfolio/BookReviewForm";
 import PageTitle from "../components/portfolio/PageTitle";
 import PortfolioNav from "../components/portfolio/PortfolioNav";
 
+const DUMMY = [
+  {
+    title: "",
+    sub: "",
+  },
+];
+
 const portfolio: NextPage = () => {
   //portfolio 페이지
   const title = "포트폴리오 확인하기";
@@ -13,7 +20,7 @@ const portfolio: NextPage = () => {
       <div className="container">
         <PortfolioNav />
         <PageTitle title={title} sub={sub} />
-        <BookReviewForm />
+        <div className="portfolio-list"></div>
       </div>
       <style jsx>{`
         .container {
