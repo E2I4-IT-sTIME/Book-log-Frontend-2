@@ -103,7 +103,7 @@ const BookSearchModal = (props: any) => {
               <div className="notice">
                 <Image
                   className="triangle"
-                  src={triangle}
+                  src="/triangle.png"
                   alt="경고"
                   width="370px"
                   height="330px"

@@ -21,8 +21,8 @@ const PortfolioNav = () => {
             서평 작성하기
           </div>
         </Link>
-        <Link href="/portfolio/review">
-          <div className={`link ${className("/portfolio/3")}`}>
+        <Link href="/portfolio/new">
+          <div className={`link ${className("/portfolio/new")}`}>
             포트폴리오 제작하기
           </div>
         </Link>

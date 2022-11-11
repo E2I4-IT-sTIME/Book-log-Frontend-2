@@ -32,7 +32,7 @@ export default function BookInfoPrev(props: bookInfo) {
         {img ? (
           <img src={imgSrc} />
         ) : (
-          <Image src={defaultImg} width={120} height={174} />
+          <Image src="/tmp.jpg" width={120} height={174} />
         )}
 
         <span className="title">{title}</span>
