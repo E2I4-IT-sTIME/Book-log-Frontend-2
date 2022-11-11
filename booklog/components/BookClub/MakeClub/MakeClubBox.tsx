@@ -46,6 +46,7 @@ export default function MakeClubBox(props: boxProps) {
   const [imgFile, setImgFile] = useState<File>();
   const [maxNum, setMaxNum] = useState(2);
   const [tags, setTags] = useState<Array<string>>();
+  const [ment, setMent] = useState("");
   const [questions, setQuestions] = useState<Array<string>>();
   const [err, setErr] = useState("");
 
@@ -120,6 +121,7 @@ export default function MakeClubBox(props: boxProps) {
     tags &&
     tags.length > 0 &&
     content !== "" &&
+    ment !== "" &&
     questions &&
     questions.length > 0
       ? setStage(Stage.Complete)
@@ -237,6 +239,18 @@ export default function MakeClubBox(props: boxProps) {
               value={content}
               onChange={(e) => setContent(e.target.value)}
             ></textarea>
+          </li>
+          <li>
+            <label htmlFor="ment" className="vanilla-label">
+              환영 멘트를 작성해주세요.
+            </label>
+            <input
+              id="ment"
+              type="text"
+              placeholder="모임원을 맞이할 짧은 환영 문구를 작성해주세요."
+              value={ment}
+              onChange={(e) => setMent(e.target.value)}
+            />
           </li>
           <li>
             <label htmlFor="questions" className="vanilla-label">

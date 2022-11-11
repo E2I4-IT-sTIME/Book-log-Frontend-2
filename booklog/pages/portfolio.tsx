@@ -2,6 +2,9 @@ import { NextPage } from "next";
 import BookReviewForm from "../components/portfolio/BookReviewForm";
 import PageTitle from "../components/portfolio/PageTitle";
 import PortfolioNav from "../components/portfolio/PortfolioNav";
+import { useRecoilState } from "recoil";
+import { CurrentLayout, ClubLayoutState } from "../states/recoilLayoutState";
+import { useEffect } from "react";
 
 const DUMMY = [
   {
@@ -11,6 +14,12 @@ const DUMMY = [
 ];
 
 const portfolio: NextPage = () => {
+  const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
+
+  useEffect(() => {
+    setLayoutState(CurrentLayout.Header);
+  }, []);
+
   //portfolio 페이지
   const title = "포트폴리오 확인하기";
   const sub =

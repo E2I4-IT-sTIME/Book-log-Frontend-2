@@ -24,3 +24,9 @@ export enum Stage {
   Join, //가입신청
   Complete, //가입신청 완료
 }
+
+export enum MyStateInClub {
+  NoMember,
+  Waiting,
+  Member
+}
