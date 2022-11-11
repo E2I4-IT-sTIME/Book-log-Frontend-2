@@ -24,7 +24,7 @@ export default function MakeClubLayout() {
         }
         .upper-box {
           width: 100%;
-          height: 600px;
+          height: 700px;
           background-color: #faf5e4;
           position: relative;
           overflow: hidden;

@@ -1,8 +1,10 @@
-import { clubInfo } from "../../res/interface/BookClubInterface";
+import { clubInfo, MyStateInClub } from "../../res/interface/BookClubInterface";
 import { useState } from "react";
 import Image from "next/image";
 import BasicModal from "./../BasicModal";
 import ClubModal from "./ClubModal";
+import ClubModalWaiting from "./ClubModalWaiting";
+import ClubModalToMember from "./ClubModalToMember";
 
 interface itemProps {
   item: clubInfo;
@@ -11,6 +13,10 @@ interface itemProps {
 export default function BottomBoxItem(props: itemProps) {
   const { item } = props;
   const [modalOpen, setModalOpen] = useState(false);
+
+  //내가 모임 권한이 어떤거인지 임시 state
+  const [myState, setMyState] = useState(MyStateInClub.Member);
+
   return (
     <>
       <div className="container" onClick={() => setModalOpen(true)}>
@@ -94,7 +100,21 @@ export default function BottomBoxItem(props: itemProps) {
         close={() => setModalOpen(false)}
         header={`${item.name} 모임`}
       >
-        <ClubModal item={item} />
+        {myState === MyStateInClub.NoMember ? (
+          <ClubModal item={item} />
+        ) : myState === MyStateInClub.Waiting ? (
+          <ClubModalWaiting
+            item={item}
+            closeModal={() => setModalOpen(false)}
+          />
+        ) : myState === MyStateInClub.Member ? (
+          <ClubModalToMember
+            item={item}
+            closeModal={() => setModalOpen(false)}
+          />
+        ) : (
+          <></>
+        )}
       </BasicModal>
     </>
   );

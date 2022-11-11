@@ -46,10 +46,6 @@ export default function UpperBox(props: upperProps) {
     }
   };
 
-  useEffect(() => {
-    console.log(onoff);
-  }, [onoff]);
-
   return (
     <div className="container">
       <span className="title">{`독서는, 함께할 때 진짜니까!`}</span>
