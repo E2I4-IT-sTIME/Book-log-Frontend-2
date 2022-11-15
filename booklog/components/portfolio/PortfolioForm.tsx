@@ -1,8 +1,30 @@
+import { useCallback, useRef, useState } from "react";
 import BookReviewsModal from "./BookReviewsModal";
 import BookSearch from "./BookSearch";
 import Button from "./Button";
 
 const PortfolioForm = () => {
+  const [isSearch, setIsSearch] = useState(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [imageUrl, setImageFile] = useState("");
+
+  const onUploadImage = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!e.target.files) {
+        return;
+      }
+      const url = URL.createObjectURL(e.target.files[0]);
+      setImageFile(url);
+    },
+    []
+  );
+  const onUploadImageButtonClick = useCallback(() => {
+    if (!inputRef.current) {
+      return;
+    }
+    inputRef.current.click();
+  }, []);
+
   return (
     <>
       <form className="container">
@@ -12,10 +34,19 @@ const PortfolioForm = () => {
             내 포트폴리오를 대표할 수 있는 커버 이미지를 추가해보세요. <br />
             이미지비율은 1440x440을 권장합니다.
           </label>
-          <div className="cover-img">
-            커버 이미지
-            <br />
-            추가하기
+          <input
+            type="file"
+            accept="'image/*"
+            ref={inputRef}
+            onChange={onUploadImage}
+            style={{ display: "none" }}
+          />
+          <div className="cover-img-box" onClick={onUploadImageButtonClick}>
+            {imageUrl ? (
+              <img className="cover-img" src={imageUrl} />
+            ) : (
+              "커버 이미지 추가하기"
+            )}
           </div>
         </div>
         <div className="portfolio">
@@ -47,13 +78,26 @@ const PortfolioForm = () => {
           <label className="sub">
             포트폴리오를 구성할 서평을 선택해주세요!
           </label>
-          <div className="cover-img review-list">서평 추가하기</div>
+          <div
+            className="cover-img-box review-list"
+            onClick={() => {
+              setIsSearch(true);
+            }}
+          >
+            서평 추가하기
+          </div>
         </div>
         <div className="btn-div">
           <Button color="#125B50" text="제작하기" onClick={() => {}} />
         </div>
       </form>
-      <BookReviewsModal />
+      <BookReviewsModal
+        open={isSearch}
+        close={() => {
+          setIsSearch(false);
+        }}
+        header="서평모달"
+      />
       <style jsx>
         {`
           .container {
@@ -65,6 +109,7 @@ const PortfolioForm = () => {
             padding: 50px;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
             gap: 50px;
+            font-family: "Pretendard-Regular";
           }
           .portfolio {
             display: flex;
@@ -97,7 +142,7 @@ const PortfolioForm = () => {
             display: flex;
             justify-content: flex-end;
           }
-          .cover-img {
+          .cover-img-box {
             display: flex;
             width: 100%;
             height: 300px;
@@ -110,6 +155,11 @@ const PortfolioForm = () => {
             font-size: 20px;
             cursor: pointer;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+          }
+          .cover-img {
+            object-fit: cover;
+            width: 100%;
           }
           .review-list {
             width: 50%;

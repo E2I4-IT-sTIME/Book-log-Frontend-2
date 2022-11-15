@@ -22,6 +22,7 @@ const review: NextPage = () => {
           padding-top: 10%;
           padding-bottom: 20%;
           background: linear-gradient(#faf5e4 35%, #fff 10%);
+          font-family: "Pretendard-Regular";
         }
       `}</style>
     </>
