@@ -4,8 +4,10 @@ import PageTitle from "../components/portfolio/PageTitle";
 import PortfolioNav from "../components/portfolio/PortfolioNav";
 import { useRecoilState } from "recoil";
 import { CurrentLayout, ClubLayoutState } from "../states/recoilLayoutState";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import PortfolioCard from "../components/portfolio/PortfolioCard";
+import { request } from "../components/api";
+import { userIndexState } from "../states/recoilUserIndex";
 
 const DUMMY = [
   {
@@ -39,9 +41,18 @@ const DUMMY = [
 ];
 
 const portfolio: NextPage = () => {
+  const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
   const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
+  const [portfolios, setPortfolios] = useState([]);
+
+  const getPortfolios = async () => {
+    const portfolios = await request(`/auth/user/${userIndex}/portfolios`);
+    setPortfolios(portfolios);
+    console.log(portfolios);
+  };
 
   useEffect(() => {
+    getPortfolios();
     setLayoutState(CurrentLayout.Header);
   }, []);
 
@@ -75,6 +86,7 @@ const portfolio: NextPage = () => {
           padding-top: 10%;
           padding-bottom: 20%;
           background: linear-gradient(#faf5e4 35%, #fff 10%);
+          font-family: "Pretendard-Regular";
         }
         .portfolio-list {
           display: flex;
