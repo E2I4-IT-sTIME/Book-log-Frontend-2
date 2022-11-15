@@ -1,11 +1,11 @@
-import Button from "../portfolio/Button";
 import { useState, useEffect } from "react";
-import img from "../image/tmp.jpg";
 import noSign from "../../res/noSign.svg";
 import Image from "next/image";
+import { useRecoilState } from "recoil";
+import { recoilLoginedState } from "../../states/recoilLogiendState";
 
 export default function User() {
-  const [isLogined, setIsLogined] = useState(false);
+  const [isLogined, setIsLogined] = useRecoilState<boolean>(recoilLoginedState);
   const [userName, setUserName] = useState("이준규");
   const induceSign = "북로그에 가입하고,\n서평으로 내 이력서를 채워보세요!";
   return (
