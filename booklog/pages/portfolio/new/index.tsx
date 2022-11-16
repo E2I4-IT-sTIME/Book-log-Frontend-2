@@ -1,19 +1,17 @@
 import { NextPage } from "next";
-import BookReviewForm from "../../../components/portfolio/BookReviewForm";
-import BookSearch from "../../../components/portfolio/BookSearch";
 import PageTitle from "../../../components/portfolio/PageTitle";
+import PortfolioForm from "../../../components/portfolio/PortfolioForm";
 import PortfolioNav from "../../../components/portfolio/PortfolioNav";
 
-const review: NextPage = () => {
-  const title = "서평 작성하기";
-  const sub =
-    "내가 읽은 책의 서평을 작성해보세요.\n작성한 서평을 엮어 포트폴리오로 제작할 수 있습니다!";
+const newPort: NextPage = () => {
+  const title = "포트폴리오 제작하기";
+  const sub = "내가 작성한 서평을 엮어\n나만의 멋진 포트폴리오를 제작해보세요!";
   return (
     <>
       <div className="container">
         <PortfolioNav />
         <PageTitle title={title} sub={sub} />
-        <BookReviewForm />
+        <PortfolioForm />
       </div>
       <style jsx>{`
         .container {
@@ -29,4 +27,4 @@ const review: NextPage = () => {
   );
 };
 
-export default review;
+export default newPort;
