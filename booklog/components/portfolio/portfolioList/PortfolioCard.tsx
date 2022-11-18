@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import noSign from "../../../res/noSign.svg";
 import { brText } from "../common/brText";
 
@@ -6,29 +7,31 @@ const PortfolioCard = (props: any) => {
   const { title, sub, backgroundImg, thumnailArr } = props;
   return (
     <>
-      <div className="portCard-container">
-        <div className="text-box">
-          <div className="title">{brText(title)}</div>
-          <div className="sub">{brText(sub)}</div>
-        </div>
-        <div className="img-box">
-          <div className="profile-box">
-            <Image src={noSign} width="50px" height="50px" />
+      <Link href="/portfolio/1">
+        <div className="portCard-container">
+          <div className="text-box">
+            <div className="title">{brText(title)}</div>
+            <div className="sub">{brText(sub)}</div>
           </div>
-          <div className="thumnail-box">
-            {thumnailArr.map((imgSrc: string) => (
-              <Image
-                src={imgSrc}
-                width={30}
-                height={70}
-                style={{
-                  borderRadius: "10px",
-                }}
-              />
-            ))}
+          <div className="img-box">
+            <div className="profile-box">
+              <Image src={noSign} width="50px" height="50px" />
+            </div>
+            <div className="thumnail-box">
+              {thumnailArr.map((imgSrc: string) => (
+                <Image
+                  src={imgSrc}
+                  width={30}
+                  height={70}
+                  style={{
+                    borderRadius: "10px",
+                  }}
+                />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </Link>
       <style jsx>{`
         .portCard-container {
           box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
