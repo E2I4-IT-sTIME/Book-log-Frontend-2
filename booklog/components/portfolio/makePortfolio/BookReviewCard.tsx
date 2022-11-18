@@ -1,19 +1,25 @@
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { bookImgSearch } from "../common/fetchBook";
 
 const BookReviewCard = (props) => {
   const { title, content, date, isbn } = props;
+
+  const [bookImgSrc, setBookImgSrc] = useState("");
+
+  const srcHandler = async () => {
+    setBookImgSrc(await bookImgSearch(isbn));
+    console.log(bookImgSrc);
+  };
+
+  useEffect(() => {
+    srcHandler();
+  }, []);
+
   return (
     <>
       <div className="card-container">
-        <Image
-          src="/tmp.jpg"
-          alt=""
-          width={120}
-          height={180}
-          style={{
-            borderRadius: 20,
-          }}
-        />
+        <img className="thumnail" src={bookImgSrc || "/tmp.jpg"} alt={title} />
         <div className="list">
           <div className="title">{title}</div>
           <div className="date">{date}</div>
@@ -48,6 +54,11 @@ const BookReviewCard = (props) => {
         }
         .content {
           font-size: 14px;
+        }
+        .thumnail {
+          width: 35%;
+          height: 100%;
+          border-radius: 20px;
         }
       `}</style>
     </>

@@ -1,10 +1,23 @@
+import { useEffect, useState } from "react";
+import { bookImgSearch } from "../common/fetchBook";
+
 const ReviewCard = (props) => {
   const { title, sub, content, date, isbn } = props.review;
+  const [bookImgSrc, setBookImgSrc] = useState("");
+
+  const srcHandler = async () => {
+    setBookImgSrc(await bookImgSearch(isbn));
+  };
+
+  useEffect(() => {
+    srcHandler();
+  }, []);
+
   return (
     <>
       <div className="review-container">
         <div className="img-box">
-          <img src={"" || "/defaultBookImg.jpg"}></img>
+          <img src={bookImgSrc || "/defaultBookImg.jpg"}></img>
         </div>
         <div className="main">
           <div className="sub">{sub}</div>

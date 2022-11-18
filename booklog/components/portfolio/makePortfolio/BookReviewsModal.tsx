@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
+import Button from "../common/Button";
 import BookReviewCard from "./BookReviewCard";
 
 interface modalState {
   open: boolean;
   close: () => void;
   header: string;
+  reviewArrHandler: (reviewArr) => void;
 }
 
 const DUMMY_REVEIWS = [
@@ -13,20 +15,19 @@ const DUMMY_REVEIWS = [
     title: "서평 제목",
     content: "어쩌구저쩌구 내용",
     date: "2022-10-06",
-    isbn: "12345",
+    isbn: "8934908068",
   },
   {
     id: 2,
     title: "서평 제목",
     content: "어쩌구저쩌구 내용",
     date: "2022-10-06",
-    isbn: "12345",
+    isbn: "8934908068",
   },
 ];
 
 export default function BasicModal(props: modalState) {
-  const { open, close, header } = props;
-  const [button, setButton] = useState("닫기");
+  const { open, close, header, reviewArrHandler } = props;
 
   return (
     <div className={open ? "openModal modal" : "modal"} onClick={close}>
@@ -49,9 +50,8 @@ export default function BasicModal(props: modalState) {
             </div>
           </main>
           <footer>
-            <button className="close" onClick={close}>
-              {button}
-            </button>
+            <Button text="닫기" color="#FF6363" onClick={close} />
+            <Button text="추가하기" color="#125B50" onClick={close} />
           </footer>
         </section>
       ) : null}
@@ -123,14 +123,9 @@ export default function BasicModal(props: modalState) {
         }
         .modal > section > footer {
           padding: 12px 16px;
-          text-align: right;
-        }
-        .modal > section > footer button {
-          padding: 6px 12px;
-          color: #fff;
-          background-color: #6c757d;
-          border-radius: 5px;
-          font-size: 13px;
+          display: flex;
+          justify-content: flex-end;
+          gap: 20px;
         }
         .modal.openModal {
           display: flex;
