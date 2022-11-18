@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { brText } from "../../../components/portfolio/common/brText";
@@ -44,7 +45,9 @@ const portfolio = () => {
   return (
     <>
       <div className="portfolio-container">
-        <header>BOOKLOG.</header>
+        <header>
+          <Link href="/">BOOKLOG.</Link>
+        </header>
         <div className="main">
           <div className="text-box">
             <div className="title">{brText(DUMMY.title)}</div>
