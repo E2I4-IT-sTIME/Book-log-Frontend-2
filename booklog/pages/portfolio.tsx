@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import PortfolioCard from "../components/portfolio/portfolioList/PortfolioCard";
 import { request } from "../components/api";
 import { userIndexState } from "../states/recoilUserIndex";
+import { recoilKakakoState } from "../states/recoilKakaoRedirection";
 
 const DUMMY = [
   {
@@ -41,6 +42,7 @@ const DUMMY = [
 ];
 
 const portfolio: NextPage = () => {
+  const [isRedirection, setIsRedirection] = useRecoilState(recoilKakakoState);
   const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
   const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
   const [portfolios, setPortfolios] = useState([]);
@@ -53,6 +55,7 @@ const portfolio: NextPage = () => {
 
   useEffect(() => {
     //getPortfolios();
+    setIsRedirection(false);
     setLayoutState(CurrentLayout.Header);
   }, []);
 

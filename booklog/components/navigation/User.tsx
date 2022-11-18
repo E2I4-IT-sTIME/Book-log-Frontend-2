@@ -1,13 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import noSign from "../../res/noSign.svg";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
 import { recoilLoginedState } from "../../states/recoilLogiendState";
+import { recoilKakakoState } from "../../states/recoilKakaoRedirection";
+import Router from "next/router";
 
 export default function User() {
+  const router = Router;
   const [isLogined, setIsLogined] = useRecoilState<boolean>(recoilLoginedState);
+  const [isRedirection, setIsRedirection] = useRecoilState(recoilKakakoState);
   const [userName, setUserName] = useState("이준규");
   const induceSign = "북로그에 가입하고,\n서평으로 내 이력서를 채워보세요!";
+
+  const login = () => {
+    //통신 필요
+    setIsRedirection(true);
+    router.push("/signup");
+  };
+
   return (
     <div className="container">
       {isLogined ? (
@@ -24,9 +35,11 @@ export default function User() {
             />
           </div>
         </div>
+      ) : isRedirection ? (
+        <></>
       ) : (
         <div className="sign-box">
-          <button onClick={() => null}>
+          <button onClick={() => login()}>
             <span className="no-hover">Sign In</span>
             <span className="hover">Login with Kakao</span>
           </button>

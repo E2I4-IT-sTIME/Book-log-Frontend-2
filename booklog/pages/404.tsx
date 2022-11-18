@@ -2,6 +2,9 @@ import speechbubble from "../res/speechbubble.svg";
 import Image from "next/image";
 import notetaking from "../res/notetaking.svg";
 import Router from "next/router";
+import { recoilKakakoState } from "../states/recoilKakaoRedirection";
+import { useRecoilState } from "recoil";
+import { useEffect } from "react";
 
 export default function Error() {
   const router = Router;
@@ -9,6 +12,13 @@ export default function Error() {
   const toHome = () => {
     router.push("/");
   };
+
+  const [isRedirection, setIsRedirection] = useRecoilState(recoilKakakoState);
+
+  useEffect(() => {
+    setIsRedirection(false);
+  }, []);
+
   return (
     <div className="container">
       <div className="img-box">
