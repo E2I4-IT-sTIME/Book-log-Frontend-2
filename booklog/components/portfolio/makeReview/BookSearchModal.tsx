@@ -4,30 +4,19 @@ import { useState } from "react";
 import BookInfoPrev from "./BookInfoPrev";
 import router from "next/router";
 import axios from "axios";
-
-const Kakao = axios.create({
-  baseURL: "https://dapi.kakao.com",
-  headers: {
-    Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_API_KEY}`,
-  },
-});
-
-const kakaoSearch = (params: any) => {
-  return Kakao.get("/v3/search/book", { params });
-};
+import { bookSearch } from "../common/fetchBook";
 
 const BookSearchModal = (props: any) => {
   const { closeModal, fetchBookInfo } = props;
   const [books, setBooks] = useState([]);
-  const [isEmpty, setEmpty] = useState(false);
   const [keyword, setKeyword] = useState("");
 
   const onChangeKeword = (e: any) => {
     setKeyword(e.target.value);
   };
-  const onSearchHandler = (e: any) => {
+  const onSearchHandler = async (e: any) => {
     e.preventDefault();
-    search();
+    setBooks(await bookSearch(keyword));
   };
 
   const onClickBook = (book: any) => {
@@ -38,33 +27,6 @@ const BookSearchModal = (props: any) => {
       bookStory: book.contents,
     });
     closeModal();
-  };
-
-  const search = async () => {
-    const searchKey = keyword;
-    try {
-      if (searchKey === "") {
-        setBooks([]);
-        setEmpty(false);
-        return;
-      }
-      const params = {
-        query: searchKey,
-        size: 45,
-        target: "title",
-      };
-      const result = await kakaoSearch(params);
-
-      if (result) {
-        setBooks(result.data.documents);
-        if (result.data.documents.length === 0) setEmpty(false);
-        else setEmpty(true);
-      } else {
-        console.log("fail");
-      }
-    } catch (error) {
-      console.log("error", error);
-    }
   };
 
   return (
@@ -83,7 +45,7 @@ const BookSearchModal = (props: any) => {
             </button>
           </div>
           <div className="book-list">
-            {isEmpty ? (
+            {books.length ? (
               <div className="list-box">
                 {books.map((book: any) => (
                   <div onClick={() => onClickBook(book)} key={book.isbn}>

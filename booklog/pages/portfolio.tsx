@@ -1,11 +1,11 @@
 import { NextPage } from "next";
-import BookReviewForm from "../components/portfolio/BookReviewForm";
-import PageTitle from "../components/portfolio/PageTitle";
-import PortfolioNav from "../components/portfolio/PortfolioNav";
+import BookReviewForm from "../components/portfolio/makeReview/BookReviewForm";
+import PageTitle from "../components/portfolio/common/PageTitle";
+import PortfolioNav from "../components/portfolio/common/PortfolioNav";
 import { useRecoilState } from "recoil";
 import { CurrentLayout, ClubLayoutState } from "../states/recoilLayoutState";
 import { useEffect, useState } from "react";
-import PortfolioCard from "../components/portfolio/PortfolioCard";
+import PortfolioCard from "../components/portfolio/portfolioList/PortfolioCard";
 import { request } from "../components/api";
 import { userIndexState } from "../states/recoilUserIndex";
 
@@ -52,7 +52,7 @@ const portfolio: NextPage = () => {
   };
 
   useEffect(() => {
-    getPortfolios();
+    //getPortfolios();
     setLayoutState(CurrentLayout.Header);
   }, []);
 

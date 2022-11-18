@@ -1,10 +1,17 @@
 import { useCallback, useRef, useState } from "react";
 import BookReviewsModal from "./BookReviewsModal";
-import BookSearch from "./BookSearch";
-import Button from "./Button";
+import BookSearch from "../makeReview/BookSearch";
+import Button from "../common/Button";
+import ReviewCard from "../portfolioPage/ReviewCard";
 
 const PortfolioForm = () => {
   const [isSearch, setIsSearch] = useState(false);
+  const [reviewArr, setReviewArr] = useState([]);
+
+  const reviewArrHandler = (reviewArr) => {
+    setReviewArr(reviewArr);
+  };
+
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [imageUrl, setImageFile] = useState("");
 
@@ -78,13 +85,18 @@ const PortfolioForm = () => {
           <label className="sub">
             포트폴리오를 구성할 서평을 선택해주세요!
           </label>
-          <div
-            className="cover-img-box review-list"
-            onClick={() => {
-              setIsSearch(true);
-            }}
-          >
-            서평 추가하기
+          <div className="review-list">
+            {reviewArr.map((review) => (
+              <ReviewCard review={review} />
+            ))}
+            <div
+              className="cover-img-box add-review"
+              onClick={() => {
+                setIsSearch(true);
+              }}
+            >
+              서평 추가하기
+            </div>
           </div>
         </div>
         <div className="btn-div">
@@ -96,6 +108,7 @@ const PortfolioForm = () => {
         close={() => {
           setIsSearch(false);
         }}
+        reviewArrHandler={reviewArrHandler}
         header="서평모달"
       />
       <style jsx>
@@ -161,8 +174,16 @@ const PortfolioForm = () => {
             object-fit: cover;
             width: 100%;
           }
-          .review-list {
+          .add-review {
             width: 50%;
+          }
+          .review-list {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            row-gap: 3rem;
+            column-gap: 3rem;
+            padding-right: 10px;
           }
         `}
       </style>

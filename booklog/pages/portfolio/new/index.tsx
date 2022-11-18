@@ -1,7 +1,7 @@
 import { NextPage } from "next";
-import PageTitle from "../../../components/portfolio/PageTitle";
-import PortfolioForm from "../../../components/portfolio/PortfolioForm";
-import PortfolioNav from "../../../components/portfolio/PortfolioNav";
+import PageTitle from "../../../components/portfolio/common/PageTitle";
+import PortfolioForm from "../../../components/portfolio/makePortfolio/PortfolioForm";
+import PortfolioNav from "../../../components/portfolio/common/PortfolioNav";
 
 const newPort: NextPage = () => {
   const title = "포트폴리오 제작하기";
