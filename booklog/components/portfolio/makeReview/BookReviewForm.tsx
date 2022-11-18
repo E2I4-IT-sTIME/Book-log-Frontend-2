@@ -1,5 +1,5 @@
 import BookSearch from "./BookSearch";
-import Button from "./Button";
+import Button from "../common/Button";
 
 const BookReviewForm = () => {
   return (

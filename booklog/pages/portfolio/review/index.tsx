@@ -1,8 +1,8 @@
 import { NextPage } from "next";
-import BookReviewForm from "../../../components/portfolio/BookReviewForm";
-import BookSearch from "../../../components/portfolio/BookSearch";
-import PageTitle from "../../../components/portfolio/PageTitle";
-import PortfolioNav from "../../../components/portfolio/PortfolioNav";
+import BookReviewForm from "../../../components/portfolio/makeReview/BookReviewForm";
+import BookSearch from "../../../components/portfolio/makeReview/BookSearch";
+import PageTitle from "../../../components/portfolio/common/PageTitle";
+import PortfolioNav from "../../../components/portfolio/common/PortfolioNav";
 
 const review: NextPage = () => {
   const title = "서평 작성하기";

@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import BookReviewsModal from "./BookReviewsModal";
-import BookSearch from "./BookSearch";
-import Button from "./Button";
+import BookSearch from "../makeReview/BookSearch";
+import Button from "../common/Button";
 
 const PortfolioForm = () => {
   const [isSearch, setIsSearch] = useState(false);

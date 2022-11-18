@@ -1,20 +1,9 @@
 import Image from "next/image";
-import noSign from "../../res/noSign.svg";
+import noSign from "../../../res/noSign.svg";
+import { brText } from "../common/brText";
 
 const PortfolioCard = (props: any) => {
   const { title, sub, backgroundImg, thumnailArr } = props;
-  const brText = (text: string) => {
-    return (
-      <span>
-        {text.split("\n").map((txt: String) => (
-          <>
-            {txt}
-            <br />
-          </>
-        ))}
-      </span>
-    );
-  };
   return (
     <>
       <div className="portCard-container">
