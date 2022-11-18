@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_END_POINT = "https://localhost:8080";
+export const API_END_POINT = "https://43.200.85.245:8080";
 
 export const request = async (url, options = {}) => {
   try {
