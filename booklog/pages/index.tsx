@@ -5,6 +5,7 @@ import Seo from "../components/Seo";
 import { useRecoilState } from "recoil";
 import { CurrentLayout, ClubLayoutState } from "../states/recoilLayoutState";
 import { useEffect } from "react";
+import { recoilKakakoState } from "../states/recoilKakaoRedirection";
 
 interface serversideProps {
   clubs: Array<clubInfo>;
@@ -13,8 +14,10 @@ interface serversideProps {
 export default function Home(props: serversideProps) {
   const { clubs } = props;
   const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
+  const [isRedirection, setIsRedirection] = useRecoilState(recoilKakakoState);
 
   useEffect(() => {
+    setIsRedirection(false);
     setLayoutState(CurrentLayout.Header);
   }, []);
   return (
