@@ -20,17 +20,20 @@ const signup: NextPage = () => {
 
   return (
     <div className="container">
-      <div className="layout"></div>
+      <div className="layout" />
       <style jsx>{`
         .container {
           width: 100%;
           height: 100vh;
-          background-color: #faf5e4;
+          background-color: white;
+          display: flex;
+          justify-content: flex-start;
         }
         .layout {
-          width: 80%;
+          width: 30%;
           height: 100%;
-          background-color: white;
+          background-color: #faf5e4;
+          box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
         }
       `}</style>
     </div>
