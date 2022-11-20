@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil";
 import { recoilLoginedState } from "../../states/recoilLogiendState";
 import { recoilKakakoState } from "../../states/recoilKakaoRedirection";
 import Router from "next/router";
+import axios from "axios";
 
 export default function User() {
   const router = Router;
@@ -12,12 +13,6 @@ export default function User() {
   const [isRedirection, setIsRedirection] = useRecoilState(recoilKakakoState);
   const [userName, setUserName] = useState("이준규");
   const induceSign = "북로그에 가입하고,\n서평으로 내 이력서를 채워보세요!";
-
-  const login = () => {
-    //통신 필요
-    setIsRedirection(true);
-    router.push("/signup");
-  };
 
   return (
     <div className="container">
@@ -39,9 +34,14 @@ export default function User() {
         <></>
       ) : (
         <div className="sign-box">
-          <button onClick={() => login()}>
+          <button>
             <span className="no-hover">Sign In</span>
-            <span className="hover">Login with Kakao</span>
+            <a
+              className="hover"
+              href="https://kauth.kakao.com/oauth/authorize?client_id=13ceafa8d13d6bd8104550a84132db96&redirect_uri=http://localhost:3000/signup&response_type=code"
+            >
+              Login with Kakao
+            </a>
           </button>
           <span className="induce">{induceSign}</span>
         </div>
