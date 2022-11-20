@@ -67,6 +67,7 @@ const BookReviewCard = (props) => {
         }
         .content {
           font-size: 14px;
+          overflow: hidden;
         }
         .thumnail {
           width: 35%;

@@ -12,32 +12,11 @@ import { recoilKakakoState } from "../states/recoilKakaoRedirection";
 
 const DUMMY = [
   {
-    id: 1,
+    portfolio_id: 1,
     title: "내가 1년 동안 자존감을\n 높였던 방법",
-    sub: "자존감 밑바닥을 찍던 내가,\n 자존감을 높일 수 있었던 1년의 기록.",
-    backgroundImg: "/portBackground.png",
-    thumnailArr: ["/tmp.jpg", "/tmp.jpg", "/tmp.jpg"],
-  },
-  {
-    id: 2,
-    title: "내가 1년 동안 자존감을\n 높였던 방법",
-    sub: "자존감 밑바닥을 찍던 내가,\n 자존감을 높일 수 있었던 1년의 기록.",
-    backgroundImg: "/portBackground.png",
-    thumnailArr: ["/tmp.jpg", "/tmp.jpg", "/tmp.jpg"],
-  },
-  {
-    id: 3,
-    title: "내가 1년 동안 자존감을\n 높였던 방법",
-    sub: "자존감 밑바닥을 찍던 내가,\n 자존감을 높일 수 있었던 1년의 기록.",
-    backgroundImg: "/portBackground.png",
-    thumnailArr: ["/tmp.jpg", "/tmp.jpg", "/tmp.jpg"],
-  },
-  {
-    id: 4,
-    title: "내가 1년 동안 자존감을\n 높였던 방법",
-    sub: "자존감 밑바닥을 찍던 내가,\n 자존감을 높일 수 있었던 1년의 기록.",
-    backgroundImg: "/portBackground.png",
-    thumnailArr: ["/tmp.jpg", "/tmp.jpg", "/tmp.jpg"],
+    content: "자존감 밑바닥을 찍던 내가,\n 자존감을 높일 수 있었던 1년의 기록.",
+    image: "/portBackground.png",
+    isbn: ["8934908068", "8934908068", "8934908068"],
   },
 ];
 
@@ -54,7 +33,7 @@ const portfolio: NextPage = () => {
   };
 
   useEffect(() => {
-    getPortfolios();
+    //getPortfolios();
     setIsRedirection(false);
     setLayoutState(CurrentLayout.Header);
   }, []);
@@ -72,11 +51,11 @@ const portfolio: NextPage = () => {
           {DUMMY.map((card) => {
             return (
               <PortfolioCard
-                key={card.id}
+                key={card.portfolio_id}
                 title={card.title}
-                sub={card.sub}
-                backgroundImg={card.backgroundImg}
-                thumnailArr={card.thumnailArr}
+                sub={card.content}
+                backgroundImg={card.image}
+                thumnailArr={card.isbn}
               />
             );
           })}

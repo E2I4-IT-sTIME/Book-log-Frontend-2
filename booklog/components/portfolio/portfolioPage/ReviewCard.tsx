@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { recoilLoginedState } from "../../../states/recoilLogiendState";
 import { bookImgSearch } from "../common/fetchBook";
 
 const ReviewCard = (props) => {
+  const [isLogined, setisLogined] = useRecoilState(recoilLoginedState);
   const { title, sub, content, date, isbn } = props.review;
   const [bookImgSrc, setBookImgSrc] = useState("");
 
@@ -26,7 +29,7 @@ const ReviewCard = (props) => {
             <div className="date">{date}</div>
             <div className="content">{content}</div>
           </div>
-          <div className="delete">-</div>
+          {isLogined ? <div className="delete">-</div> : ""}
         </div>
       </div>
       <style jsx>{`
@@ -49,8 +52,9 @@ const ReviewCard = (props) => {
         }
         .text-box {
           width: 70%;
+          padding: 2%;
           display: flex;
-          justify-content: center;
+          justify-content: space-between;
         }
         img {
           width: 100%;
@@ -64,7 +68,6 @@ const ReviewCard = (props) => {
           width: 85%;
           padding: 5px;
           gap: 5px;
-          padding: 30px 0;
         }
         .title {
           font-size: 25px;
@@ -83,7 +86,6 @@ const ReviewCard = (props) => {
           color: white;
           height: 20px;
           width: 20px;
-          margin: 10px 0;
           line-height: 20px;
           text-align: center;
           font-weight: bold;
