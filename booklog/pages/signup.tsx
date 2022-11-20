@@ -100,7 +100,7 @@ const signup: NextPage = () => {
         }
       )
       .then((res) => {
-        console.log(res);
+        router.push("/");
       })
       .catch((res) => {
         console.log(res);
