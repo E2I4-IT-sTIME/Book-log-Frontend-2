@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
+import { request } from "../../../components/api";
 import { brText } from "../../../components/portfolio/common/brText";
 import ThumnailCard from "../../../components/portfolio/common/thumnailCard";
 import BookReviewsModal from "../../../components/portfolio/makePortfolio/BookReviewsModal";
@@ -10,7 +12,8 @@ import {
   CurrentLayout,
 } from "../../../states/recoilLayoutState";
 import { recoilLoginedState } from "../../../states/recoilLogiendState";
-
+import { userIndexState } from "../../../states/recoilUserIndex";
+// dummy를 portfolio(state)로 바꿔야함
 const DUMMY = {
   title: "내가 1년 동안\n자존감을 높였던 방법",
   username: "중규리",
@@ -40,8 +43,22 @@ const DUMMY = {
 const portfolio = () => {
   const [isSearch, setIsSearch] = useState(false);
   const [isLogined, setisLogined] = useRecoilState(recoilLoginedState);
+  const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
   const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
+  const [portfolio, setPortfolio] = useState({});
+
+  const router = useRouter();
+  const portId = router.query.port_id;
+
+  const getPortfolio = async () => {
+    const portfolio = await request(
+      `/auth/user/${userIndex}/portfolios/${portId}`
+    );
+    setPortfolio(portfolio);
+  };
+
   useEffect(() => {
+    //getPortfolio();
     setLayoutState(CurrentLayout.WhiteHeader);
   }, []);
 
