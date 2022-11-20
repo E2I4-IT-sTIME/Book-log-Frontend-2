@@ -2,9 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import noSign from "../../../res/noSign.svg";
 import { brText } from "../common/brText";
+import ThumnailCard from "../common/thumnailCard";
 
 const PortfolioCard = (props: any) => {
   const { title, sub, backgroundImg, thumnailArr } = props;
+  console.log(thumnailArr);
   return (
     <>
       <Link href="/portfolio/1">
@@ -18,15 +20,8 @@ const PortfolioCard = (props: any) => {
               <Image src={noSign} width="50px" height="50px" />
             </div>
             <div className="thumnail-box">
-              {thumnailArr.map((imgSrc: string) => (
-                <Image
-                  src={imgSrc}
-                  width={30}
-                  height={70}
-                  style={{
-                    borderRadius: "10px",
-                  }}
-                />
+              {thumnailArr.map((isbn: string) => (
+                <ThumnailCard isbn={isbn} />
               ))}
             </div>
           </div>

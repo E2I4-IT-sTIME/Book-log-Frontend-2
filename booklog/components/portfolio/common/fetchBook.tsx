@@ -34,7 +34,7 @@ export const bookSearch = async (searchKey: string) => {
   }
 };
 
-export const bookImgSearch = async (isbn: String) => {
+export const bookImgSearch = async (isbn: string) => {
   try {
     const params = {
       query: isbn,
@@ -51,5 +51,6 @@ export const bookImgSearch = async (isbn: String) => {
     }
   } catch (error) {
     console.log("error", error);
+    return "";
   }
 };

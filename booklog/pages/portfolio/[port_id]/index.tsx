@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { brText } from "../../../components/portfolio/common/brText";
+import ThumnailCard from "../../../components/portfolio/common/thumnailCard";
+import BookReviewsModal from "../../../components/portfolio/makePortfolio/BookReviewsModal";
 import ReviewCard from "../../../components/portfolio/portfolioPage/ReviewCard";
 import {
   ClubLayoutState,
@@ -22,7 +24,7 @@ const DUMMY = {
       content:
         "독후감과 서평은 다음 세 가지 면에서 분명하게 구별됩니다. 첫째, 독후감이 정서적이라면, 서평은 논리적입니다.독후감은 감상을 담습니다.서평은 사유를 담습니다. 둘째, 독후감이 내향적이라면, 서평은 외향적입니다. 독후감은 독자만의 고유한 느낌을 표현하는 데 초점을 두지만, 서평은 읽어 줄 다른 이의 세계로 나아가고자 합니다. ",
       date: "2022-10-06",
-      isbn: "12345",
+      isbn: "8934908068",
     },
     {
       id: 2,
@@ -30,17 +32,29 @@ const DUMMY = {
       sub: "마음이 답답할 때 꺼내보는 책",
       content: "어쩌구저쩌구 내용",
       date: "2022-10-06",
-      isbn: "12345",
+      isbn: "8934908068",
     },
   ],
 };
 
 const portfolio = () => {
+  const [isSearch, setIsSearch] = useState(false);
   const [isLogined, setisLogined] = useRecoilState(recoilLoginedState);
   const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
   useEffect(() => {
     setLayoutState(CurrentLayout.WhiteHeader);
   }, []);
+
+  const [checkReviews, setCheckReviews] = useState(
+    DUMMY.reveiws.map((ele) => {
+      return { ...ele, selected: true };
+    })
+  );
+
+  const reviewArrHandler = (reviewArr) => {
+    setCheckReviews(reviewArr);
+    console.log(checkReviews);
+  };
 
   return (
     <>
@@ -60,25 +74,50 @@ const portfolio = () => {
           <div className="side-box">
             {isLogined ? (
               <div className="buttons">
-                <button>삭제</button>
-                <button>공유</button>
+                <button className="del">삭제</button>
+                <button className="share">공유</button>
               </div>
             ) : (
               ""
             )}
             <div className="bookimges">
-              {DUMMY.reveiws.map((isbn) => {
-                return "";
-              })}
+              {DUMMY.reveiws.map((review) => (
+                <ThumnailCard isbn={review.isbn} />
+              ))}
             </div>
           </div>
         </div>
         <div className="content">
-          {DUMMY.reveiws.map((review) => (
-            <ReviewCard review={review} />
-          ))}
+          {checkReviews
+            .filter((review) => review.selected)
+            .map((review) => (
+              <div className="card-box">
+                <ReviewCard review={review} />
+              </div>
+            ))}
+          {isLogined ? (
+            <div
+              className="add-reveiw"
+              onClick={() => {
+                setIsSearch(true);
+              }}
+            >
+              서평 추가하기
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
+      <BookReviewsModal
+        open={isSearch}
+        close={() => {
+          setIsSearch(false);
+        }}
+        checkReviews={checkReviews}
+        reviewArrHandler={reviewArrHandler}
+        header="서평모달"
+      />
       <style jsx>{`
         .portfolio-container {
           display: flex;
@@ -105,11 +144,25 @@ const portfolio = () => {
           cursor: pointer;
           margin-left: 5px;
         }
+        .main {
+          display: flex;
+          justify-content: space-between;
+          font-family: "Pretendard-Regular";
+        }
         .text-box {
           display: flex;
           flex-direction: column;
           gap: 20px;
           color: white;
+        }
+        .card-box {
+          width: 48%;
+          height: 300px;
+        }
+        .side-box {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
         }
         .title {
           font-size: 25px;
@@ -134,6 +187,35 @@ const portfolio = () => {
           row-gap: 3rem;
           column-gap: 3rem;
           padding-right: 10px;
+        }
+        button {
+          font-size: 14px;
+          font-weight: 700;
+          padding: 8px 15px;
+          margin-left: 10px;
+          border-radius: 10px;
+          color: white;
+          border: none;
+          cursor: pointer;
+        }
+        .del {
+          background-color: #ff6363;
+        }
+        .share {
+          background-color: #125b50;
+        }
+        .bookimges {
+        }
+        .add-reveiw {
+          height: 300px;
+          width: 14%;
+          background-color: #474747;
+          color: white;
+          border-radius: 20px;
+          text-align: center;
+          line-height: 300px;
+          font-weight: 800;
+          cursor: pointer;
         }
       `}</style>
     </>

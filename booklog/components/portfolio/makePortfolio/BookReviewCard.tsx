@@ -3,13 +3,18 @@ import { useEffect, useState } from "react";
 import { bookImgSearch } from "../common/fetchBook";
 
 const BookReviewCard = (props) => {
-  const { title, content, date, isbn } = props;
+  const { title, content, date, isbn, selected } = props;
 
   const [bookImgSrc, setBookImgSrc] = useState("");
+  const [isSelected, setIsSelected] = useState(selected);
 
   const srcHandler = async () => {
     setBookImgSrc(await bookImgSearch(isbn));
     console.log(bookImgSrc);
+  };
+
+  const className = (IsSelected) => {
+    return IsSelected && "active";
   };
 
   useEffect(() => {
@@ -18,7 +23,12 @@ const BookReviewCard = (props) => {
 
   return (
     <>
-      <div className="card-container">
+      <div
+        className={`card-container ${className(isSelected)}`}
+        onClick={() => {
+          setIsSelected(!isSelected);
+        }}
+      >
         <img className="thumnail" src={bookImgSrc || "/tmp.jpg"} alt={title} />
         <div className="list">
           <div className="title">{title}</div>
@@ -30,14 +40,17 @@ const BookReviewCard = (props) => {
         .card-container {
           display: flex;
           flex-direction: row;
-          background-color: #d9d9d9;
           border-radius: 20px;
           padding: 20px;
-          width: 48%;
-          height: 230px;
+          width: 100%;
+          background-color: #d9d9d9;
+          height: 100%;
           gap: 20px;
           cursor: pointer;
           box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+        }
+        .active {
+          background-color: #125b50;
         }
         .list {
           display: flex;
@@ -54,6 +67,7 @@ const BookReviewCard = (props) => {
         }
         .content {
           font-size: 14px;
+          overflow: hidden;
         }
         .thumnail {
           width: 35%;

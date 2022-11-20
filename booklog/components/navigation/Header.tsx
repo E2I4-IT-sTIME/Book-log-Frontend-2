@@ -5,6 +5,10 @@ const Header = () => {
   const router = useRouter();
   const path = router.pathname;
   const className = (link: string) => {
+    const pathname = path.split("/")[1];
+    if (pathname) {
+      return link.includes(pathname) && "active";
+    }
     return path == link && "active";
   };
 
