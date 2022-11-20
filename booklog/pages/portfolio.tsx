@@ -27,7 +27,9 @@ const portfolio: NextPage = () => {
   const [portfolios, setPortfolios] = useState([]);
 
   const getPortfolios = async () => {
-    const portfolios = await request(`/auth/user/${userIndex}/portfolios`);
+    const portfolios = await request(`/auth/user/${userIndex}/portfolios`, {
+      Authorization: `${localStorage.getItem("token")}`,
+    });
     setPortfolios(portfolios);
     console.log(portfolios);
   };
@@ -52,10 +54,11 @@ const portfolio: NextPage = () => {
             return (
               <PortfolioCard
                 key={card.portfolio_id}
+                id={card.portfolio_id}
                 title={card.title}
-                sub={card.content}
+                content={card.content}
                 backgroundImg={card.image}
-                thumnailArr={card.isbn}
+                isbnArr={card.isbn}
               />
             );
           })}

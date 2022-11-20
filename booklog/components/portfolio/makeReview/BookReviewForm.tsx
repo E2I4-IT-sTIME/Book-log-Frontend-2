@@ -1,17 +1,33 @@
 import BookSearch from "./BookSearch";
 import Button from "../common/Button";
+import { useState } from "react";
 
 const BookReviewForm = () => {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [isbn, setIsbn] = useState("");
+  const titleChangeHandler = (e: any) => {
+    setTitle(e.target.value);
+  };
+  const contentChangeHandler = (e: any) => {
+    setContent(e.target.value);
+  };
+  const isbnChangeHandler = (isbn) => {
+    setIsbn(isbn.split(" ")[0]);
+  };
+
+  console.log(isbn);
   return (
     <>
       <form className="container">
-        <BookSearch />
+        <BookSearch isbnChangeHandler={isbnChangeHandler} />
         <div className="review">
           <label className="title">서평 제목</label>
           <input
             type="text"
             className="title-input"
             placeholder="서평 제목을 입력해주세요"
+            onChange={titleChangeHandler}
           />
         </div>
         <div className="review">
@@ -19,6 +35,7 @@ const BookReviewForm = () => {
           <textarea
             className="content-input"
             placeholder="서평의 내용을 입력해주세요"
+            onChange={contentChangeHandler}
           ></textarea>
         </div>
         <div className="btn-div">

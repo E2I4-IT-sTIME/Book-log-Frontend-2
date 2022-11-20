@@ -3,16 +3,18 @@ import BookSearchModal from "./BookSearchModal";
 import Image from "next/image";
 
 interface bookInfo {
+  isbn: string;
   imgSrc: string;
   bookTitle: string;
   author: string;
   bookStory: string;
 }
 
-const BookSearch = () => {
+const BookSearch = (props: any) => {
   const [isSearch, setIsSearch] = useState(false);
 
   const [bookInfo, setBookInfo] = useState({
+    isbn: "",
     imgSrc: "",
     bookTitle: "",
     author: "",
@@ -22,12 +24,12 @@ const BookSearch = () => {
   const fetchBookInfo = (book: bookInfo) => {
     setBookInfo({
       ...bookInfo,
+      isbn: book.isbn,
       imgSrc: book.imgSrc,
       bookTitle: book.bookTitle,
       author: book.author,
       bookStory: book.bookStory,
     });
-    console.log(bookInfo);
   };
 
   return (
@@ -73,6 +75,7 @@ const BookSearch = () => {
         </div>
         {isSearch && (
           <BookSearchModal
+            isbnChangeHandler={props.isbnChangeHandler}
             closeModal={() => setIsSearch(!isSearch)}
             fetchBookInfo={fetchBookInfo}
           />

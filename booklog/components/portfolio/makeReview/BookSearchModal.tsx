@@ -20,7 +20,9 @@ const BookSearchModal = (props: any) => {
   };
 
   const onClickBook = (book: any) => {
+    props.isbnChangeHandler(book.isbn);
     fetchBookInfo({
+      isbn: book.isbn,
       imgSrc: book.thumbnail,
       bookTitle: book.title,
       author: book.authors[0],
