@@ -6,28 +6,13 @@ interface modalState {
   open: boolean;
   close: () => void;
   header: string;
+  checkReviews: any;
   reviewArrHandler: (reviewArr) => void;
 }
 
-const DUMMY_REVEIWS = [
-  {
-    id: 1,
-    title: "서평 제목",
-    content: "어쩌구저쩌구 내용",
-    date: "2022-10-06",
-    isbn: "8934908068",
-  },
-  {
-    id: 2,
-    title: "서평 제목",
-    content: "어쩌구저쩌구 내용",
-    date: "2022-10-06",
-    isbn: "8934908068",
-  },
-];
-
 export default function BasicModal(props: modalState) {
-  const { open, close, header, reviewArrHandler } = props;
+  const { open, close, header, checkReviews, reviewArrHandler } = props;
+  const [newCheckReviews, setNewCheckReviews] = useState(checkReviews);
 
   return (
     <div className={open ? "openModal modal" : "modal"} onClick={close}>
@@ -35,23 +20,38 @@ export default function BasicModal(props: modalState) {
         <section onClick={(e) => e.stopPropagation()}>
           <main>
             <div className="title">
-              내가 작성한 서평 {DUMMY_REVEIWS.length}건
+              내가 작성한 서평 {checkReviews.length}건
             </div>
             <div className="review-list">
-              {DUMMY_REVEIWS.map((reveiw) => (
-                <BookReviewCard
-                  key={reveiw.id}
-                  title={reveiw.title}
-                  date={reveiw.date}
-                  content={reveiw.content}
-                  isbn={reveiw.isbn}
-                />
+              {newCheckReviews.map((review) => (
+                <div
+                  className="card-box"
+                  onClick={() => {
+                    review.selected = !review.selected;
+                  }}
+                >
+                  <BookReviewCard
+                    key={review.id}
+                    title={review.title}
+                    date={review.date}
+                    content={review.content}
+                    isbn={review.isbn}
+                    selected={review.selected}
+                  />
+                </div>
               ))}
             </div>
           </main>
           <footer>
             <Button text="닫기" color="#FF6363" onClick={close} />
-            <Button text="추가하기" color="#125B50" onClick={close} />
+            <Button
+              text="추가하기"
+              color="#125B50"
+              onClick={() => {
+                reviewArrHandler(checkReviews);
+                close();
+              }}
+            />
           </footer>
         </section>
       ) : null}
@@ -76,6 +76,12 @@ export default function BasicModal(props: modalState) {
           padding-right: 10px;
           overflow-y: scroll;
         }
+        .card-box {
+          width: 48%;
+          height: 230px;
+          border-radius: 20px;
+        }
+
         .modal {
           display: none;
           position: fixed;

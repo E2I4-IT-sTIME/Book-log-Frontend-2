@@ -75,7 +75,9 @@ const portfolio = () => {
         </div>
         <div className="content">
           {DUMMY.reveiws.map((review) => (
-            <ReviewCard review={review} />
+            <div className="card-box">
+              <ReviewCard review={review} />
+            </div>
           ))}
         </div>
       </div>
@@ -110,6 +112,10 @@ const portfolio = () => {
           flex-direction: column;
           gap: 20px;
           color: white;
+        }
+        .card-box {
+          width: 48%;
+          height: 300px;
         }
         .title {
           font-size: 25px;

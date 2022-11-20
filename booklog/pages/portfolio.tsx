@@ -54,7 +54,7 @@ const portfolio: NextPage = () => {
   };
 
   useEffect(() => {
-    //getPortfolios();
+    getPortfolios();
     setIsRedirection(false);
     setLayoutState(CurrentLayout.Header);
   }, []);

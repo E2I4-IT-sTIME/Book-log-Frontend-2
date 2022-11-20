@@ -4,12 +4,35 @@ import BookSearch from "../makeReview/BookSearch";
 import Button from "../common/Button";
 import ReviewCard from "../portfolioPage/ReviewCard";
 
+const DUMMY_REVEIWS = [
+  {
+    id: 1,
+    title: "서평 제목",
+    content: "어쩌구저쩌구 내용",
+    date: "2022-10-06",
+    isbn: "8934908068",
+  },
+  {
+    id: 2,
+    title: "서평 제목",
+    content: "어쩌구저쩌구 내용",
+    date: "2022-10-06",
+    isbn: "8934908068",
+  },
+];
+
 const PortfolioForm = () => {
   const [isSearch, setIsSearch] = useState(false);
-  const [reviewArr, setReviewArr] = useState([]);
+
+  const [checkReviews, setCheckReviews] = useState(
+    DUMMY_REVEIWS.map((ele) => {
+      return { ...ele, selected: false };
+    })
+  );
 
   const reviewArrHandler = (reviewArr) => {
-    setReviewArr(reviewArr);
+    setCheckReviews(reviewArr);
+    console.log(checkReviews);
   };
 
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -86,9 +109,13 @@ const PortfolioForm = () => {
             포트폴리오를 구성할 서평을 선택해주세요!
           </label>
           <div className="review-list">
-            {reviewArr.map((review) => (
-              <ReviewCard review={review} />
-            ))}
+            {checkReviews
+              .filter((review) => review.selected)
+              .map((review) => (
+                <div className="card-box">
+                  <ReviewCard review={review} />
+                </div>
+              ))}
             <div
               className="cover-img-box add-review"
               onClick={() => {
@@ -108,6 +135,7 @@ const PortfolioForm = () => {
         close={() => {
           setIsSearch(false);
         }}
+        checkReviews={checkReviews}
         reviewArrHandler={reviewArrHandler}
         header="서평모달"
       />
@@ -140,6 +168,10 @@ const PortfolioForm = () => {
             padding-left: 10px;
             border-radius: 5px;
             font-size: 16px;
+          }
+          .card-box {
+            width: 48%;
+            height: 260px;
           }
           .sub {
           }
@@ -175,14 +207,15 @@ const PortfolioForm = () => {
             width: 100%;
           }
           .add-review {
-            width: 50%;
+            width: 48%;
+            height: 260px;
           }
           .review-list {
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
-            row-gap: 3rem;
-            column-gap: 3rem;
+            row-gap: 2rem;
+            column-gap: 2rem;
             padding-right: 10px;
           }
         `}
