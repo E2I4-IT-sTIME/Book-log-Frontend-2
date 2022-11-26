@@ -4,6 +4,7 @@ import { clubInfo } from "../../res/interface/DynamicBookClubInterface";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { CurrentLayout, ClubLayoutState } from "../../states/recoilLayoutState";
+import Layout from "../../components/DynamicBookClub/Layout";
 
 interface serversideProps {
   item: clubInfo;
@@ -22,6 +23,7 @@ export default function BookClubDynamicPage(props: serversideProps) {
   return (
     <>
       <Seo title={item.name} />
+      <Layout info={item} />
     </>
   );
 }
@@ -30,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   try {
     const clubId = query.params;
     const tmpData: clubInfo = {
-      name: "루시가 최고야",
+      name: "루시 아일랜드",
       id: 123,
       dates: ["2022-10-27", "2022-10-28", "2022-11-01", "2022-11-02"],
       image:
@@ -38,8 +40,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       info: "이젠 머리가 어지러워 어느새 해는 져 있고 난 오늘이 무슨 요일인지도 모르고 사나 봐 어질러진 방은 치울 엄두조차 나질 않고 침대 위에 누워 얼마나 잘 수 있나 생각해",
       max_num: 10,
       cur_num: 5,
-      ment: "루시 아일랜드",
-      notice: "",
+      ment: "",
+      notice: "모입 가입 멘트입니다",
       onoff: false,
       tags: [
         "개화",
