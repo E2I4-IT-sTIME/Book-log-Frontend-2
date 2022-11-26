@@ -9,6 +9,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretUp, faCaretDown, faX } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+import axios from "axios";
 
 type EventHandlers<T> = Omit<
   DOMAttributes<T>,
@@ -126,6 +127,30 @@ export default function MakeClubBox(props: boxProps) {
     questions.length > 0
       ? setStage(Stage.Complete)
       : setErr("입력하지 않은 정보가 존재합니다.");
+  };
+
+  const makeQuery = () => {
+    const newObj = new FormData();
+    // newObj.append("hashtags");
+
+    axios
+      .post(
+        "http://43.200.85.245:8080/auth/meeting",
+        {},
+        {
+          headers: {
+            "Content-type": "application/json",
+            Accept: "application/json",
+            // Authorization: `${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((res) => {
+        console.log("Error!");
+      });
   };
 
   return (

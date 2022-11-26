@@ -127,7 +127,6 @@ export default function ClubModalJoinBox(props: joinProps) {
           font-size: 14px;
           font-weight: 400;
           color: white;
-
           text-shadow: 1px 1px 2px #141414;
         }
       `}</style>
