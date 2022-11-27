@@ -52,6 +52,7 @@ const signup: NextPage = () => {
       .then((res) => {
         setIsExist(res.data.isExist);
         localStorage.setItem("access_token", res.data.jwtToken);
+        localStorage.setItem("uid", res.data.userId);
         setUid(res.data.userId);
       })
       .catch((error) => {
