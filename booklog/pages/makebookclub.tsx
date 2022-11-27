@@ -13,6 +13,7 @@ export default function makebookclub() {
     setIsRedirection(false);
     setLayoutState(CurrentLayout.Header);
   }, []);
+
   return (
     <>
       <Seo title="Make Book Club" />
