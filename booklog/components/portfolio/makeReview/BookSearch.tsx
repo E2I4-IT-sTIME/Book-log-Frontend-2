@@ -53,7 +53,10 @@ const BookSearch = (props: any) => {
                 <p className="book-regist">책 등록하기</p>
               </div>
             ) : (
-              <img src={bookInfo.imgSrc} />
+              <div className="thumnail">
+                <img src={bookInfo.imgSrc} />
+                <p className="msg">책 변경하기</p>
+              </div>
             )}
           </div>
           <div className="book-info">
@@ -147,6 +150,36 @@ const BookSearch = (props: any) => {
           font-size: 16px;
           margin: 12px 0;
           height: 20px;
+        }
+        .thumnail {
+          width: 100%;
+          height: 100%;
+          position: relative;
+        }
+        .thumnail > img {
+          transition: filter 0.3s ease-in-out;
+        }
+        .thumnail > img:hover {
+          filter: blur(5px);
+        }
+        .thumnail > img:hover + .msg {
+          opacity: 1;
+        }
+        .msg:hover + .thumnail > img {
+          filter: blur(5px);
+        }
+        .thumnail > .msg:hover {
+          opacity: 1;
+        }
+
+        .thumnail > .msg {
+          position: absolute;
+          top: 48%;
+          left: 25%;
+          opacity: 0;
+          text-decoration: underline;
+          transition: all 0.2s ease-in-out;
+          color: white;
         }
       `}</style>
     </>
