@@ -146,7 +146,7 @@ export default function ClubModalToMember(props: itemProps) {
         }
         .enter-btn {
           background-color: #ffffff;
-          border: 2px solid #125b50;
+          border: none;
           color: #125b50;
           border-radius: 5px;
           padding: 5px 15px;
@@ -155,7 +155,8 @@ export default function ClubModalToMember(props: itemProps) {
           font-family: "Pretendard";
           cursor: pointer;
           transition: all 0.25s;
-          box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+          box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px,
+            rgba(0, 0, 0, 0.23) 0px 6px 6px;
         }
         .enter-btn:hover {
           background-color: #125b50;
