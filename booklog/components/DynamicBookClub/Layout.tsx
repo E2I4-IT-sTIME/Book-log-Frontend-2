@@ -1,6 +1,8 @@
 import { clubInfo } from "../../res/interface/DynamicBookClubInterface";
 import LeftBar from "./LeftBar";
+import ProfileBox from "./ProfileBox";
 import RightBox from "./RightBox";
+import TitleBox from "./TitleBox";
 
 interface infoProps {
   info: clubInfo;
@@ -18,14 +20,18 @@ export default function Layout(props: infoProps) {
     <div className="container">
       <div className="back-1" />
       <div className="back-2" />
-      <div className="profile-box"></div>
+      <div className="profile-box">
+        <ProfileBox />
+      </div>
       <div className="left-bar">
         <LeftBar images={tmpImages} />
       </div>
       <div className="right-box">
         <RightBox />
       </div>
-      <div className="top-box"></div>
+      <div className="top-box">
+        <TitleBox />
+      </div>
       <div className="bottom-box"></div>
       <style jsx>{`
         .container {
@@ -80,6 +86,17 @@ export default function Layout(props: infoProps) {
           position: absolute;
           top: 27px;
           right: 15px;
+        }
+        .top-box {
+          width: 80%;
+          height: 32vh;
+          position: absolute;
+          top: 0px;
+          left: 130px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
         }
       `}</style>
     </div>
