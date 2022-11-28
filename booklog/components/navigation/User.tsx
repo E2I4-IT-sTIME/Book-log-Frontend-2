@@ -41,6 +41,9 @@ export default function User() {
         setUserObj(res.data);
       })
       .catch((error) => {
+        setIsLogined(false);
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("uid");
         console.log(error);
       });
   };
@@ -52,6 +55,14 @@ export default function User() {
       setIsLogined(false);
     }
   };
+
+  useEffect(() => {
+    const uid = localStorage.getItem("uid");
+    const jwt = localStorage.getItem("access_token");
+    if (uid && uid !== "" && jwt && jwt !== "") {
+      setIsLogined(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (isLogined) {
@@ -86,6 +97,7 @@ export default function User() {
                 <li onClick={() => setOpenEditModal(true)}>프로필 수정</li>
               </ul>
               <ProfileEditModal
+                info={userObj}
                 open={openEditModal}
                 close={() => setOpenEditModal(false)}
               />
