@@ -1,8 +1,12 @@
 import BookSearch from "./BookSearch";
 import Button from "../common/Button";
 import { useState } from "react";
+import { userIndexState } from "../../../states/recoilUserIndex";
+import { useRecoilState } from "recoil";
+import { postReveiwData } from "../../api";
 
 const BookReviewForm = () => {
+  const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isbn, setIsbn] = useState("");
@@ -16,7 +20,17 @@ const BookReviewForm = () => {
     setIsbn(isbn.split(" ")[0]);
   };
 
-  console.log(isbn);
+  const postReview = async () => {
+    const postData = {
+      title: title,
+      content: content,
+      isbn: isbn,
+    };
+
+    const IsOk = await postReveiwData(postData, userIndex);
+    if (IsOk) alert("서평이 생성되었습니다!");
+  };
+
   return (
     <>
       <form className="container">
@@ -39,7 +53,11 @@ const BookReviewForm = () => {
           ></textarea>
         </div>
         <div className="btn-div">
-          <Button color="#125B50" text="서평 저장하기" onClick={() => {}} />
+          <Button
+            color="#125B50"
+            text="서평 저장하기"
+            onClick={() => postReview()}
+          />
         </div>
       </form>
       <style jsx>

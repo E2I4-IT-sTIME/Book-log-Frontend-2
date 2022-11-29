@@ -5,7 +5,9 @@ import { bookImgSearch } from "../common/fetchBook";
 
 const ReviewCard = (props) => {
   const [isLogined, setisLogined] = useRecoilState(recoilLoginedState);
-  const { title, sub, content, date, isbn } = props.review;
+  const { title, content, createDate, isbn } = props.review;
+  const date = createDate.substr(0, 10);
+
   const [bookImgSrc, setBookImgSrc] = useState("");
 
   const srcHandler = async () => {
@@ -24,7 +26,6 @@ const ReviewCard = (props) => {
         </div>
         <div className="text-box">
           <div className="main">
-            <div className="sub">{sub}</div>
             <div className="title">{title}</div>
             <div className="date">{date}</div>
             <div className="content">{content}</div>
@@ -74,9 +75,6 @@ const ReviewCard = (props) => {
           font-weight: 700;
         }
         .date,
-        .sub {
-          font-size: 14px;
-        }
         .content {
           font-size: 15px;
         }

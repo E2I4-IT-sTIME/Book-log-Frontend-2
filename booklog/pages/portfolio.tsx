@@ -6,36 +6,24 @@ import { useRecoilState } from "recoil";
 import { CurrentLayout, ClubLayoutState } from "../states/recoilLayoutState";
 import { useEffect, useState } from "react";
 import PortfolioCard from "../components/portfolio/portfolioList/PortfolioCard";
-import { request } from "../components/api";
+import { fetchPortfolioList } from "../components/api";
 import { userIndexState } from "../states/recoilUserIndex";
 import { recoilKakakoState } from "../states/recoilKakaoRedirection";
-
-const DUMMY = [
-  {
-    portfolio_id: 1,
-    title: "내가 1년 동안 자존감을\n 높였던 방법",
-    content: "자존감 밑바닥을 찍던 내가,\n 자존감을 높일 수 있었던 1년의 기록.",
-    image: "/portBackground.png",
-    isbn: ["8934908068", "8934908068", "8934908068"],
-  },
-];
 
 const portfolio: NextPage = () => {
   const [isRedirection, setIsRedirection] = useRecoilState(recoilKakakoState);
   const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
   const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
   const [portfolios, setPortfolios] = useState([]);
+  console.log(portfolios);
 
   const getPortfolios = async () => {
-    const portfolios = await request(`/auth/user/${userIndex}/portfolios`, {
-      Authorization: `${localStorage.getItem("token")}`,
-    });
-    setPortfolios(portfolios);
-    console.log(portfolios);
+    const fetchData = await fetchPortfolioList(userIndex);
+    setPortfolios(fetchData || []);
   };
 
   useEffect(() => {
-    //getPortfolios();
+    getPortfolios();
     setIsRedirection(false);
     setLayoutState(CurrentLayout.Header);
   }, []);
@@ -50,18 +38,20 @@ const portfolio: NextPage = () => {
         <PortfolioNav />
         <PageTitle title={title} sub={sub} />
         <div className="portfolio-list">
-          {DUMMY.map((card) => {
-            return (
-              <PortfolioCard
-                key={card.portfolio_id}
-                id={card.portfolio_id}
-                title={card.title}
-                content={card.content}
-                backgroundImg={card.image}
-                isbnArr={card.isbn}
-              />
-            );
-          })}
+          {portfolios.length
+            ? portfolios.map((card) => {
+                return (
+                  <PortfolioCard
+                    key={card.portfolio_id}
+                    id={card.portfolio_id}
+                    title={card.title}
+                    content={card.content}
+                    backgroundImg={card.image}
+                    isbnArr={card.isbn}
+                  />
+                );
+              })
+            : "등록된 포트폴리오가 없습니다."}
         </div>
       </div>
       <style jsx>{`

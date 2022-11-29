@@ -1,38 +1,32 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import BookReviewsModal from "./BookReviewsModal";
 import BookSearch from "../makeReview/BookSearch";
 import Button from "../common/Button";
 import ReviewCard from "../portfolioPage/ReviewCard";
-
-const DUMMY_REVEIWS = [
-  {
-    id: 1,
-    title: "서평 제목",
-    content: "어쩌구저쩌구 내용",
-    date: "2022-10-06",
-    isbn: "8934908068",
-  },
-  {
-    id: 2,
-    title: "서평 제목",
-    content: "어쩌구저쩌구 내용",
-    date: "2022-10-06",
-    isbn: "8934908068",
-  },
-];
+import { userIndexState } from "./../../../states/recoilUserIndex";
+import { useRecoilState } from "recoil";
+import { fetchReviewList } from "../../api";
 
 const PortfolioForm = () => {
   const [isSearch, setIsSearch] = useState(false);
+  const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
+  const [checkReviews, setCheckReviews] = useState([]);
 
-  const [checkReviews, setCheckReviews] = useState(
-    DUMMY_REVEIWS.map((ele) => {
-      return { ...ele, selected: false };
-    })
-  );
+  const getReviews = async (userIndex) => {
+    const fetchData = (await fetchReviewList(userIndex)) || [];
+    setCheckReviews(
+      fetchData.map((ele) => {
+        return { ...ele, selected: false };
+      })
+    );
+  };
+
+  useEffect(() => {
+    getReviews(userIndex);
+  }, []);
 
   const reviewArrHandler = (reviewArr) => {
     setCheckReviews(reviewArr);
-    console.log(checkReviews);
   };
 
   const inputRef = useRef<HTMLInputElement | null>(null);
