@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import noSign from "../../res/noSign.svg";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
@@ -6,30 +6,94 @@ import { recoilLoginedState } from "../../states/recoilLogiendState";
 import { recoilKakakoState } from "../../states/recoilKakaoRedirection";
 import Router from "next/router";
 import axios from "axios";
+import ProfileEditModal from "./ProfileEditModal";
+
+interface UserInfo {
+  birthday: string | null;
+  email: string;
+  id: number;
+  image: string;
+  job: string | null;
+  username: string;
+}
 
 export default function User() {
   const router = Router;
   const [isLogined, setIsLogined] = useRecoilState<boolean>(recoilLoginedState);
   const [isRedirection, setIsRedirection] = useRecoilState(recoilKakakoState);
-  const [userName, setUserName] = useState("이준규");
+  const [userObj, setUserObj] = useState<UserInfo>();
+  const [openModal, setOpenModal] = useState(false); //프로필 이미지 눌렀을 때 나오는 모달
+  const [openEditModal, setOpenEditModal] = useState(false); //프로필 수정 눌렀을 때 나오는 모달
+
   const induceSign = "북로그에 가입하고,\n서평으로 내 이력서를 채워보세요!";
+
+  const getUserInfo = () => {
+    const uid = localStorage.getItem("uid");
+    axios
+      .get(`http://43.200.85.245:8080/auth/user/${uid}`, {
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+      .then((res) => {
+        setUserObj(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const signOut = () => {
+    if (confirm("정말 로그아웃 하시겠습니까?")) {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("uid");
+      setIsLogined(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isLogined) {
+      getUserInfo();
+    }
+  }, [isLogined]);
 
   return (
     <div className="container">
-      {isLogined ? (
-        <div className="signed-box">
-          <span>
-            반갑습니다, <b>{userName}</b>님!
-          </span>
-          <div className="profile-box">
-            <Image
-              src={noSign}
-              layout="fill"
-              objectFit="cover"
-              alt="profile-img"
-            />
+      {isLogined && userObj ? (
+        <>
+          <div className="signed-box">
+            <span>
+              반갑습니다, <b>{userObj.username}</b>님!
+            </span>
+            <div
+              className="profile-box"
+              onClick={() => setOpenModal((prev) => !prev)}
+            >
+              <Image
+                src={userObj.image}
+                layout="fill"
+                objectFit="cover"
+                alt="profile-img"
+              />
+            </div>
           </div>
-        </div>
+          {openModal ? (
+            <div className="profile-modal">
+              <ul>
+                <li onClick={signOut}>로그아웃</li>
+                <li onClick={() => setOpenEditModal(true)}>프로필 수정</li>
+              </ul>
+              <ProfileEditModal
+                open={openEditModal}
+                close={() => setOpenEditModal(false)}
+              />
+            </div>
+          ) : (
+            <></>
+          )}
+        </>
       ) : isRedirection ? (
         <></>
       ) : (
@@ -105,17 +169,47 @@ export default function User() {
           display: flex;
           justify-content: flex-end;
           align-items: center;
+          gap: 10px;
         }
         .profile-box {
           width: 50px;
           height: 50px;
           position: relative;
+          border-radius: 100%;
+          overflow: hidden;
+          cursor: pointer;
         }
         .signed-box span {
           text-align: end;
           color: black;
           font-weight: 400;
           white-space: pre-line;
+        }
+        .profile-modal {
+          background-color: white;
+          align-self: flex-end;
+          margin-top: 10px;
+          border-radius: 10px;
+          overflow: hidden;
+          box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        }
+        .profile-modal ul {
+          list-style-type: none;
+          margin: 0px;
+          padding: 0px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+        }
+        .profile-modal ul li {
+          padding: 15px 10px;
+          width: 100%;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.25s;
+        }
+        .profile-modal ul li:hover {
+          background-color: #125b5078;
         }
       `}</style>
     </div>
