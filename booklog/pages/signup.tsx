@@ -3,6 +3,7 @@ import { useRecoilState } from "recoil";
 import { CurrentLayout, ClubLayoutState } from "../states/recoilLayoutState";
 import { recoilLoginedState } from "../states/recoilLogiendState";
 import { recoilKakakoState } from "../states/recoilKakaoRedirection";
+import { userIndexState } from "../states/recoilUserIndex";
 import { useEffect, useState } from "react";
 import Router from "next/router";
 import axios from "axios";
@@ -11,10 +12,10 @@ const signup: NextPage = () => {
   const router = Router;
   const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
   const [isLogined, setIsLogined] = useRecoilState<boolean>(recoilLoginedState);
+  const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
   const [kakaoState, setKakaoState] = useRecoilState(recoilKakakoState);
 
   const [name, setName] = useState("");
-  const [uid, setUid] = useState(0);
   const [isExist, setIsExist] = useState(false);
 
   const requestToken = async (request_code: string) => {
@@ -52,7 +53,7 @@ const signup: NextPage = () => {
       .then((res) => {
         setIsExist(res.data.isExist);
         localStorage.setItem("access_token", res.data.jwtToken);
-        setUid(res.data.userId);
+        setUserIndex(res.data.userId);
       })
       .catch((error) => {
         setKakaoState(false);
@@ -88,7 +89,7 @@ const signup: NextPage = () => {
     //추가정보입력함수
     axios
       .post(
-        `http://43.200.85.245:8080/join/${uid}/username?name=${name}`,
+        `http://43.200.85.245:8080/join/${userIndex}/username?name=${name}`,
         {
           name: name,
         },
