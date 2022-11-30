@@ -137,9 +137,9 @@ export default function MakeClubBox(props: boxProps) {
       multipartFile.append("info", content);
       multipartFile.append("ment", ment);
       multipartFile.append("max_num", `${maxNum}`);
-      multipartFile.append("onoff", onoff.toString());
-      multipartFile.append("questions", JSON.stringify(questions));
-      multipartFile.append("hashtags", JSON.stringify(tags));
+      multipartFile.append("onoff", JSON.stringify(onoff));
+      multipartFile.append("questions", question.toString());
+      multipartFile.append("hashtags", tag.toString());
 
       axios
         .post("http://43.200.85.245:8080/auth/meeting", multipartFile, {
