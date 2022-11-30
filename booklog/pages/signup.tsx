@@ -194,6 +194,7 @@ const signup: NextPage = () => {
           font-size: 16px;
           font-weight: 900;
           border-radius: 10px;
+          cursor: pointer;
         }
       `}</style>
     </div>
