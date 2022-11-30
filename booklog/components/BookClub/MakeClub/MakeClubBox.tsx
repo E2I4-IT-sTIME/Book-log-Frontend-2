@@ -46,9 +46,9 @@ export default function MakeClubBox(props: boxProps) {
   const [attachment, setAttachment] = useState("");
   const [imgFile, setImgFile] = useState<File>();
   const [maxNum, setMaxNum] = useState(2);
-  const [tags, setTags] = useState<Array<string>>();
+  const [tags, setTags] = useState<Array<string>>([]);
   const [ment, setMent] = useState("");
-  const [questions, setQuestions] = useState<Array<string>>();
+  const [questions, setQuestions] = useState<Array<string>>([]);
   const [err, setErr] = useState("");
 
   const handleOnChange: Event<"input", "onChange"> = (e) => {
@@ -125,32 +125,36 @@ export default function MakeClubBox(props: boxProps) {
     ment !== "" &&
     questions &&
     questions.length > 0
-      ? setStage(Stage.Complete)
+      ? makeQuery()
       : setErr("입력하지 않은 정보가 존재합니다.");
   };
 
   const makeQuery = () => {
-    const newObj = new FormData();
-    // newObj.append("hashtags");
+    if (imgFile) {
+      const multipartFile = new FormData();
+      multipartFile.append("image", imgFile);
+      multipartFile.append("name", name);
+      multipartFile.append("info", content);
+      multipartFile.append("ment", ment);
+      multipartFile.append("max_num", `${maxNum}`);
+      multipartFile.append("onoff", onoff.toString());
+      multipartFile.append("questions", JSON.stringify(questions));
+      multipartFile.append("hashtags", JSON.stringify(tags));
 
-    axios
-      .post(
-        "http://43.200.85.245:8080/auth/meeting",
-        {},
-        {
+      axios
+        .post("http://43.200.85.245:8080/auth/meeting", multipartFile, {
           headers: {
-            "Content-type": "application/json",
-            Accept: "application/json",
-            // Authorization: `${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
-        }
-      )
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((res) => {
-        console.log("Error!");
-      });
+        })
+        .then((res) => {
+          console.log(res);
+          setStage(Stage.Complete);
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+    }
   };
 
   return (

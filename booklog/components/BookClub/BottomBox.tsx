@@ -8,8 +8,10 @@ import {
   ClubState,
   clubState,
 } from "../../states/recoilClubSearch";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
+import EmptyBox from "./EmptyBox";
 
 interface boxProps {
   clubs: Array<clubInfo>;
@@ -17,6 +19,7 @@ interface boxProps {
 
 export default function BottomBox(props: boxProps) {
   const { clubs } = props;
+  const [clubArr, setClubArr] = useState(clubs);
   const [onoff, setOnoff] = useRecoilState(onoffState);
   const [nameKeyword, setNameKeyword] = useRecoilState(nameKeywordState);
   const [tagKeyword, setTagKeyword] = useRecoilState(tagKeywordState);
@@ -27,16 +30,33 @@ export default function BottomBox(props: boxProps) {
     setTagKeyword("");
   };
 
+  const classificationByOnoff = () => {
+    const newClubs = clubs.filter((club) => club.onoff === onoff);
+    setClubArr(newClubs);
+  };
+
+  useEffect(() => {
+    setClubArr(clubs);
+  }, [clubs]);
+
+  useEffect(() => {
+    classificationByOnoff();
+  }, [clubs]);
+
+  useEffect(() => {
+    classificationByOnoff();
+  }, [onoff]);
+
   return (
     <div className="container">
       <div className="title-box">
         <span className="title">
           {clubStatus === ClubState.AllClubs ? "모집 중인" : "나의"} 독서모임{" "}
-          {clubs.length}개
+          {clubArr.length}개
         </span>
         <span className="tag">{onoff ? "대면 모임" : "비대면 모임"}</span>
       </div>
-      {nameKeyword !== "" ? (
+      {nameKeyword !== "" && clubStatus === ClubState.AllClubs ? (
         <div className="search-box">
           <span className="search-keyword">
             {nameKeyword}의 모임명 검색 결과입니다.
@@ -60,11 +80,15 @@ export default function BottomBox(props: boxProps) {
       ) : (
         <></>
       )}
-      <div className="grid-box">
-        {clubs.map((club, index) => (
-          <BottomBoxItem item={club} key={`${club.id} - ${index}`} />
-        ))}
-      </div>
+      {clubArr.length > 0 ? (
+        <div className="grid-box">
+          {clubArr.map((club, index) => (
+            <BottomBoxItem item={club} key={`${club.id} - ${index}`} />
+          ))}
+        </div>
+      ) : (
+        <EmptyBox />
+      )}
       <style jsx>{`
         .container {
           width: 100%;

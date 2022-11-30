@@ -1,9 +1,15 @@
 import { clubInfo } from "../../res/interface/BookClubInterface";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import club from "../../res/club.svg";
 import UpperBox from "./UpperBox";
 import BottomBox from "./BottomBox";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import {
+  nameKeywordState,
+  tagKeywordState,
+} from "../../states/recoilClubSearch";
 
 interface clubProps {
   clubs: Array<clubInfo>;
@@ -12,11 +18,88 @@ interface clubProps {
 export default function ClubLayout(props: clubProps) {
   const { clubs } = props;
   const [curClubs, setClubs] = useState(clubs);
+  const [nameKeyword, setNameKeyword] = useRecoilState(nameKeywordState);
+  const [tagKeyword, setTagKeyword] = useRecoilState(tagKeywordState);
 
   const resetClubs = (state: boolean) => {
     //내 모임을 보여주거나 전체 모임 보여주거나
     //true 이면 전체모임 보여주기 - false이면 내 모임 보여주기
+    if (state) {
+      setClubs(clubs);
+    } else {
+      const uid = localStorage.getItem("uid");
+      const jwt = localStorage.getItem("access_token");
+      if (uid && jwt) {
+        axios
+          .get(`http://43.200.85.245:8080/auth/user/${uid}/meetings`, {
+            headers: {
+              "Content-type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${jwt}`,
+            },
+          })
+          .then((res) => {
+            setClubs(res.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        alert("로그인 후 이용할 수 있는 서비스입니다.");
+      }
+    }
   };
+
+  const getAllClubs = () => {
+    const clubsRes = axios
+      .get("http://43.200.85.245:8080/meetings", {
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+        },
+      })
+      .then((res) => {
+        setClubs(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const searchBookClubByTag = () => {
+    axios
+      .get(`http://43.200.85.245:8080/auth/meeting/searchCategory`, {
+        params: { category: tagKeyword },
+      })
+      .then((res) => {
+        setClubs(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const searchBookClubByName = () => {
+    axios
+      .get(`http://43.200.85.245:8080/auth/meeting/searchName`, {
+        params: { name: nameKeyword },
+      })
+      .then((res) => {
+        setClubs(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    if (nameKeyword === "" && tagKeyword !== "") {
+      searchBookClubByTag();
+    } else if (nameKeyword !== "" && tagKeyword === "") {
+      searchBookClubByName();
+    } else if (nameKeyword === "" && tagKeyword === "") {
+      getAllClubs();
+    }
+  }, [nameKeyword, tagKeyword]);
 
   return (
     <div className="container">
