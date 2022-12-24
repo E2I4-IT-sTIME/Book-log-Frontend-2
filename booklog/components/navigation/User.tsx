@@ -9,11 +9,8 @@ import axios from "axios";
 import ProfileEditModal from "./ProfileEditModal";
 
 interface UserInfo {
-  birthday: string | null;
-  email: string;
   id: number;
   image: string;
-  job: string | null;
   username: string;
 }
 

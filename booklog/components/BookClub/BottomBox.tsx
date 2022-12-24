@@ -31,8 +31,10 @@ export default function BottomBox(props: boxProps) {
   };
 
   const classificationByOnoff = () => {
-    const newClubs = clubs.filter((club) => club.onoff === onoff);
-    setClubArr(newClubs);
+    if (clubs) {
+      const newClubs = clubs.filter((club) => club.onoff === onoff);
+      setClubArr(newClubs);
+    }
   };
 
   useEffect(() => {
@@ -52,7 +54,7 @@ export default function BottomBox(props: boxProps) {
       <div className="title-box">
         <span className="title">
           {clubStatus === ClubState.AllClubs ? "모집 중인" : "나의"} 독서모임{" "}
-          {clubArr.length}개
+          {clubArr ? clubArr.length : 0}개
         </span>
         <span className="tag">{onoff ? "대면 모임" : "비대면 모임"}</span>
       </div>
@@ -80,7 +82,7 @@ export default function BottomBox(props: boxProps) {
       ) : (
         <></>
       )}
-      {clubArr.length > 0 ? (
+      {clubArr && clubArr.length > 0 ? (
         <div className="grid-box">
           {clubArr.map((club, index) => (
             <BottomBoxItem item={club} key={`${club.id} - ${index}`} />

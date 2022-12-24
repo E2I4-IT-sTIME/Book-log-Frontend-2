@@ -5,11 +5,8 @@ import { useRecoilState } from "recoil";
 import { recoilLoginedState } from "../../states/recoilLogiendState";
 
 interface UserInfo {
-  birthday: string | null;
-  email: string;
   id: number;
   image: string;
-  job: string | null;
   username: string;
 }
 
@@ -75,10 +72,10 @@ export default function BasicModal(props: modalState) {
   const saveInfo = () => {
     const uid = localStorage.getItem("uid");
     const multipartFile = new FormData();
-    multipartFile.append("birthday", "");
-    multipartFile.append("image", imgFile ? imgFile : info.image);
-    multipartFile.append("job", "");
     multipartFile.append("username", name);
+    if (imgFile) {
+      multipartFile.append("image", imgFile);
+    }
     axios
       .patch(`http://43.200.85.245:8080/auth/user/${uid}`, multipartFile, {
         headers: {

@@ -20,7 +20,6 @@ export default function Carousel(props: carouselProps) {
   const [curIndex, setCurIndex] = useState(0);
 
   const move = (direction: Direction) => {
-    console.log(clubs.length);
     if (direction === Direction.Left) {
       curIndex === clubs.length - 1 ? null : moveLeft();
     } else {
@@ -39,7 +38,9 @@ export default function Carousel(props: carouselProps) {
   };
 
   useEffect(() => {
-    clubArray.length > 10 ? setClubArray((prev) => prev.slice(0, 10)) : null;
+    clubArray && clubArray.length > 10
+      ? setClubArray((prev) => prev.slice(0, 10))
+      : null;
   }, []);
 
   return (
@@ -53,14 +54,15 @@ export default function Carousel(props: carouselProps) {
         </button>
       </div>
       <div className="items">
-        {clubArray.map((club, index) => (
-          <CarouselItem
-            key={club.id}
-            index={index}
-            item={club}
-            length={clubArray.length}
-          />
-        ))}
+        {clubArray &&
+          clubArray.map((club, index) => (
+            <CarouselItem
+              key={club.id}
+              index={index}
+              item={club}
+              length={clubArray.length}
+            />
+          ))}
       </div>
       <style jsx>{`
         .container {

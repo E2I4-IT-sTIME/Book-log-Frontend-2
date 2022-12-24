@@ -9,6 +9,8 @@ import { useRecoilState } from "recoil";
 import {
   nameKeywordState,
   tagKeywordState,
+  clubState,
+  ClubState,
 } from "../../states/recoilClubSearch";
 
 interface clubProps {
@@ -20,6 +22,7 @@ export default function ClubLayout(props: clubProps) {
   const [curClubs, setClubs] = useState(clubs);
   const [nameKeyword, setNameKeyword] = useRecoilState(nameKeywordState);
   const [tagKeyword, setTagKeyword] = useRecoilState(tagKeywordState);
+  const [clubStatus, setClubStatus] = useRecoilState(clubState);
 
   const resetClubs = (state: boolean) => {
     //내 모임을 보여주거나 전체 모임 보여주거나
@@ -40,11 +43,13 @@ export default function ClubLayout(props: clubProps) {
           })
           .then((res) => {
             setClubs(res.data);
+            setClubStatus(ClubState.MyClubs);
           })
           .catch((error) => {
             console.log(error);
           });
       } else {
+        setClubStatus(ClubState.AllClubs);
         alert("로그인 후 이용할 수 있는 서비스입니다.");
       }
     }
