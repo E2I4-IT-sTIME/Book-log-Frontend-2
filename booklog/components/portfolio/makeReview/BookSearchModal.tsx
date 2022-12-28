@@ -1,14 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { bookSearch } from '../common/fetchBook';
 import BookInfoPrev from './BookInfoPrev';
 import Image from 'next/image';
-
-interface modalState {
-  open: boolean;
-  isbnChangeHandler: () => void;
-  closeModal: () => void;
-  fetchBookInfo: () => void;
-}
 
 export default function BasicModal(props: any) {
   const { open, closeModal, fetchBookInfo, isbnChangeHandler } = props;
@@ -34,7 +27,6 @@ export default function BasicModal(props: any) {
     });
     closeModal();
   };
-  console.log(open);
 
   return (
     <div className={open ? 'openModal modal' : 'modal'} onClick={closeModal}>
