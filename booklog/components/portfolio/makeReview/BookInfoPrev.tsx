@@ -60,6 +60,7 @@ export default function BookInfoPrev(props: bookInfo) {
         .container img {
           margin: 0 auto;
           width: 130px;
+          height: 180px;
         }
 
         .rank {
@@ -71,12 +72,12 @@ export default function BookInfoPrev(props: bookInfo) {
           padding: 10px 0px 3px 0px;
           font-size: 1rem;
           font-weight: bold;
-          width: 120px;
+          width: 100%;
         }
 
         .author {
           font-size: 0.9rem;
-          width: 120px;
+          width: 100%;
         }
       `}</style>
     </div>

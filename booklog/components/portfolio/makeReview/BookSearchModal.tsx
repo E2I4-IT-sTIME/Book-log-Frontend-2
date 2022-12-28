@@ -5,8 +5,10 @@ import Image from 'next/image';
 
 export default function BasicModal(props: any) {
   const { open, closeModal, fetchBookInfo, isbnChangeHandler } = props;
-  const [books, setBooks] = useState([]);
+  const [books, setBooks] = useState(null);
   const [keyword, setKeyword] = useState('');
+
+  console.log(Array.isArray(books));
 
   const onChangeKeword = (e: any) => {
     setKeyword(e.target.value);
@@ -45,36 +47,40 @@ export default function BasicModal(props: any) {
               </button>
             </div>
             <div className="book-list">
-              {books.length ? (
-                <div className="list-box">
-                  {books.map((book: any) => (
-                    <div onClick={() => onClickBook(book)} key={book.isbn}>
-                      <BookInfoPrev
-                        imgSrc={book.thumbnail}
-                        bookTitle={book.title}
-                        author={book.authors[0]}
-                        publisher={book.publisher}
-                        dateTime={book.datetime}
-                        content={book.contents}
-                        url={book.url}
-                      ></BookInfoPrev>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="notice">
-                  <Image
-                    className="triangle"
-                    src="/triangle.png"
-                    alt="경고"
-                    width="370px"
-                    height="330px"
-                  />
-                  <div className="notice-text">
-                    <div className="small">검색결과가 없어요!</div>
-                    <div>다른 검색어로 검색해주세요</div>
+              {Array.isArray(books) ? (
+                books.length ? (
+                  <div className="list-box">
+                    {books.map((book: any) => (
+                      <div onClick={() => onClickBook(book)} key={book.isbn}>
+                        <BookInfoPrev
+                          imgSrc={book.thumbnail}
+                          bookTitle={book.title}
+                          author={book.authors[0]}
+                          publisher={book.publisher}
+                          dateTime={book.datetime}
+                          content={book.contents}
+                          url={book.url}
+                        ></BookInfoPrev>
+                      </div>
+                    ))}
                   </div>
-                </div>
+                ) : (
+                  <div className="notice">
+                    <Image
+                      className="triangle"
+                      src="/triangle.png"
+                      alt="경고"
+                      width="370px"
+                      height="330px"
+                    />
+                    <div className="notice-text">
+                      <div className="small">검색결과가 없어요!</div>
+                      <div>다른 검색어로 검색해주세요</div>
+                    </div>
+                  </div>
+                )
+              ) : (
+                <div className="notice-text init">책을 검색해주세요</div>
               )}
             </div>
           </main>
@@ -132,6 +138,10 @@ export default function BasicModal(props: any) {
         }
         .small {
           font-size: 36px;
+        }
+        .init {
+          top: 50%;
+          left: 42%;
         }
 
         .list-box {
