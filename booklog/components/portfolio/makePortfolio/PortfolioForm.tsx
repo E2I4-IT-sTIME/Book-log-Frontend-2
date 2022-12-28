@@ -5,7 +5,8 @@ import Button from "../common/Button";
 import ReviewCard from "../portfolioPage/ReviewCard";
 import { userIndexState } from "./../../../states/recoilUserIndex";
 import { useRecoilState } from "recoil";
-import { fetchReviewList } from "../../api";
+import { fetchReviewList, postPortfolioData } from "../../api";
+import Image from "next/image";
 
 const PortfolioForm = () => {
   const [isSearch, setIsSearch] = useState(false);
@@ -32,22 +33,72 @@ const PortfolioForm = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [imageUrl, setImageFile] = useState("");
 
-  const onUploadImage = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!e.target.files) {
-        return;
-      }
-      const url = URL.createObjectURL(e.target.files[0]);
-      setImageFile(url);
-    },
-    []
-  );
-  const onUploadImageButtonClick = useCallback(() => {
-    if (!inputRef.current) {
-      return;
-    }
-    inputRef.current.click();
-  }, []);
+  const [profile, setProfile] = useState("");
+  const [attachment, setAttachment] = useState("");
+  const [imgFile, setImgFile] = useState<File>();
+
+  const onImageHandler = (e: any) => {
+    const {
+      target: { files, value },
+    } = e;
+    const theFile = files[0];
+    const reader = new FileReader();
+    setProfile(value);
+    reader.onloadend = (finishedEvent: any) => {
+      const {
+        currentTarget: { result },
+      } = finishedEvent;
+      setAttachment(result);
+      setImgFile(theFile);
+    };
+    reader.readAsDataURL(theFile);
+  };
+
+  console.log(imgFile);
+
+  // const onUploadImage = useCallback(
+  //   (e: React.ChangeEvent<HTMLInputElement>) => {
+  //     if (!e.target.files) {
+  //       return;
+  //     }
+  //     const url = URL.createObjectURL(e.target.files[0]);
+  //     setImageFile(url);
+  //     console.log(url);
+  //   },
+  //   []
+  // );
+  // const onUploadImageButtonClick = useCallback(() => {
+  //   if (!inputRef.current) {
+  //     return;
+  //   }
+  //   inputRef.current.click();
+  // }, []);
+
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  const titleChangeHandler = (e: any) => {
+    setTitle(e.target.value);
+  };
+  const contentChangeHandler = (e: any) => {
+    setContent(e.target.value);
+  };
+
+  const postPortfolio = async () => {
+    const reviewsIdArr = checkReviews
+      .filter((e) => e.selected)
+      .map((e) => e.review_id);
+
+    const formData = new FormData();
+
+    formData.append("image", imgFile);
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("reviews_id", reviewsIdArr);
+
+    console.log(formData.get("image"));
+    postPortfolioData(formData, userIndex);
+  };
 
   return (
     <>
@@ -58,7 +109,20 @@ const PortfolioForm = () => {
             내 포트폴리오를 대표할 수 있는 커버 이미지를 추가해보세요. <br />
             이미지비율은 1440x440을 권장합니다.
           </label>
+          <Image
+            src={attachment}
+            alt="프로필이미지"
+            width="100px"
+            height="100px"
+          />
           <input
+            name="file"
+            type="file"
+            accept="image/*"
+            onChange={onImageHandler}
+            value={profile}
+          />
+          {/* <input
             type="file"
             accept="'image/*"
             ref={inputRef}
@@ -71,7 +135,7 @@ const PortfolioForm = () => {
             ) : (
               "커버 이미지 추가하기"
             )}
-          </div>
+          </div> */}
         </div>
         <div className="portfolio">
           <label className="title">포트폴리오 제목</label>
@@ -85,6 +149,7 @@ const PortfolioForm = () => {
             type="text"
             className="title-input"
             placeholder="포트폴리오 제목을 입력해주세요"
+            onChange={titleChangeHandler}
           />
         </div>
         <div className="portfolio">
@@ -95,6 +160,7 @@ const PortfolioForm = () => {
           <textarea
             className="content-input"
             placeholder="포트폴리오 설명을 입력해주세요"
+            onChange={contentChangeHandler}
           ></textarea>
         </div>
         <div className="portfolio">
@@ -121,7 +187,13 @@ const PortfolioForm = () => {
           </div>
         </div>
         <div className="btn-div">
-          <Button color="#125B50" text="제작하기" onClick={() => {}} />
+          <Button
+            color="#125B50"
+            text="제작하기"
+            onClick={() => {
+              postPortfolio();
+            }}
+          />
         </div>
       </form>
       <BookReviewsModal

@@ -1,6 +1,6 @@
-import { useState } from "react";
-import BookSearchModal from "./BookSearchModal";
-import Image from "next/image";
+import { useState } from 'react';
+import BookSearchModal from './BookSearchModal';
+import Image from 'next/image';
 
 interface bookInfo {
   isbn: string;
@@ -14,11 +14,11 @@ const BookSearch = (props: any) => {
   const [isSearch, setIsSearch] = useState(false);
 
   const [bookInfo, setBookInfo] = useState({
-    isbn: "",
-    imgSrc: "",
-    bookTitle: "",
-    author: "",
-    bookStory: "",
+    isbn: '',
+    imgSrc: '',
+    bookTitle: '',
+    author: '',
+    bookStory: '',
   });
 
   const fetchBookInfo = (book: bookInfo) => {
@@ -43,7 +43,7 @@ const BookSearch = (props: any) => {
               setIsSearch(true);
             }}
           >
-            {bookInfo.imgSrc === "" ? (
+            {bookInfo.imgSrc === '' ? (
               <div className="img-none">
                 <p>
                   책을
@@ -71,18 +71,18 @@ const BookSearch = (props: any) => {
             <div>
               <p className="bold">줄거리</p>
               <p className="sub">
-                {bookInfo.bookStory || "줄거리가 존재하지 않아요"}
+                {bookInfo.bookStory || '줄거리가 존재하지 않아요'}
               </p>
             </div>
           </div>
         </div>
-        {isSearch && (
-          <BookSearchModal
-            isbnChangeHandler={props.isbnChangeHandler}
-            closeModal={() => setIsSearch(!isSearch)}
-            fetchBookInfo={fetchBookInfo}
-          />
-        )}
+
+        <BookSearchModal
+          open={isSearch}
+          isbnChangeHandler={props.isbnChangeHandler}
+          closeModal={() => setIsSearch(!isSearch)}
+          fetchBookInfo={fetchBookInfo}
+        />
       </div>
       <style jsx>{`
         .container {
