@@ -70,8 +70,8 @@ export default function BasicModal(props: any) {
                       className="triangle"
                       src="/triangle.png"
                       alt="경고"
-                      width="370px"
-                      height="330px"
+                      width="330px"
+                      height="290px"
                     />
                     <div className="notice-text">
                       <div className="small">검색결과가 없어요!</div>
@@ -80,7 +80,9 @@ export default function BasicModal(props: any) {
                   </div>
                 )
               ) : (
-                <div className="notice-text init">책을 검색해주세요</div>
+                <div className="notice">
+                  <div className="notice-text init">책을 검색해주세요</div>
+                </div>
               )}
             </div>
           </main>
@@ -126,9 +128,10 @@ export default function BasicModal(props: any) {
           flex-direction: row;
           align-items: center;
           justify-content: center;
+          position: relative;
         }
         .notice-text {
-          font-size: 40px;
+          font-size: 30px;
           font-weight: 800;
           position: absolute;
           display: flex;
@@ -140,8 +143,8 @@ export default function BasicModal(props: any) {
           font-size: 36px;
         }
         .init {
-          top: 50%;
-          left: 42%;
+          top: 40%;
+          left: 38%;
         }
 
         .list-box {
