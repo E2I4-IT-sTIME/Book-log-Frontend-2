@@ -7,11 +7,15 @@ interface propsType {
 const Button = (props: propsType) => {
   return (
     <>
-      <button style={{ backgroundColor: props.color }} onClick={props.onClick}>
+      <div
+        className="button"
+        style={{ backgroundColor: props.color }}
+        onClick={props.onClick}
+      >
         {props.text}
-      </button>
+      </div>
       <style jsx>{`
-        button {
+        .button {
           border: 0px;
           font-size: 20px;
           font-weight: bold;

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Button from "../common/Button";
 import BookReviewCard from "./BookReviewCard";
+import review from "./../../../pages/portfolio/review/index";
 
 interface modalState {
   open: boolean;
@@ -11,8 +12,12 @@ interface modalState {
 }
 
 export default function BasicModal(props: modalState) {
-  const { open, close, header, checkReviews, reviewArrHandler } = props;
-  const [newCheckReviews, setNewCheckReviews] = useState(checkReviews);
+  const { open, close, checkReviews, reviewArrHandler } = props;
+
+  const [newCheckReviews, setNewCheckReviews] = useState([]);
+  useEffect(() => {
+    setNewCheckReviews(checkReviews);
+  }, [checkReviews]);
 
   return (
     <div className={open ? "openModal modal" : "modal"} onClick={close}>
@@ -30,14 +35,7 @@ export default function BasicModal(props: modalState) {
                     review.selected = !review.selected;
                   }}
                 >
-                  <BookReviewCard
-                    key={review.id}
-                    title={review.title}
-                    date={review.date}
-                    content={review.content}
-                    isbn={review.isbn}
-                    selected={review.selected}
-                  />
+                  <BookReviewCard review={review} />
                 </div>
               ))}
             </div>
