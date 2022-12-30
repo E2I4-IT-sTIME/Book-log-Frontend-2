@@ -6,6 +6,7 @@ import { useRecoilState } from "recoil";
 import { CurrentLayout, ClubLayoutState } from "../states/recoilLayoutState";
 import { useEffect } from "react";
 import { recoilKakakoState } from "../states/recoilKakaoRedirection";
+import axios from "axios";
 
 interface serversideProps {
   clubs: Array<clubInfo>;
@@ -30,28 +31,18 @@ export default function Home(props: serversideProps) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
-    const tmpClub: clubInfo = {
-      id: 0,
-      image:
-        "https://i.pinimg.com/564x/b5/78/03/b57803fc499cbcd05d28277d6810ce4f.jpg",
-      info: "라브리 그림책 독서모임",
-      max_num: 10,
-      cur_num: 1,
-      name: "이준규",
-      onoff: false,
-      tags: ["경기", "개발자", "취업"],
-    };
-    const tmpArray = [
-      tmpClub,
-      tmpClub,
-      tmpClub,
-      tmpClub,
-      tmpClub,
-      tmpClub,
-      tmpClub,
-      tmpClub,
-    ];
-    return { props: { clubs: tmpArray } };
+    const clubsRes = await axios.get("http://43.200.85.245:8080/meetings", {
+      headers: {
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    });
+
+    if (clubsRes.status === 200) {
+      const clubs: Array<clubInfo> = clubsRes.data;
+      return { props: { clubs: clubs } };
+    }
+    return { props: {} };
   } catch (err) {
     console.log(err);
     return { props: {} };

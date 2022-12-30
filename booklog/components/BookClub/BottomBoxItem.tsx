@@ -1,10 +1,11 @@
 import { clubInfo, MyStateInClub } from "../../res/interface/BookClubInterface";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import BasicModal from "./../BasicModal";
 import ClubModal from "./ClubModal";
 import ClubModalWaiting from "./ClubModalWaiting";
 import ClubModalToMember from "./ClubModalToMember";
+import axios from "axios";
 
 interface itemProps {
   item: clubInfo;
@@ -16,6 +17,35 @@ export default function BottomBoxItem(props: itemProps) {
 
   //내가 모임 권한이 어떤거인지 임시 state
   const [myState, setMyState] = useState(MyStateInClub.Member);
+
+  const getMyRight = () => {
+    const jwt = localStorage.getItem("access_token");
+    axios
+      .get(`http://43.200.85.245:8080/auth/meeting/${item.id}/check`, {
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
+      })
+      .then((res) => {
+        const right = res.data;
+        if (right === 0) {
+          setMyState(MyStateInClub.NoMember);
+        } else if (right === 1) {
+        } else if (right === 2) {
+        } else if (right === 3) {
+          setMyState(MyStateInClub.Member);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    getMyRight();
+  }, []);
 
   return (
     <>
