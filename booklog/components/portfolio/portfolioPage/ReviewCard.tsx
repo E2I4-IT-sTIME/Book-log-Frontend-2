@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { recoilLoginedState } from "../../../states/recoilLogiendState";
-import { bookImgSearch } from "../common/fetchBook";
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { recoilLoginedState } from '../../../states/recoilLogiendState';
+import { bookImgSearch } from '../common/fetchBook';
 
 const ReviewCard = (props) => {
   const [isLogined, setisLogined] = useRecoilState(recoilLoginedState);
-  const { title, content, createDate, isbn } = props.review;
+  const { review_id, title, content, createDate, isbn } = props.review;
   const date = createDate.substr(0, 10);
 
-  const [bookImgSrc, setBookImgSrc] = useState("");
+  const [bookImgSrc, setBookImgSrc] = useState('');
 
   const srcHandler = async () => {
     setBookImgSrc(await bookImgSearch(isbn));
@@ -22,7 +22,7 @@ const ReviewCard = (props) => {
     <>
       <div className="review-container">
         <div className="img-box">
-          <img src={bookImgSrc || "/defaultBookImg.jpg"}></img>
+          <img src={bookImgSrc || '/defaultBookImg.jpg'}></img>
         </div>
         <div className="text-box">
           <div className="main">
@@ -30,7 +30,18 @@ const ReviewCard = (props) => {
             <div className="date">{date}</div>
             <div className="content">{content}</div>
           </div>
-          {isLogined ? <div className="delete">-</div> : ""}
+          {isLogined ? (
+            <div
+              className="delete"
+              onClick={() => {
+                props.onClick(review_id);
+              }}
+            >
+              -
+            </div>
+          ) : (
+            ''
+          )}
         </div>
       </div>
       <style jsx>{`
@@ -47,7 +58,7 @@ const ReviewCard = (props) => {
         .img-box {
           width: 30%;
           height: 100%;
-          background: url("/defaultBookImg.jpg") no-repeat;
+          background: url('/defaultBookImg.jpg') no-repeat;
           padding: 15px;
           border-radius: 10px 0 0 10px;
         }
@@ -87,6 +98,13 @@ const ReviewCard = (props) => {
           line-height: 20px;
           text-align: center;
           font-weight: bold;
+          transition: all 0.2s;
+        }
+        .delete:hover {
+          margin-top: -1px;
+          margin-left: 0px;
+          transform: scale(1.1, 1.1);
+          box-shadow: 0px 5px 5px -2px rgba(0, 0, 0, 0.25);
         }
       `}</style>
     </>

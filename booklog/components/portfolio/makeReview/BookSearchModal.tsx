@@ -8,8 +8,6 @@ export default function BasicModal(props: any) {
   const [books, setBooks] = useState(null);
   const [keyword, setKeyword] = useState('');
 
-  console.log(Array.isArray(books));
-
   const onChangeKeword = (e: any) => {
     setKeyword(e.target.value);
   };

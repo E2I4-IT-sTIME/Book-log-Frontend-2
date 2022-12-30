@@ -33,7 +33,7 @@ const signup: NextPage = () => {
     })
       .then((response) => {
         returnValue = response.data.access_token;
-        console.log(returnValue);
+        //console.log(returnValue);
         sendTokenToServer(returnValue);
       })
       .catch((error) => {
@@ -51,7 +51,7 @@ const signup: NextPage = () => {
         },
       })
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         setIsExist(res.data.isExist);
         localStorage.setItem('access_token', res.data.jwtToken);
         localStorage.setItem('uid', res.data.userId);
@@ -89,7 +89,7 @@ const signup: NextPage = () => {
   }, [isExist]);
 
   const registerInfo = () => {
-    const uid = localStorage.getItem("uid");
+    const uid = localStorage.getItem('uid');
     //추가정보입력함수
     axios
       .post(

@@ -1,11 +1,13 @@
-import Image from "next/image";
-import Link from "next/link";
-import noSign from "../../../res/noSign.svg";
-import { brText } from "../common/brText";
-import ThumnailCard from "../common/thumnailCard";
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect } from 'react';
+import noSign from '../../../res/noSign.svg';
+import { brText } from '../common/brText';
+import ThumnailCard from '../common/ThumnailCard';
 
 const PortfolioCard = (props: any) => {
   const { title, content, backgroundImg, isbnArr, id } = props;
+
   return (
     <>
       <Link href={`/portfolio/${id}`}>
@@ -16,10 +18,10 @@ const PortfolioCard = (props: any) => {
           </div>
           <div className="img-box">
             <div className="profile-box">
-              <Image src={noSign} width="50px" height="50px" />
+              <Image src={noSign} width="50px" height="50px" alt="" />
             </div>
             <div className="thumnail-box">
-              {isbnArr.map((isbn: string) => (
+              {(isbnArr || []).map((isbn: string) => (
                 <ThumnailCard isbn={isbn} />
               ))}
             </div>
