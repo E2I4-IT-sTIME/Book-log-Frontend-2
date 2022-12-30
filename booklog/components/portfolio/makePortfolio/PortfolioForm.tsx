@@ -1,20 +1,18 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import BookReviewsModal from "./BookReviewsModal";
-import BookSearch from "../makeReview/BookSearch";
-import Button from "../common/Button";
-import ReviewCard from "../portfolioPage/ReviewCard";
-import { userIndexState } from "./../../../states/recoilUserIndex";
-import { useRecoilState } from "recoil";
-import { fetchReviewList, postPortfolioData } from "../../api";
-import Image from "next/image";
+import { useEffect, useRef, useState, useCallback } from 'react';
+import BookReviewsModal from './BookReviewsModal';
+import Button from '../common/Button';
+import ReviewCard from '../portfolioPage/ReviewCard';
+import { fetchReviewList, postPortfolioData } from '../../api';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const PortfolioForm = () => {
   const [isSearch, setIsSearch] = useState(false);
-  const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
   const [checkReviews, setCheckReviews] = useState([]);
+  const router = useRouter();
 
-  const getReviews = async (userIndex) => {
-    const fetchData = (await fetchReviewList(userIndex)) || [];
+  const getReviews = async () => {
+    const fetchData = (await fetchReviewList()) || [];
     setCheckReviews(
       fetchData.map((ele) => {
         return { ...ele, selected: false };
@@ -23,7 +21,7 @@ const PortfolioForm = () => {
   };
 
   useEffect(() => {
-    getReviews(userIndex);
+    getReviews();
   }, []);
 
   const reviewArrHandler = (reviewArr) => {
@@ -31,11 +29,18 @@ const PortfolioForm = () => {
   };
 
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [imageUrl, setImageFile] = useState("");
+  const [imageUrl, setImageFile] = useState('');
 
-  const [profile, setProfile] = useState("");
-  const [attachment, setAttachment] = useState("");
+  const [profile, setProfile] = useState('');
+  const [attachment, setAttachment] = useState('');
   const [imgFile, setImgFile] = useState<File>();
+
+  const onUploadImageButtonClick = useCallback(() => {
+    if (!inputRef.current) {
+      return;
+    }
+    inputRef.current.click();
+  }, []);
 
   const onImageHandler = (e: any) => {
     const {
@@ -54,28 +59,8 @@ const PortfolioForm = () => {
     reader.readAsDataURL(theFile);
   };
 
-  console.log(imgFile);
-
-  // const onUploadImage = useCallback(
-  //   (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     if (!e.target.files) {
-  //       return;
-  //     }
-  //     const url = URL.createObjectURL(e.target.files[0]);
-  //     setImageFile(url);
-  //     console.log(url);
-  //   },
-  //   []
-  // );
-  // const onUploadImageButtonClick = useCallback(() => {
-  //   if (!inputRef.current) {
-  //     return;
-  //   }
-  //   inputRef.current.click();
-  // }, []);
-
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
 
   const titleChangeHandler = (e: any) => {
     setTitle(e.target.value);
@@ -91,13 +76,18 @@ const PortfolioForm = () => {
 
     const formData = new FormData();
 
-    formData.append("image", imgFile);
-    formData.append("title", title);
-    formData.append("content", content);
-    formData.append("reviews_id", reviewsIdArr);
+    formData.append('image', imgFile);
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('reviews_id', reviewsIdArr);
 
-    console.log(formData.get("image"));
-    postPortfolioData(formData, userIndex);
+    const res = await postPortfolioData(formData);
+    if (res) {
+      alert('포트폴리오가 생성되었습니다!');
+      router.push('/portfolio');
+    } else {
+      alert('잠시후 다시 시도해 주세요');
+    }
   };
 
   return (
@@ -109,33 +99,21 @@ const PortfolioForm = () => {
             내 포트폴리오를 대표할 수 있는 커버 이미지를 추가해보세요. <br />
             이미지비율은 1440x440을 권장합니다.
           </label>
-          <Image
-            src={attachment}
-            alt="프로필이미지"
-            width="100px"
-            height="100px"
-          />
+          <div className="cover-img-box" onClick={onUploadImageButtonClick}>
+            <div className="img-text">커버 이미지 추가하기</div>
+            {attachment && (
+              <Image src={attachment} alt="" layout="fill" objectFit="fill" />
+            )}
+          </div>
           <input
             name="file"
             type="file"
             accept="image/*"
+            ref={inputRef}
             onChange={onImageHandler}
             value={profile}
+            style={{ display: 'none' }}
           />
-          {/* <input
-            type="file"
-            accept="'image/*"
-            ref={inputRef}
-            onChange={onUploadImage}
-            style={{ display: "none" }}
-          />
-          <div className="cover-img-box" onClick={onUploadImageButtonClick}>
-            {imageUrl ? (
-              <img className="cover-img" src={imageUrl} />
-            ) : (
-              "커버 이미지 추가하기"
-            )}
-          </div> */}
         </div>
         <div className="portfolio">
           <label className="title">포트폴리오 제목</label>
@@ -172,7 +150,7 @@ const PortfolioForm = () => {
             {checkReviews
               .filter((review) => review.selected)
               .map((review) => (
-                <div className="card-box">
+                <div className="card-box" key={review.id}>
                   <ReviewCard review={review} />
                 </div>
               ))}
@@ -216,7 +194,7 @@ const PortfolioForm = () => {
             padding: 50px;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
             gap: 50px;
-            font-family: "Pretendard-Regular";
+            font-family: 'Pretendard-Regular';
           }
           .portfolio {
             display: flex;
@@ -255,6 +233,7 @@ const PortfolioForm = () => {
           }
           .cover-img-box {
             display: flex;
+            flex-grow: 1;
             width: 100%;
             height: 300px;
             border-radius: 10px;
@@ -267,6 +246,7 @@ const PortfolioForm = () => {
             cursor: pointer;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
             overflow: hidden;
+            position: relative;
           }
           .cover-img {
             object-fit: cover;
