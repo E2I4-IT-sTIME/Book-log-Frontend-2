@@ -1,17 +1,47 @@
 import BookSearch from "./BookSearch";
 import Button from "../common/Button";
+import { useState } from "react";
+import { userIndexState } from "../../../states/recoilUserIndex";
+import { useRecoilState } from "recoil";
+import { postReveiwData } from "../../api";
 
 const BookReviewForm = () => {
+  const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [isbn, setIsbn] = useState("");
+  const titleChangeHandler = (e: any) => {
+    setTitle(e.target.value);
+  };
+  const contentChangeHandler = (e: any) => {
+    setContent(e.target.value);
+  };
+  const isbnChangeHandler = (isbn) => {
+    setIsbn(isbn.split(" ")[0]);
+  };
+
+  const postReview = async () => {
+    const postData = {
+      title: title,
+      content: content,
+      isbn: isbn,
+    };
+
+    const IsOk = await postReveiwData(postData, userIndex);
+    if (IsOk) alert("서평이 생성되었습니다!");
+  };
+
   return (
     <>
       <form className="container">
-        <BookSearch />
+        <BookSearch isbnChangeHandler={isbnChangeHandler} />
         <div className="review">
           <label className="title">서평 제목</label>
           <input
             type="text"
             className="title-input"
             placeholder="서평 제목을 입력해주세요"
+            onChange={titleChangeHandler}
           />
         </div>
         <div className="review">
@@ -19,10 +49,15 @@ const BookReviewForm = () => {
           <textarea
             className="content-input"
             placeholder="서평의 내용을 입력해주세요"
+            onChange={contentChangeHandler}
           ></textarea>
         </div>
         <div className="btn-div">
-          <Button color="#125B50" text="서평 저장하기" onClick={() => {}} />
+          <Button
+            color="#125B50"
+            text="서평 저장하기"
+            onClick={() => postReview()}
+          />
         </div>
       </form>
       <style jsx>

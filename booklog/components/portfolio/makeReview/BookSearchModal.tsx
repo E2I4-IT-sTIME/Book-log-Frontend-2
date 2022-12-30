@@ -1,15 +1,14 @@
-import triangle from "../image/triangle.png";
-import Image from "next/image";
-import { useState } from "react";
-import BookInfoPrev from "./BookInfoPrev";
-import router from "next/router";
-import axios from "axios";
-import { bookSearch } from "../common/fetchBook";
+import { useState } from 'react';
+import { bookSearch } from '../common/fetchBook';
+import BookInfoPrev from './BookInfoPrev';
+import Image from 'next/image';
 
-const BookSearchModal = (props: any) => {
-  const { closeModal, fetchBookInfo } = props;
-  const [books, setBooks] = useState([]);
-  const [keyword, setKeyword] = useState("");
+export default function BasicModal(props: any) {
+  const { open, closeModal, fetchBookInfo, isbnChangeHandler } = props;
+  const [books, setBooks] = useState(null);
+  const [keyword, setKeyword] = useState('');
+
+  console.log(Array.isArray(books));
 
   const onChangeKeword = (e: any) => {
     setKeyword(e.target.value);
@@ -20,7 +19,9 @@ const BookSearchModal = (props: any) => {
   };
 
   const onClickBook = (book: any) => {
+    isbnChangeHandler(book.isbn);
     fetchBookInfo({
+      isbn: book.isbn,
       imgSrc: book.thumbnail,
       bookTitle: book.title,
       author: book.authors[0],
@@ -30,77 +31,64 @@ const BookSearchModal = (props: any) => {
   };
 
   return (
-    <>
-      <div className="container" onClick={closeModal}>
-        <div className="modal" onClick={(e) => e.stopPropagation()}>
-          <div className="title">책 검색</div>
-          <div className="input-box">
-            <input
-              type="text"
-              placeholder="책 이름을 검색해보세요."
-              onChange={onChangeKeword}
-            />
-            <button className="search" onClick={onSearchHandler}>
-              검색
-            </button>
-          </div>
-          <div className="book-list">
-            {books.length ? (
-              <div className="list-box">
-                {books.map((book: any) => (
-                  <div onClick={() => onClickBook(book)} key={book.isbn}>
-                    <BookInfoPrev
-                      imgSrc={book.thumbnail}
-                      bookTitle={book.title}
-                      author={book.authors[0]}
-                      publisher={book.publisher}
-                      dateTime={book.datetime}
-                      content={book.contents}
-                      url={book.url}
-                    ></BookInfoPrev>
+    <div className={open ? 'openModal modal' : 'modal'} onClick={closeModal}>
+      {open ? (
+        <section onClick={(e) => e.stopPropagation()}>
+          <main>
+            <div className="title">책 검색</div>
+            <div className="input-box">
+              <input
+                type="text"
+                placeholder="책 이름을 검색해보세요."
+                onChange={onChangeKeword}
+              />
+              <button className="search" onClick={onSearchHandler}>
+                검색
+              </button>
+            </div>
+            <div className="book-list">
+              {Array.isArray(books) ? (
+                books.length ? (
+                  <div className="list-box">
+                    {books.map((book: any) => (
+                      <div onClick={() => onClickBook(book)} key={book.isbn}>
+                        <BookInfoPrev
+                          imgSrc={book.thumbnail}
+                          bookTitle={book.title}
+                          author={book.authors[0]}
+                          publisher={book.publisher}
+                          dateTime={book.datetime}
+                          content={book.contents}
+                          url={book.url}
+                        ></BookInfoPrev>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="notice">
-                <Image
-                  className="triangle"
-                  src="/triangle.png"
-                  alt="경고"
-                  width="370px"
-                  height="330px"
-                />
-                <div className="notice-text">
-                  <div className="small">검색결과가 없어요!</div>
-                  <div>다른 검색어로 검색해주세요</div>
+                ) : (
+                  <div className="notice">
+                    <Image
+                      className="triangle"
+                      src="/triangle.png"
+                      alt="경고"
+                      width="330px"
+                      height="290px"
+                    />
+                    <div className="notice-text">
+                      <div className="small">검색결과가 없어요!</div>
+                      <div>다른 검색어로 검색해주세요</div>
+                    </div>
+                  </div>
+                )
+              ) : (
+                <div className="notice">
+                  <div className="notice-text init">책을 검색해주세요</div>
                 </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+              )}
+            </div>
+          </main>
+        </section>
+      ) : null}
       <style jsx>{`
-        .container {
-          position: absolute;
-          top: 0;
-          left: 0;
-          z-index: 100;
-          width: 100%;
-          height: 250vh;
-          background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .modal {
-          display: flex;
-          flex-direction: column;
-          margin: 10% auto;
-          border-radius: 10px;
-          background: white;
-          width: 85%;
-          height: 140vh;
-          padding: 50px;
-          box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
-        }
         .title {
           font-size: 36px;
           font-weight: bold;
@@ -140,9 +128,10 @@ const BookSearchModal = (props: any) => {
           flex-direction: row;
           align-items: center;
           justify-content: center;
+          position: relative;
         }
         .notice-text {
-          font-size: 40px;
+          font-size: 30px;
           font-weight: 800;
           position: absolute;
           display: flex;
@@ -153,23 +142,102 @@ const BookSearchModal = (props: any) => {
         .small {
           font-size: 36px;
         }
+        .init {
+          top: 40%;
+          left: 38%;
+        }
 
         .list-box {
           width: 100%;
           height: 80%;
-          display: flex;
-          justify-content: center;
-          flex-direction: row;
-          flex-wrap: wrap;
-          row-gap: 3rem;
-          column-gap: 4rem;
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr 1fr;
+          grid-gap: 30px;
+
           margin-top: 40px;
-          padding: 0px 0px 100px 0px;
+          padding: 0px 20px 100px 20px;
           overflow-y: scroll;
         }
-      `}</style>
-    </>
-  );
-};
+        .thumnail {
+          width: 100%;
+          height: 100%;
+          position: relative;
+        }
+        .thumnail > img {
+          transition: filter 0.3s ease-in-out;
+        }
+        .thumnail > img:hover {
+          filter: blur(5px);
+        }
+        .thumnail > img:hover + .msg {
+          opacity: 1;
+        }
+        .msg:hover + .thumnail > img {
+          filter: blur(5px);
+        }
+        .thumnail > .msg:hover {
+          opacity: 1;
+        }
 
-export default BookSearchModal;
+        .thumnail > .msg {
+          position: absolute;
+          top: 48%;
+          left: 25%;
+          opacity: 0;
+          text-decoration: underline;
+          transition: all 0.2s ease-in-out;
+          color: white;
+        }
+        .modal {
+          display: none;
+          position: fixed;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          z-index: 9999;
+          background-color: rgba(0, 0, 0, 0.6);
+        }
+        .modal > section {
+          width: 90%;
+          max-width: 1000px;
+          margin: 0 auto;
+          border-radius: 0.3rem;
+          background-color: #fff;
+          animation: modal-show 0.3s;
+          overflow: hidden;
+        }
+
+        .modal > section > main {
+          height: 800px;
+          border-bottom: 1px solid #dee2e6;
+          border-top: 1px solid #dee2e6;
+          padding: 40px;
+        }
+        .modal.openModal {
+          display: flex;
+          align-items: center;
+          animation: modal-bg-show 0.3s;
+        }
+        @keyframes modal-show {
+          from {
+            opacity: 0;
+            margin-top: -50px;
+          }
+          to {
+            opacity: 1;
+            margin-top: 0;
+          }
+        }
+        @keyframes modal-bg-show {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+      `}</style>
+    </div>
+  );
+}

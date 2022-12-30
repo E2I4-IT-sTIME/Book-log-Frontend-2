@@ -5,22 +5,21 @@ import { brText } from "../common/brText";
 import ThumnailCard from "../common/thumnailCard";
 
 const PortfolioCard = (props: any) => {
-  const { title, sub, backgroundImg, thumnailArr } = props;
-  console.log(thumnailArr);
+  const { title, content, backgroundImg, isbnArr, id } = props;
   return (
     <>
-      <Link href="/portfolio/1">
+      <Link href={`/portfolio/${id}`}>
         <div className="portCard-container">
           <div className="text-box">
             <div className="title">{brText(title)}</div>
-            <div className="sub">{brText(sub)}</div>
+            <div className="sub">{brText(content)}</div>
           </div>
           <div className="img-box">
             <div className="profile-box">
               <Image src={noSign} width="50px" height="50px" />
             </div>
             <div className="thumnail-box">
-              {thumnailArr.map((isbn: string) => (
+              {isbnArr.map((isbn: string) => (
                 <ThumnailCard isbn={isbn} />
               ))}
             </div>

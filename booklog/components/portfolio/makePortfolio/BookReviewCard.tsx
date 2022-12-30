@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { bookImgSearch } from "../common/fetchBook";
 
 const BookReviewCard = (props) => {
-  const { title, content, date, isbn, selected } = props;
+  const { title, content, createDate, isbn, selected } = props.review;
+  const date = createDate.substr(0, 10);
 
   const [bookImgSrc, setBookImgSrc] = useState("");
   const [isSelected, setIsSelected] = useState(selected);

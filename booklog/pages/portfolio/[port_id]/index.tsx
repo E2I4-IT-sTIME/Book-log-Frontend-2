@@ -1,6 +1,9 @@
+import { GetServerSideProps } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
+import { fetchPortfolio, request } from "../../../components/api";
 import { brText } from "../../../components/portfolio/common/brText";
 import ThumnailCard from "../../../components/portfolio/common/thumnailCard";
 import BookReviewsModal from "../../../components/portfolio/makePortfolio/BookReviewsModal";
@@ -10,50 +13,42 @@ import {
   CurrentLayout,
 } from "../../../states/recoilLayoutState";
 import { recoilLoginedState } from "../../../states/recoilLogiendState";
-
-const DUMMY = {
-  title: "내가 1년 동안\n자존감을 높였던 방법",
-  username: "중규리",
-  userimg: "/noSign.svg",
-  sub: "자존감 밑바닥을 찍던 내가,\n 자존감을 높일 수 있었던 1년의 기록.",
-  reveiws: [
-    {
-      id: 1,
-      title: "서평 제목",
-      sub: "마음이 답답할 때 꺼내보는 책",
-      content:
-        "독후감과 서평은 다음 세 가지 면에서 분명하게 구별됩니다. 첫째, 독후감이 정서적이라면, 서평은 논리적입니다.독후감은 감상을 담습니다.서평은 사유를 담습니다. 둘째, 독후감이 내향적이라면, 서평은 외향적입니다. 독후감은 독자만의 고유한 느낌을 표현하는 데 초점을 두지만, 서평은 읽어 줄 다른 이의 세계로 나아가고자 합니다. ",
-      date: "2022-10-06",
-      isbn: "8934908068",
-    },
-    {
-      id: 2,
-      title: "서평 제목",
-      sub: "마음이 답답할 때 꺼내보는 책",
-      content: "어쩌구저쩌구 내용",
-      date: "2022-10-06",
-      isbn: "8934908068",
-    },
-  ],
-};
+import { userIndexState } from "../../../states/recoilUserIndex";
 
 const portfolio = () => {
   const [isSearch, setIsSearch] = useState(false);
   const [isLogined, setisLogined] = useRecoilState(recoilLoginedState);
+  const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
   const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
-  useEffect(() => {
-    setLayoutState(CurrentLayout.WhiteHeader);
-  }, []);
+  const [portfolio, setPortfolio] = useState({
+    title: "",
+    image: "",
+    content: "",
+    reviewResList: [],
+  });
+  const [checkReviews, setCheckReviews] = useState([]);
 
-  const [checkReviews, setCheckReviews] = useState(
-    DUMMY.reveiws.map((ele) => {
-      return { ...ele, selected: true };
-    })
-  );
+  const router = useRouter();
+  const portId = router.query.port_id;
+
+  const getPortfolio = async () => {
+    const portfolio = await fetchPortfolio(userIndex, portId);
+    setPortfolio(portfolio);
+    setCheckReviews(
+      portfolio.reviewResList.map((ele) => {
+        return { ...ele, selected: true };
+      })
+    );
+  };
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    getPortfolio(portId);
+    setLayoutState(CurrentLayout.WhiteHeader);
+  }, [router.isReady]);
 
   const reviewArrHandler = (reviewArr) => {
     setCheckReviews(reviewArr);
-    console.log(checkReviews);
   };
 
   return (
@@ -64,12 +59,12 @@ const portfolio = () => {
         </header>
         <div className="main">
           <div className="text-box">
-            <div className="title">{brText(DUMMY.title)}</div>
+            <div className="title">{brText(portfolio.title)}</div>
             <div className="user">
-              <img className="userimg" src={DUMMY.userimg}></img>
-              <div className="username">{DUMMY.username}</div>
+              <img className="userimg" src={portfolio.image}></img>
+              <div className="username">이름</div>
             </div>
-            <div className="sub">{brText(DUMMY.sub)}</div>
+            <div className="sub">{brText(portfolio.content)}</div>
           </div>
           <div className="side-box">
             {isLogined ? (
@@ -81,7 +76,7 @@ const portfolio = () => {
               ""
             )}
             <div className="bookimges">
-              {DUMMY.reveiws.map((review) => (
+              {portfolio.reviewResList.map((review) => (
                 <ThumnailCard isbn={review.isbn} />
               ))}
             </div>
@@ -133,7 +128,7 @@ const portfolio = () => {
               rgba(0, 0, 0, 1) 75%,
               rgba(0, 0, 0, 1) 100%
             ),
-            url("/portBackground.png") no-repeat;
+            url(${portfolio.image || "/portBackground.png"}) no-repeat;
           background-size: 100% auto;
         }
         header {
