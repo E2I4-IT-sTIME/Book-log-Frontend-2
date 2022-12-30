@@ -106,6 +106,12 @@ export default function BottomBox(props: boxProps) {
           grid-template-rows: auto;
           gap: 50px;
         }
+
+        @media screen and (max-width: 1000px) {
+          .grid-box {
+            grid-template-columns: 1fr 1fr 1fr;
+          }
+        }
         .title-box {
           display: flex;
           justify-content: flex-start;
