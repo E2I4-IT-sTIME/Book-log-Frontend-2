@@ -33,6 +33,7 @@ const signup: NextPage = () => {
     })
       .then((response) => {
         returnValue = response.data.access_token;
+        console.log(returnValue);
         sendTokenToServer(returnValue);
       })
       .catch((error) => {
@@ -42,7 +43,7 @@ const signup: NextPage = () => {
 
   const sendTokenToServer = (token: string) => {
     axios
-      .get(`http://43.200.85.245:8080/api/access_token?token=${token}`, {
+      .get(`http://15.165.100.90:8080/api/access_token?token=${token}`, {
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",
@@ -50,12 +51,14 @@ const signup: NextPage = () => {
         },
       })
       .then((res) => {
+        console.log(res);
         setIsExist(res.data.isExist);
         localStorage.setItem("access_token", res.data.jwtToken);
         localStorage.setItem("uid", res.data.userId);
         setUid(res.data.userId);
       })
       .catch((error) => {
+        console.log(error);
         setKakaoState(false);
       });
   };
@@ -89,7 +92,7 @@ const signup: NextPage = () => {
     //추가정보입력함수
     axios
       .post(
-        `http://43.200.85.245:8080/join/${uid}/username?name=${name}`,
+        `http://15.165.100.90:8080/join/${uid}/username?name=${name}`,
         {
           name: name,
         },
