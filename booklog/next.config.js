@@ -3,7 +3,11 @@ const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
   images: {
-    domains: ["i.pinimg.com", "k.kakaocdn.net"],
+    domains: [
+      "i.pinimg.com",
+      "k.kakaocdn.net",
+      "mybooklog.s3.ap-northeast-2.amazonaws.com",
+    ],
   },
 };
 

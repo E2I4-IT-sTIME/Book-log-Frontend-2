@@ -7,7 +7,6 @@ import {
   ClubState,
   clubState,
 } from "../../states/recoilClubSearch";
-import { clubInfo } from "../../res/interface/BookClubInterface";
 import Router from "next/router";
 
 interface upperProps {
@@ -38,10 +37,8 @@ export default function UpperBox(props: upperProps) {
 
   const onChangeStatus = () => {
     if (clubStatus === ClubState.AllClubs) {
-      setClubStatus(ClubState.MyClubs);
       setClubs(false);
     } else {
-      setClubStatus(ClubState.AllClubs);
       setClubs(true);
     }
   };
@@ -64,28 +61,39 @@ export default function UpperBox(props: upperProps) {
         </button>
       </div>
       <div className="search-box">
-        <label htmlFor="name">독서모임 명으로 검색하기</label>
-        <div className="input-line">
-          <input
-            id="name"
-            type="text"
-            placeholder="찾고싶은 독서모임 이름을 입력해주세요."
-            value={searchName}
-            onChange={(e) => setSearchName(e.target.value)}
-          />
-          <button onClick={() => onSearchByName()}>검색</button>
-        </div>
-        <label htmlFor="tag">독서모임 태그로 검색하기</label>
-        <div className="input-line">
-          <input
-            id="tag"
-            type="text"
-            placeholder="찾고싶은 독서모임 태그를 입력해주세요."
-            value={searchTag}
-            onChange={(e) => setSearchTag(e.target.value)}
-          />
-          <button onClick={() => onSearchByTag()}>검색</button>
-        </div>
+        {clubStatus === ClubState.AllClubs ? (
+          <>
+            <label htmlFor="name">독서모임 명으로 검색하기</label>
+            <div className="input-line">
+              <input
+                id="name"
+                type="text"
+                placeholder="찾고싶은 독서모임 이름을 입력해주세요."
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
+              />
+              <button onClick={() => onSearchByName()}>검색</button>
+            </div>
+            <label htmlFor="tag">독서모임 태그로 검색하기</label>
+            <div className="input-line">
+              <input
+                id="tag"
+                type="text"
+                placeholder="찾고싶은 독서모임 태그를 입력해주세요."
+                value={searchTag}
+                onChange={(e) => setSearchTag(e.target.value)}
+              />
+              <button onClick={() => onSearchByTag()}>검색</button>
+            </div>
+          </>
+        ) : (
+          <div className="my-search-box">
+            <span className="my-title">내가 가입한 모임들</span>
+            <span className="my-subtitle">
+              내 모임에서는 검색 기능을 사용할 수 없습니다.
+            </span>
+          </div>
+        )}
         <div className="onoff-box">
           <span>{onoff ? `대면 모임` : `비대면 모임`}</span>
           <label className="switch-button">
@@ -254,6 +262,23 @@ export default function UpperBox(props: upperProps) {
           -webkit-transform: translateX(20px);
           -ms-transform: translateX(20px);
           transform: translateX(20px);
+        }
+        .my-search-box {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 5px;
+        }
+        .my-title {
+          font-size: 24px;
+          font-weight: 900;
+          color: #242424;
+        }
+        .my-subtitle {
+          font-size: 16px;
+          font-weight: 400;
+          color: #242424;
         }
       `}</style>
     </div>
