@@ -27,7 +27,7 @@ export default function User() {
   const getUserInfo = () => {
     const uid = localStorage.getItem("uid");
     axios
-      .get(`http://43.200.85.245:8080/auth/user/${uid}`, {
+      .get(`http://15.165.100.90:8080/auth/user/${uid}`, {
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",
@@ -35,12 +35,13 @@ export default function User() {
         },
       })
       .then((res) => {
+        console.log(res);
         setUserObj(res.data);
       })
       .catch((error) => {
         setIsLogined(false);
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("uid");
+        // localStorage.removeItem("access_token");
+        // localStorage.removeItem("uid");
         console.log(error);
       });
   };
