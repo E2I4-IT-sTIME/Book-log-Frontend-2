@@ -1,35 +1,34 @@
-import { NextPage } from "next";
-import { useRecoilState } from "recoil";
-import { CurrentLayout, ClubLayoutState } from "../states/recoilLayoutState";
-import { recoilLoginedState } from "../states/recoilLogiendState";
-import { recoilKakakoState } from "../states/recoilKakaoRedirection";
-import { userIndexState } from "../states/recoilUserIndex";
-import { useEffect, useState } from "react";
-import Router from "next/router";
-import axios from "axios";
+import { NextPage } from 'next';
+import { useRecoilState } from 'recoil';
+import { CurrentLayout, ClubLayoutState } from '../states/recoilLayoutState';
+import { recoilLoginedState } from '../states/recoilLogiendState';
+import { recoilKakakoState } from '../states/recoilKakaoRedirection';
+import { useEffect, useState } from 'react';
+import Router from 'next/router';
+import axios from 'axios';
 
 const signup: NextPage = () => {
   const router = Router;
   const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
   const [isLogined, setIsLogined] = useRecoilState<boolean>(recoilLoginedState);
-  const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
   const [kakaoState, setKakaoState] = useRecoilState(recoilKakakoState);
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
+  const [uid, setUid] = useState(0);
   const [isExist, setIsExist] = useState(false);
 
   const requestToken = async (request_code: string) => {
-    let returnValue = "none";
-    let request_token_url = "https://kauth.kakao.com/oauth/token";
+    let returnValue = 'none';
+    let request_token_url = 'https://kauth.kakao.com/oauth/token';
     axios({
-      method: "post",
+      method: 'post',
       url: request_token_url,
       params: {
-        grant_type: "authorization_code",
-        client_id: "13ceafa8d13d6bd8104550a84132db96",
-        redirect_uri: "http://localhost:3000/signup",
+        grant_type: 'authorization_code',
+        client_id: '13ceafa8d13d6bd8104550a84132db96',
+        redirect_uri: 'http://localhost:3000/signup',
         code: request_code,
-        client_secret: "Hzxodlq6y3ivzB7a8kRPzCGvGi7J5TIg",
+        client_secret: 'Hzxodlq6y3ivzB7a8kRPzCGvGi7J5TIg',
       },
     })
       .then((response) => {
@@ -46,17 +45,17 @@ const signup: NextPage = () => {
     axios
       .get(`http://15.165.100.90:8080/api/access_token?token=${token}`, {
         headers: {
-          "Content-type": "application/json",
-          Accept: "application/json",
+          'Content-type': 'application/json',
+          Accept: 'application/json',
           withCredentials: true,
         },
       })
       .then((res) => {
         console.log(res);
         setIsExist(res.data.isExist);
-        localStorage.setItem("access_token", res.data.jwtToken);
-        localStorage.setItem("uid", res.data.userId);
-        setUserIndex(res.data.userId);
+        localStorage.setItem('access_token', res.data.jwtToken);
+        localStorage.setItem('uid', res.data.userId);
+        setUid(res.data.userId);
       })
       .catch((error) => {
         console.log(error);
@@ -68,7 +67,7 @@ const signup: NextPage = () => {
     setLayoutState(CurrentLayout.Header);
     const href = window.location.href;
     let params = new URL(document.URL).searchParams;
-    let code = params.get("code");
+    let code = params.get('code');
     if (code) {
       requestToken(code);
     } else {
@@ -78,14 +77,14 @@ const signup: NextPage = () => {
 
   useEffect(() => {
     if (!kakaoState) {
-      router.push("/404");
+      router.push('/404');
     }
   }, [kakaoState]);
 
   useEffect(() => {
     if (isExist) {
       setIsLogined(true);
-      router.push("/");
+      router.push('/');
     }
   }, [isExist]);
 
@@ -99,13 +98,13 @@ const signup: NextPage = () => {
         },
         {
           headers: {
-            "Content-type": "application/json",
-            Accept: "application/json",
+            'Content-type': 'application/json',
+            Accept: 'application/json',
           },
         }
       )
       .then((res) => {
-        router.push("/");
+        router.push('/');
       })
       .catch((res) => {
         console.log(res);
