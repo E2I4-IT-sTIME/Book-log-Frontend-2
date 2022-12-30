@@ -89,6 +89,7 @@ const signup: NextPage = () => {
   }, [isExist]);
 
   const registerInfo = () => {
+    const uid = localStorage.getItem("uid");
     //추가정보입력함수
     axios
       .post(
