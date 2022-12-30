@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import { bookImgSearch } from "./fetchBook";
+import { useEffect, useState } from 'react';
+import { bookImgSearch } from './fetchBook';
 
 const ThumnailCard = (props: any) => {
-  const [bookImgSrc, setBookImgSrc] = useState("");
+  const [bookImgSrc, setBookImgSrc] = useState('');
 
   const srcHandler = async () => {
-    setBookImgSrc((await bookImgSearch(props.isbn)) || "");
+    setBookImgSrc((await bookImgSearch(props.isbn)) || '');
   };
 
   useEffect(() => {
@@ -15,8 +15,8 @@ const ThumnailCard = (props: any) => {
   return (
     <img
       className="hi"
-      src={bookImgSrc || "/tmp.jpg"}
-      style={{ width: 40, height: 70, borderRadius: 10, objectFit: "contain" }}
+      src={bookImgSrc || '/tmp.jpg'}
+      style={{ width: 40, height: 60, borderRadius: 10, objectFit: 'fill' }}
     />
   );
 };
