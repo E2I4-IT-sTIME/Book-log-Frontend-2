@@ -1,18 +1,39 @@
-import axios from "axios";
+import axios from 'axios';
+import { useEffect } from 'react';
 
 const API = axios.create({
-  baseURL: "http://43.200.85.245:8080",
+  baseURL: 'http://15.165.100.90:8080',
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
-// 서평 추가
-export const addReviewtoPort = async (postData, userIndex) => {
+// 유저 정보 받아오기
+export const getUserInfo = async () => {
   try {
+    const uid = localStorage.getItem('uid');
+    const res = await API.get(`/auth/user/${uid}`, {
+      headers: {
+        'Content-type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+      },
+    });
+    if (res.status === 200) {
+      return res.data;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// 서평 추가
+export const addReviewtoPort = async (postData) => {
+  try {
+    const userIndex = localStorage.getItem('uid');
     const res = await API.post(`/auth/user/${userIndex}/review`, postData, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },
     });
     if (res.status === 200) {
@@ -24,11 +45,29 @@ export const addReviewtoPort = async (postData, userIndex) => {
 };
 
 // 서평 생성
-export const postReveiwData = async (postData, userIndex) => {
+export const postReveiwData = async (postData) => {
   try {
+    const userIndex = localStorage.getItem('uid');
     const res = await API.post(`/auth/user/${userIndex}/review`, postData, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+      },
+    });
+    if (res.status === 200) {
+      return true;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// 서평 삭제
+export const deleteReveiwData = async (reviewId) => {
+  try {
+    const userIndex = localStorage.getItem('uid');
+    const res = await API.delete(`/auth/user/${userIndex}/review/${reviewId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },
     });
     if (res.status === 200) {
@@ -40,11 +79,12 @@ export const postReveiwData = async (postData, userIndex) => {
 };
 
 // 서평 목록
-export const fetchReviewList = async (userIndex) => {
+export const fetchReviewList = async () => {
   try {
+    const userIndex = localStorage.getItem('uid');
     const res = await API.get(`/auth/user/${userIndex}/reviews`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },
     });
     if (res.status === 200) {
@@ -56,11 +96,12 @@ export const fetchReviewList = async (userIndex) => {
 };
 
 // 포트폴리오 목록
-export const fetchPortfolioList = async (userIndex) => {
+export const fetchPortfolioList = async () => {
   try {
+    const userIndex = localStorage.getItem('uid');
     const res = await API.get(`/auth/user/${userIndex}/portfolios`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },
     });
     if (res.status === 200) {
@@ -72,11 +113,12 @@ export const fetchPortfolioList = async (userIndex) => {
 };
 
 // 포트폴리오 개별 조회
-export const fetchPortfolio = async (userIndex, port_id) => {
+export const fetchPortfolio = async (port_id) => {
   try {
+    const userIndex = localStorage.getItem('uid');
     const res = await API.get(`/auth/user/${userIndex}/portfolios/${port_id}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },
     });
     if (res.status === 200) {
@@ -88,13 +130,35 @@ export const fetchPortfolio = async (userIndex, port_id) => {
 };
 
 // 포트폴리오 생성
-export const postPortfolioData = async (formData, userIndex) => {
+export const postPortfolioData = async (formData) => {
   try {
+    const userIndex = localStorage.getItem('uid');
     const res = await API.post(`/auth/user/${userIndex}/portfolio`, formData, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },
     });
+    if (res.status === 200) {
+      return true;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// 포트폴리오 삭제
+export const deletePortfolio = async (portId) => {
+  try {
+    const userIndex = localStorage.getItem('uid');
+    const res = await API.delete(
+      `/auth/user/${userIndex}/portfolio/${portId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      }
+    );
     if (res.status === 200) {
       return true;
     }
