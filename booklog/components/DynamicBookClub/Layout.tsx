@@ -61,7 +61,7 @@ export default function Layout(props: infoProps) {
       <div className="back-1" />
       <div className="back-2" />
       <div className="profile-box">
-        <ProfileBox />
+        <ProfileBox isAdmin={isAdmin} />
       </div>
       <div className="left-bar">
         <LeftBar images={userList} />
@@ -129,6 +129,7 @@ export default function Layout(props: infoProps) {
           position: absolute;
           top: 27px;
           right: 15px;
+          z-index: 9999999999;
         }
         .top-box {
           width: 80%;

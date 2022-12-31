@@ -181,7 +181,7 @@ export default function RightBox(props: noticeProps) {
           padding: 30px;
           gap: 30px;
           position: relative;
-          z-index: 9999999;
+          z-index: 999;
         }
         .container::-webkit-scrollbar {
           width: 5px;

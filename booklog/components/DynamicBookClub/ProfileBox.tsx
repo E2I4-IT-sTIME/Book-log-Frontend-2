@@ -11,7 +11,12 @@ interface UserInfo {
   username: string;
 }
 
-export default function ProfileBox() {
+interface profileProps {
+  isAdmin: boolean;
+}
+
+export default function ProfileBox(props: profileProps) {
+  const { isAdmin } = props;
   const [isLogined, setIsLogined] = useRecoilState<boolean>(recoilLoginedState);
   const [openModal, setOpenModal] = useState(false);
   const [userObj, setUserObj] = useState<UserInfo>();
@@ -57,12 +62,21 @@ export default function ProfileBox() {
         />
       </div>
       {openModal ? (
-        <div className="modal">
-          <ul>
-            <li>모임에서 탈퇴하고 싶어요.</li>
-            <li>모임 가입자 명단을 보고 싶어요.</li>
-          </ul>
-        </div>
+        isAdmin ? (
+          <div className="modal">
+            <ul>
+              <li>모임을 삭제하고 싶어요.</li>
+              <li>모임 가입자 명단을 보고 싶어요.</li>
+            </ul>
+          </div>
+        ) : (
+          <div className="modal">
+            <ul>
+              <li>모임에서 탈퇴하고 싶어요.</li>
+              <li>모임을 신고하고 싶어요.</li>
+            </ul>
+          </div>
+        )
       ) : (
         <></>
       )}

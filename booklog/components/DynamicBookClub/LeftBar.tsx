@@ -1,5 +1,6 @@
 import Image from "next/image";
 import logo from "../../res/logo.png";
+import Router from "next/router";
 
 interface userProps {
   images: Array<string>;
@@ -7,10 +8,12 @@ interface userProps {
 
 export default function LeftBar(props: userProps) {
   const { images } = props;
+  const router = Router;
+
   return (
     <div className="container">
       <ul>
-        <li>
+        <li onClick={() => router.push("/")}>
           <Image src={logo} width={50} height={50} />
         </li>
         {images.map((image, index) => (

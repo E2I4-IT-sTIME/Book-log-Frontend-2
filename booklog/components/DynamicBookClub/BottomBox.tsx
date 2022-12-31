@@ -2,8 +2,6 @@ import Stamp from "./Stamp";
 import axios from "axios";
 import moment from "moment";
 
-const today = new Date();
-
 interface bottomProps {
   infoUpdate: () => void;
   id: number;
@@ -18,7 +16,7 @@ export default function BottomBox(props: bottomProps) {
       for (let i = 0; i < dates.length; i++) {
         if (
           moment(dates[i]).format("YYYY-MM-DD") ===
-          moment(today).format("YYYY-MM-DD")
+          moment(new Date()).format("YYYY-MM-DD")
         ) {
           alert("이미 출석을 완료하였습니다.");
           return;
@@ -27,10 +25,10 @@ export default function BottomBox(props: bottomProps) {
       const jwt = localStorage.getItem("access_token");
       axios
         .post(
-          `http://15.165.100.90:8080/auth/meeting/${id}/attendance`,
-          {
-            date: today.toString(),
-          },
+          `http://15.165.100.90:8080/auth/meeting/${id}/attendance?date=${moment(
+            new Date()
+          ).format("YYYY-MM-DD HH:mm:ss.SSS")}`,
+          {},
           {
             headers: {
               "Content-Type": `application/json`,
@@ -54,7 +52,7 @@ export default function BottomBox(props: bottomProps) {
     <div className="container">
       <Stamp
         isCompleted={false}
-        date={today.toString()}
+        date={new Date().toString()}
         attendance={attendance}
       />
       <div className="horizon-line" />

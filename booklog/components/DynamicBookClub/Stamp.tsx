@@ -105,6 +105,9 @@ export default function Stamp(props: StampProps) {
           right: 40px;
           top: 50%;
           transform: translate(0%, -50%);
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
         .checked {
           background-color: #125b50;
