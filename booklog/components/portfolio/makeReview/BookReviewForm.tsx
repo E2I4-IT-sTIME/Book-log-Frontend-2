@@ -2,11 +2,13 @@ import BookSearch from './BookSearch';
 import Button from '../common/Button';
 import { useState } from 'react';
 import { postReveiwData } from '../../api';
+import { useRouter } from 'next/router';
 
 const BookReviewForm = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [isbn, setIsbn] = useState('');
+  const router = useRouter();
 
   const inputChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -23,7 +25,7 @@ const BookReviewForm = () => {
   };
 
   const isbnChangeHandler = (isbn: string) => {
-    setIsbn(isbn.split(' ')[0]);
+    setIsbn(isbn.split(' ')[0] || isbn.split(' ')[1]);
   };
 
   const postReview = async () => {
@@ -32,12 +34,13 @@ const BookReviewForm = () => {
       content: content,
       isbn: isbn,
     };
-
+    console.log(postData);
     const IsOk = await postReveiwData(postData);
     if (IsOk) {
       alert('서평이 생성되었습니다!');
       setTitle('');
       setContent('');
+      router.push('/portfolio/new');
     } else alert('잠시후 다시 시도해 주세요!');
   };
 
