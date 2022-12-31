@@ -138,11 +138,11 @@ export default function MakeClubBox(props: boxProps) {
       multipartFile.append("ment", ment);
       multipartFile.append("max_num", `${maxNum}`);
       multipartFile.append("onoff", JSON.stringify(onoff));
-      multipartFile.append("questions", question.toString());
-      multipartFile.append("hashtags", tag.toString());
+      multipartFile.append("questions", questions.join(","));
+      multipartFile.append("hashtags", tags.join(","));
 
       axios
-        .post("http://43.200.85.245:8080/auth/meeting", multipartFile, {
+        .post("http://15.165.100.90:8080/auth/meeting", multipartFile, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },

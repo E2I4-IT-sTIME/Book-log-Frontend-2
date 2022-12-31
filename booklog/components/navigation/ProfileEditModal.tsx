@@ -77,7 +77,7 @@ export default function BasicModal(props: modalState) {
       multipartFile.append("image", imgFile);
     }
     axios
-      .patch(`http://43.200.85.245:8080/auth/user/${uid}`, multipartFile, {
+      .patch(`http://15.165.100.90:8080/auth/user/${uid}`, multipartFile, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -105,7 +105,7 @@ export default function BasicModal(props: modalState) {
   const deleteInfo = () => {
     const uid = localStorage.getItem("uid");
     axios
-      .patch(`http://43.200.85.245:8080/auth/user/delete/${uid}`, null, {
+      .patch(`http://15.165.100.90:8080/auth/user/delete/${uid}`, null, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },

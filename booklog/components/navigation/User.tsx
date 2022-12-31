@@ -9,6 +9,7 @@ import axios from 'axios';
 import ProfileEditModal from './ProfileEditModal';
 import { recoilUserObjState } from '../../states/recoilUserObjState';
 
+
 interface UserInfo {
   id: number;
   image: string;
@@ -37,13 +38,12 @@ export default function User() {
         },
       })
       .then((res) => {
-        //console.log(res);
         setUserObj(res.data);
       })
       .catch((error) => {
         setIsLogined(false);
-        // localStorage.removeItem("access_token");
-        // localStorage.removeItem("uid");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("uid");
         console.log(error);
       });
   };
@@ -53,6 +53,30 @@ export default function User() {
       localStorage.removeItem('access_token');
       localStorage.removeItem('uid');
       setIsLogined(false);
+    }
+  };
+
+  const withDraw = () => {
+    if (
+      confirm("정말 탈퇴하시겠습니까?\n탈퇴 이후 계정을 복구할 수 없습니다.")
+    ) {
+      const uid = localStorage.getItem("uid");
+      axios
+        .patch(`http://15.165.100.90:8080/auth/user/delete/${uid}`, {
+          headers: {
+            "Content-type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        })
+        .then((res) => {
+          setIsLogined(false);
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("uid");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
@@ -95,6 +119,7 @@ export default function User() {
               <ul>
                 <li onClick={signOut}>로그아웃</li>
                 <li onClick={() => setOpenEditModal(true)}>프로필 수정</li>
+                <li onClick={() => withDraw()}>회원 탈퇴</li>
               </ul>
               <ProfileEditModal
                 info={userObj}
