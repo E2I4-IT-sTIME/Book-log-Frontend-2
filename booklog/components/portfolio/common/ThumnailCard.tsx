@@ -16,7 +16,14 @@ const ThumnailCard = (props: any) => {
     <img
       className="hi"
       src={bookImgSrc || '/tmp.jpg'}
-      style={{ width: 40, height: 60, borderRadius: 10, objectFit: 'fill' }}
+      style={{
+        width: 40,
+        height: 60,
+        borderRadius: 10,
+        objectFit: 'fill',
+        marginLeft: -20,
+        zIndex: `${3 - props.idx}`,
+      }}
     />
   );
 };
