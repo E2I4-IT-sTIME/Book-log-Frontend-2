@@ -4,6 +4,8 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { recoilLoginedState } from "../../states/recoilLogiendState";
 import Router from "next/router";
+import BasicModal from "../BasicModal";
+import WaitingModal from "./WaitingModal";
 
 interface UserInfo {
   id: number;
@@ -11,15 +13,27 @@ interface UserInfo {
   username: string;
 }
 
+interface answerInterface {
+  answers: Array<string>;
+  email: string;
+  qna_id: number;
+  questions: Array<string>;
+  user_id: number;
+  username: string;
+}
+
 interface profileProps {
+  id: number;
   isAdmin: boolean;
 }
 
 export default function ProfileBox(props: profileProps) {
-  const { isAdmin } = props;
+  const { id, isAdmin } = props;
   const [isLogined, setIsLogined] = useRecoilState<boolean>(recoilLoginedState);
   const [openModal, setOpenModal] = useState(false);
   const [userObj, setUserObj] = useState<UserInfo>();
+  const [waiter, setWaiter] = useState<Array<answerInterface>>();
+  const [modalOpen, setModalOpen] = useState(false);
   const router = Router;
 
   const getUserInfo = () => {
@@ -45,8 +59,26 @@ export default function ProfileBox(props: profileProps) {
       });
   };
 
+  const getUserAnswers = () => {
+    axios
+      .get(`http://15.165.100.90:8080/auth/meetings/${id}/answers`, {
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+      .then((res) => {
+        setWaiter(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     getUserInfo();
+    if (isAdmin) getUserAnswers();
   }, []);
 
   return (
@@ -66,7 +98,9 @@ export default function ProfileBox(props: profileProps) {
           <div className="modal">
             <ul>
               <li>모임을 삭제하고 싶어요.</li>
-              <li>모임 가입자 명단을 보고 싶어요.</li>
+              <li onClick={() => setModalOpen(true)}>
+                모임 가입자 명단을 보고 싶어요.
+              </li>
             </ul>
           </div>
         ) : (
@@ -80,6 +114,21 @@ export default function ProfileBox(props: profileProps) {
       ) : (
         <></>
       )}
+      <BasicModal
+        open={modalOpen}
+        close={() => setModalOpen(false)}
+        header="수락 대기인원"
+      >
+        {waiter ? (
+          <WaitingModal
+            meetingId={id}
+            waiting={waiter}
+            update={getUserAnswers}
+          />
+        ) : (
+          <WaitingModal meetingId={id} waiting={[]} update={getUserAnswers} />
+        )}
+      </BasicModal>
       <style jsx>{`
         .container {
           width: 100%;

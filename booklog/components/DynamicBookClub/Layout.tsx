@@ -61,7 +61,7 @@ export default function Layout(props: infoProps) {
       <div className="back-1" />
       <div className="back-2" />
       <div className="profile-box">
-        <ProfileBox isAdmin={isAdmin} />
+        <ProfileBox isAdmin={isAdmin} id={id} />
       </div>
       <div className="left-bar">
         <LeftBar images={userList} />

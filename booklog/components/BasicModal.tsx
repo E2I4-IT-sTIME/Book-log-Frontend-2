@@ -73,6 +73,19 @@ export default function BasicModal(props: modalState) {
         .modal > section > main {
           border-bottom: 1px solid #dee2e6;
           border-top: 1px solid #dee2e6;
+          padding: 50px 0px;
+          max-height: 500px;
+          overflow-y: scroll;
+          overflow-x: auto;
+        }
+        .modal > section > main .modal > section > main::-webkit-scrollbar {
+          width: 5px;
+        }
+        .modal > section > main::-webkit-scrollbar-thumb {
+          background-color: #125b50;
+        }
+        .modal > section > main::-webkit-scrollbar-track {
+          background-color: #00ff0000;
         }
         .modal > section > footer {
           padding: 12px 16px;
