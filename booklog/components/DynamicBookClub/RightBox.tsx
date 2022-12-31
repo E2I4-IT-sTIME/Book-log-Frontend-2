@@ -1,108 +1,175 @@
-import Image from "next/image";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import DefaultTextArea from "./DefaultTextArea";
+import CommentBox from "./CommentBox";
+import moment from "moment";
 
-export default function RightBox() {
+interface noticeProps {
+  id: number;
+  isAdmin: boolean;
+}
+
+export interface Comment {
+  comment_id: number;
+  content: string;
+  createtDate: string;
+  email: string;
+  username: string;
+}
+
+interface Notice {
+  createDate: string;
+  getCommentResList: Array<Comment>;
+  notice: string;
+}
+
+export default function RightBox(props: noticeProps) {
+  const { id, isAdmin } = props;
+  const [notice, setNotice] = useState<Notice>();
+  const [inputComment, setInputComment] = useState("");
+  const [noticeEditable, setNoticeEditable] = useState(false);
+  const [inputNotice, setInputNotice] = useState("");
+
+  const getNotice = () => {
+    const jwt = localStorage.getItem("access_token");
+    axios
+      .get(`http://15.165.100.90:8080/auth/meeting/${id}/notice`, {
+        headers: {
+          "Content-Type": `application/json`,
+          Accept: "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setNotice(res.data);
+        res.data.notice !== null ? setNotice(res.data.notice) : null;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const uploadComment = () => {
+    if (inputComment === "") {
+      alert("댓글을 작성해주세요.");
+      return;
+    }
+
+    const jwt = localStorage.getItem("access_token");
+    axios
+      .post(
+        `http://15.165.100.90:8080/auth/meeting/${id}/comment`,
+        {
+          content: inputComment,
+        },
+        {
+          headers: {
+            "Content-Type": `application/json`,
+            Accept: "application/json",
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      )
+      .then((res) => {
+        setInputComment("");
+        getNotice();
+      })
+      .catch((err) => {
+        alert("저장에 실패했습니다.");
+        console.log(err);
+      });
+  };
+
+  const uploadNotice = () => {
+    const jwt = localStorage.getItem("access_token");
+    axios
+      .patch(
+        `http://15.165.100.90:8080/auth/meeting/${id}/notice`,
+        {
+          content: inputNotice,
+        },
+        {
+          headers: {
+            "Content-Type": `application/json`,
+            Accept: "application/json",
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        setNoticeEditable(false);
+        getNotice();
+      })
+      .catch((err) => {
+        alert("저장에 실패했습니다.");
+        console.log(err);
+      });
+  };
+
+  const editableHandler = () => {
+    if (noticeEditable) {
+      //저장구문추가
+      inputNotice !== "" ? uploadNotice() : setNoticeEditable(false);
+      return;
+    } else {
+      setNoticeEditable(true);
+    }
+  };
+
+  useEffect(() => {
+    getNotice();
+  }, []);
+
   return (
     <div className="container">
       <span className="title">필독! 공지사항</span>
       <div className="content-box">
-        <span className="date">2022-11-20</span>
-        <span className="content">
-          {
-            "해당 독서모임의 관리자입니다. 반갑습니다!\n저희 독서모임은 주 1회 비대면으로 진행되고 있습니다.\n이번주는 10월 13일 오후 8시에 ZOOM으로 진행될예정입니다.\n사정이 있어서 참석하지 못하는 분들은 여기에 댓글 달아주세요."
-          }
-        </span>
+        <div className="notice-info-box">
+          <span className="date">
+            {notice && moment(notice.createDate).format("YYYY-MM-DD HH:MM")}
+          </span>
+          {isAdmin ? (
+            <span className="edit-btn" onClick={() => editableHandler()}>
+              {noticeEditable ? "저장" : "공지 수정"}
+            </span>
+          ) : (
+            <></>
+          )}
+        </div>
+        {noticeEditable ? (
+          <DefaultTextArea
+            value={inputNotice}
+            onChange={(value) => setInputNotice(value)}
+            placeholder="공지를 입력해주세요."
+          />
+        ) : (
+          <span className="content">
+            {notice && notice.notice
+              ? notice.notice
+              : "아직 작성된 공지가 없습니다. :("}
+          </span>
+        )}
+      </div>
+      <div className="input-comment">
+        <DefaultTextArea
+          value={inputComment}
+          onChange={(value) => setInputComment(value)}
+          placeholder="댓글을 입력해주세요."
+        />
+        <button className="save-btn" onClick={() => uploadComment()}>
+          저장
+        </button>
       </div>
       <div className="comment-box">
-        <div className="profile-box">
-          <div className="profile-img">
-            <Image
-              src={`https://i.pinimg.com/564x/42/0d/e8/420de8cce15c86343592a7a5c5929956.jpg`}
-              objectFit="cover"
-              layout="fill"
-            />
-          </div>
-          <div className="info-box">
-            <span className="writer">김루시</span>
-            <div className="light-box">
-              <span className="comment-date">2022-11-21</span>
-              <div className="btn-box">
-                <span>수정</span>|<span>삭제</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="content-box">
-          <span className="content">어쩌구저쩌구 솰라솰라</span>
-        </div>
-      </div>
-      <div className="comment-box">
-        <div className="profile-box">
-          <div className="profile-img">
-            <Image
-              src={`https://i.pinimg.com/564x/42/0d/e8/420de8cce15c86343592a7a5c5929956.jpg`}
-              objectFit="cover"
-              layout="fill"
-            />
-          </div>
-          <div className="info-box">
-            <span className="writer">김루시</span>
-            <div className="light-box">
-              <span className="comment-date">2022-11-21</span>
-              <div className="btn-box">
-                <span>수정</span>|<span>삭제</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="content-box">
-          <span className="content">어쩌구저쩌구 솰라솰라</span>
-        </div>
-      </div>
-      <div className="comment-box">
-        <div className="profile-box">
-          <div className="profile-img">
-            <Image
-              src={`https://i.pinimg.com/564x/42/0d/e8/420de8cce15c86343592a7a5c5929956.jpg`}
-              objectFit="cover"
-              layout="fill"
-            />
-          </div>
-          <div className="info-box">
-            <span className="writer">김루시</span>
-            <div className="light-box">
-              <span className="comment-date">2022-11-21</span>
-              <div className="btn-box">
-                <span>수정</span>|<span>삭제</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="content-box">
-          <span className="content">어쩌구저쩌구 솰라솰라</span>
-        </div>
-      </div>
-      <div className="comment-box">
-        <div className="profile-box">
-          <div className="profile-img">
-            <Image
-              src={`https://i.pinimg.com/564x/42/0d/e8/420de8cce15c86343592a7a5c5929956.jpg`}
-              objectFit="cover"
-              layout="fill"
-            />
-          </div>
-          <div className="info-box">
-            <span className="writer">김루시</span>
-            <div className="light-box">
-              <span className="comment-date">2022-11-21</span>
-              <div className="btn-box">
-                <span>수정</span>|<span>삭제</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="content-box">
-          <span className="content">어쩌구저쩌구 솰라솰라</span>
-        </div>
+        {notice && notice.getCommentResList ? (
+          notice.getCommentResList.map((comment) => (
+            <CommentBox id={id} comment={comment} getNotice={getNotice} />
+          ))
+        ) : (
+          <span>댓글이 존재하지 않습니다. :(</span>
+        )}
       </div>
       <style jsx>{`
         .container {
@@ -114,6 +181,8 @@ export default function RightBox() {
           align-items: center;
           padding: 30px;
           gap: 30px;
+          position: relative;
+          z-index: 9999999;
         }
         .container::-webkit-scrollbar {
           width: 5px;
@@ -130,6 +199,7 @@ export default function RightBox() {
           color: #125b50;
         }
         .content-box {
+          width: 100%;
           display: flex;
           flex-direction: column;
           align-items: flex-start;
@@ -138,22 +208,21 @@ export default function RightBox() {
           word-break: keep-all;
           color: #242424;
         }
-        .date {
+        .notice-info-box {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .date,
+        .edit-btn {
           font-size: 11px;
         }
-        .comment-box {
-          width: 100%;
-          border-radius: 10px;
-          background-color: #f4f4f4;
-          padding: 20px;
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 10px;
-          box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
-            rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+        .edit-btn {
+          cursor: pointer;
         }
-        .profile-box {
+        .input-comment {
           width: 100%;
           display: flex;
           flex-direction: row;
@@ -161,40 +230,24 @@ export default function RightBox() {
           justify-content: flex-start;
           gap: 10px;
         }
-        .profile-img {
-          width: 35px;
-          height: 35px;
-          position: relative;
-          border-radius: 100%;
-          overflow: hidden;
-        }
-        .info-box {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-        }
-        .writer {
-          color: #4f4f4f;
-          font-weight: 700;
-        }
-        .light-box {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          font-size: 12px;
-          font-weight: 200;
-          gap: 30px;
-        }
-        .btn-box {
-          display: flex;
-          flex-direction: row;
-          gap: 5px;
-        }
-        .btn-box span {
+        .save-btn {
+          width: 60px;
+          padding: 5px 0px;
+          border: none;
+          border-radius: 5px;
+          background-color: #125b50;
+          color: white;
+          font-size: 13px;
+          font-weight: 900;
           cursor: pointer;
         }
-        .content-box {
-          color: #242424;
+        .comment-box {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 20px;
         }
       `}</style>
     </div>

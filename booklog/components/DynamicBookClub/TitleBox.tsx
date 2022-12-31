@@ -1,27 +1,36 @@
-export default function TitleBox() {
-  const hashTags = ["독서", "책읽기", "시집", "다함께", "감성"];
-  const onoff = false;
+import { clubInfo } from "../../res/interface/DynamicBookClubInterface";
+
+interface titleProps {
+  info: clubInfo;
+}
+
+export default function TitleBox(props: titleProps) {
+  const { info } = props;
+
   return (
     <div className="container">
-      <span className="title">독서모임 이름입니다.</span>
+      <span className="title">{info.name}</span>
       <div className="tags">
-        {hashTags.map((tag, index) => (
-          <span key={`${tag}-${index}`} className="tag">
-            {tag}
-          </span>
-        ))}
+        {info.tags.map((tag, index) =>
+          tag !== null ? (
+            <span key={`${tag}-${index}`} className="tag">
+              {tag}
+            </span>
+          ) : (
+            <></>
+          )
+        )}
       </div>
       <div className="content">
-        <span>#{onoff ? "대면 모임" : "비대면 모임"}</span>
-        <span>{`감성적인 책을 좋아하는 사람들의 모임입니다.\n모임명은 별 헤는 밤 독서모임이지만, 장르를 가리지 않아요!`}</span>
+        <span>#{info.onoff ? "대면 모임" : "비대면 모임"}</span>
+        <span>{info.info}</span>
       </div>
-      <div className="sub-box">{}</div>
       <style jsx>{`
         .container {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          gap: 7px;
+          gap: 12px;
           justify-content: flex-start;
         }
         .title {

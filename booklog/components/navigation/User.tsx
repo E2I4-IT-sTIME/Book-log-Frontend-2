@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import noSign from "../../res/noSign.svg";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
 import { recoilLoginedState } from "../../states/recoilLogiendState";
@@ -35,13 +34,12 @@ export default function User() {
         },
       })
       .then((res) => {
-        console.log(res);
         setUserObj(res.data);
       })
       .catch((error) => {
         setIsLogined(false);
-        // localStorage.removeItem("access_token");
-        // localStorage.removeItem("uid");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("uid");
         console.log(error);
       });
   };

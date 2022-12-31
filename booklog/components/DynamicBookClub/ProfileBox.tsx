@@ -1,18 +1,57 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { recoilLoginedState } from "../../states/recoilLogiendState";
+import Router from "next/router";
+
+interface UserInfo {
+  id: number;
+  image: string;
+  username: string;
+}
 
 export default function ProfileBox() {
+  const [isLogined, setIsLogined] = useRecoilState<boolean>(recoilLoginedState);
   const [openModal, setOpenModal] = useState(false);
+  const [userObj, setUserObj] = useState<UserInfo>();
+  const router = Router;
+
+  const getUserInfo = () => {
+    const uid = localStorage.getItem("uid");
+    axios
+      .get(`http://15.165.100.90:8080/auth/user/${uid}`, {
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+      .then((res) => {
+        setUserObj(res.data);
+      })
+      .catch((error) => {
+        setIsLogined(false);
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("uid");
+        alert("로그아웃 되었습니다.");
+        router.push("/");
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+
   return (
     <div className="container">
       <span className="info-box">
-        반갑습니다, <span className="st">중규리</span>님
+        반갑습니다, <span className="st">{userObj && userObj.username}</span>님
       </span>
       <div className="img-box" onClick={() => setOpenModal((prev) => !prev)}>
         <Image
-          src={
-            "https://i.pinimg.com/564x/42/0d/e8/420de8cce15c86343592a7a5c5929956.jpg"
-          }
+          src={userObj ? userObj.image : ""}
           layout="fill"
           objectFit="cover"
         />

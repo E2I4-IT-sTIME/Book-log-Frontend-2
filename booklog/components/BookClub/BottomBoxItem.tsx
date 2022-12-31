@@ -36,6 +36,7 @@ export default function BottomBoxItem(props: itemProps) {
         } else if (right === 1) {
           setMyState(MyStateInClub.Waiting);
         } else if (right === 2) {
+          setMyState(MyStateInClub.Member);
         } else if (right === 3) {
           setMyState(MyStateInClub.Member);
         }
