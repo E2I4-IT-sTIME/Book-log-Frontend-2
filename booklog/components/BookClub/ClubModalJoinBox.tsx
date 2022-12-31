@@ -67,8 +67,8 @@ export default function ClubModalJoinBox(props: joinProps) {
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            "Content-type": "application/json",
             Accept: "application/json",
+            "Content-Type": "application/json",
           },
         }
       )

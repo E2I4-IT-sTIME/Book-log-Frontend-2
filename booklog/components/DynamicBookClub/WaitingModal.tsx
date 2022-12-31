@@ -49,9 +49,9 @@ export default function WaitingModal(props: waitingProps) {
         `http://15.165.100.90:8080/auth/${meetingId}/answer/${answer_id}`,
         {
           headers: {
-            "Content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             Accept: "application/json",
-            Authorization: `${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
           },
         }
       )
@@ -71,9 +71,9 @@ export default function WaitingModal(props: waitingProps) {
         {},
         {
           headers: {
-            "Content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             Accept: "application/json",
-            Authorization: `${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
           },
         }
       )
@@ -146,6 +146,7 @@ export default function WaitingModal(props: waitingProps) {
           justify-content: center;
           align-items: center;
           gap: 20px;
+          padding: 50px 0px;
         }
         .waiter {
           width: 95%;

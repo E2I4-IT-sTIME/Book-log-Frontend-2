@@ -76,6 +76,52 @@ export default function ProfileBox(props: profileProps) {
       });
   };
 
+  const deleteClubs = () => {
+    if (
+      confirm(
+        "정말 모임을 삭제하시겠습니까?\n삭제된 모임은 복구가 불가능합니다."
+      )
+    ) {
+      axios
+        .delete(`http://15.165.100.90:8080/auth/meeting/${id}`, {
+          headers: {
+            "Content-type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        })
+        .then((res) => {
+          alert("삭제가 완료되었습니다.");
+          router.push("/");
+        })
+        .catch((error) => {
+          alert("삭제에 실패하였습니다.");
+          console.log(error);
+        });
+    }
+  };
+
+  const withDraw = () => {
+    if (confirm("정말 모임을 탈퇴하시겠습니까?\n복구가 불가능합니다.")) {
+      axios
+        .delete(`http://15.165.100.90:8080/auth/meeting/${id}/out`, {
+          headers: {
+            "Content-type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        })
+        .then((res) => {
+          alert("탈퇴가 완료되었습니다.");
+          router.push("/");
+        })
+        .catch((error) => {
+          alert("탈퇴에 실패하였습니다.");
+          console.log(error);
+        });
+    }
+  };
+
   useEffect(() => {
     getUserInfo();
     if (isAdmin) getUserAnswers();
@@ -97,7 +143,7 @@ export default function ProfileBox(props: profileProps) {
         isAdmin ? (
           <div className="modal">
             <ul>
-              <li>모임을 삭제하고 싶어요.</li>
+              <li onClick={() => deleteClubs()}>모임을 삭제하고 싶어요.</li>
               <li onClick={() => setModalOpen(true)}>
                 모임 가입자 명단을 보고 싶어요.
               </li>
@@ -106,7 +152,7 @@ export default function ProfileBox(props: profileProps) {
         ) : (
           <div className="modal">
             <ul>
-              <li>모임에서 탈퇴하고 싶어요.</li>
+              <li onClick={() => withDraw()}>모임에서 탈퇴하고 싶어요.</li>
               <li>모임을 신고하고 싶어요.</li>
             </ul>
           </div>

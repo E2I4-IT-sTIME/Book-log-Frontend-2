@@ -29,6 +29,7 @@ export default function Layout(props: infoProps) {
         },
       })
       .then((res) => {
+        console.log(res);
         setUserList(res.data.userImage);
       })
       .catch((err) => {

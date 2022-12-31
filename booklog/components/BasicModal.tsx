@@ -73,8 +73,7 @@ export default function BasicModal(props: modalState) {
         .modal > section > main {
           border-bottom: 1px solid #dee2e6;
           border-top: 1px solid #dee2e6;
-          padding: 50px 0px;
-          max-height: 500px;
+          max-height: 600px;
           overflow-y: scroll;
           overflow-x: auto;
         }
