@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import BookSearchModal from './BookSearchModal';
 import Image from 'next/image';
 
@@ -175,4 +175,4 @@ const BookSearch = (props: any) => {
   );
 };
 
-export default BookSearch;
+export default memo(BookSearch);

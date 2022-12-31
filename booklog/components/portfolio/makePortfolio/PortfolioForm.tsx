@@ -75,6 +75,7 @@ const PortfolioForm = () => {
       .map((e) => e.review_id);
 
     const formData = new FormData();
+    console.log(imgFile);
 
     formData.append('image', imgFile);
     formData.append('title', title);
@@ -102,7 +103,12 @@ const PortfolioForm = () => {
           <div className="cover-img-box" onClick={onUploadImageButtonClick}>
             <div className="img-text">커버 이미지 추가하기</div>
             {attachment && (
-              <Image src={attachment} alt="" layout="fill" objectFit="fill" />
+              <Image
+                src={attachment}
+                alt=""
+                layout="fill"
+                objectFit="contain"
+              />
             )}
           </div>
           <input
@@ -247,6 +253,10 @@ const PortfolioForm = () => {
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
             overflow: hidden;
             position: relative;
+            transition: background 0.2s ease-in-out;
+          }
+          .cover-img-box:hover {
+            background-color: #d6d6d6;
           }
           .cover-img {
             object-fit: cover;

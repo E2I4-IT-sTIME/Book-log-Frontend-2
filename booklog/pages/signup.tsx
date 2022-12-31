@@ -33,7 +33,6 @@ const signup: NextPage = () => {
     })
       .then((response) => {
         returnValue = response.data.access_token;
-        //console.log(returnValue);
         sendTokenToServer(returnValue);
       })
       .catch((error) => {
