@@ -1,12 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { recoilLoginedState } from '../../../states/recoilLogiendState';
+import DeleteButton from '../common/DeleteButton';
 import { bookImgSearch } from '../common/fetchBook';
 
 const ReviewCard = (props) => {
   const [isLogined, setisLogined] = useRecoilState(recoilLoginedState);
   const { review_id, title, content, createDate, isbn } = props.review;
   const date = createDate.substr(0, 10);
+
+  const subConent = () => {
+    if (content.length > 220) {
+      return content.substr(0, 220) + '...';
+    } else return content;
+  };
 
   const [bookImgSrc, setBookImgSrc] = useState('');
 
@@ -28,17 +35,10 @@ const ReviewCard = (props) => {
           <div className="main">
             <div className="title">{title}</div>
             <div className="date">{date}</div>
-            <div className="content">{content}</div>
+            <div className="content">{subConent()}</div>
           </div>
           {isLogined ? (
-            <div
-              className="delete"
-              onClick={() => {
-                props.onClick(review_id);
-              }}
-            >
-              -
-            </div>
+            <DeleteButton id={review_id} text="-" onClick={props.onClick} />
           ) : (
             ''
           )}
@@ -54,6 +54,12 @@ const ReviewCard = (props) => {
           height: 100%;
           cursor: pointer;
           box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+          transition: all 0.2s ease-in-out;
+        }
+        .review-container:hover {
+          margin-top: -1px;
+          margin-left: 0px;
+          transform: scale(1.03, 1.03);
         }
         .img-box {
           width: 30%;
@@ -88,23 +94,6 @@ const ReviewCard = (props) => {
         .date,
         .content {
           font-size: 15px;
-        }
-        .delete {
-          background-color: #ff8396;
-          border-radius: 50%;
-          color: white;
-          height: 20px;
-          width: 20px;
-          line-height: 20px;
-          text-align: center;
-          font-weight: bold;
-          transition: all 0.2s;
-        }
-        .delete:hover {
-          margin-top: -1px;
-          margin-left: 0px;
-          transform: scale(1.1, 1.1);
-          box-shadow: 0px 5px 5px -2px rgba(0, 0, 0, 0.25);
         }
       `}</style>
     </>
