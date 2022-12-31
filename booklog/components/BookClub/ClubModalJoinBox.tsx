@@ -1,5 +1,6 @@
 import { Stage } from "../../res/interface/BookClubInterface";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
+import axios from "axios";
 
 interface joinProps {
   id: number;
@@ -8,19 +9,12 @@ interface joinProps {
 
 export default function ClubModalJoinBox(props: joinProps) {
   const { id, setStage } = props;
-  const [answers, setAnswers] = useState(["", "", "", "", ""]);
+  const [questions, setQuestions] = useState<Array<string>>();
+  const [answers, setAnswers] = useState<Array<string>>();
   const [err, setErr] = useState("");
 
-  const tmpQuestions = [
-    "첫 번째 질문입니다.",
-    "두 번째 질문입니다.",
-    "세 번째 질문입니다.",
-    "네 번째 질문입니다.",
-    "다섯번 째 질문입니다.",
-  ];
-
-  const wrhiteAnswer = (ind: number, value: string) => {
-    const newAnswer = answers.map((ans, index) =>
+  const writeAnswer = (ind: number, value: string) => {
+    const newAnswer = answers?.map((ans, index) =>
       index === ind ? value : ans
     );
     setAnswers(newAnswer);
@@ -32,28 +26,87 @@ export default function ClubModalJoinBox(props: joinProps) {
   };
 
   const checkAnswer = () => {
-    const ansNum = answers.filter((ans) => ans !== "").length;
-    tmpQuestions.length === ansNum
-      ? nextStage()
+    const ansNum = answers?.filter((ans) => ans !== "").length;
+    const qNum = questions?.filter((q) => q !== null).length;
+    qNum === ansNum
+      ? register()
       : setErr("아직 작성하지 않은 답변이 있습니다.");
   };
+
+  const getQuestions = () => {
+    axios
+      .get(`http://15.165.100.90:8080/auth/${id}/question`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          "Content-type": "application/json",
+          Accept: "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        const resQuestions: Array<string> = res.data.questions;
+        setQuestions(resQuestions);
+        resQuestions.forEach((q) => {
+          q !== null
+            ? setAnswers((prev) => (prev ? [...prev, ""] : [""]))
+            : null;
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const register = () => {
+    axios
+      .post(
+        `http://15.165.100.90:8080/auth/meetings/${id}`,
+        {
+          answers: answers,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        nextStage();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getQuestions();
+  }, []);
 
   return (
     <div className="container">
       <span className="title">가입 신청서 작성</span>
       <ul>
-        {tmpQuestions.map((q, index) => (
-          <li key={`${q}-${index}`}>
-            <label htmlFor={q}>{q}</label>
-            <input
-              id={q}
-              type="text"
-              placeholder={`${index + 1}번 질문의 답변을 작성해주세요.`}
-              value={answers[index]}
-              onChange={(e) => wrhiteAnswer(index, e.target.value)}
-            />
-          </li>
-        ))}
+        {questions &&
+          answers &&
+          questions.map((q, index) =>
+            q !== null ? (
+              <li key={`${q}-${index}`}>
+                <label htmlFor={q}>{q}</label>
+                <input
+                  id={q}
+                  type="text"
+                  placeholder={`${index + 1}번 질문의 답변을 작성해주세요.`}
+                  value={answers[index]}
+                  onChange={(e) => writeAnswer(index, e.target.value)}
+                />
+              </li>
+            ) : (
+              <></>
+            )
+          )}
       </ul>
       {err !== "" ? <span className="err-msg">{err}</span> : <></>}
       <button onClick={() => checkAnswer()}>신청</button>

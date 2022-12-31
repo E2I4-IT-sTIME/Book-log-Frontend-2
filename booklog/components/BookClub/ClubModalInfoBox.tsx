@@ -18,11 +18,15 @@ export default function ClubModalInfoBox(props: itemProps) {
         {item.max_num})
       </span>
       <div className="tag-box">
-        {item.tags.map((tag, index) => (
-          <span className="tag" key={`${tag}-${index}`}>
-            #{tag}
-          </span>
-        ))}
+        {item.tags.map((tag, index) =>
+          tag !== null ? (
+            <span className="tag" key={`${tag}-${index}`}>
+              #{tag}
+            </span>
+          ) : (
+            <></>
+          )
+        )}
       </div>
       <span className="content">{item.info}</span>
 

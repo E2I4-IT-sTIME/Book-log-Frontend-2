@@ -38,8 +38,10 @@ export default function UpperBox(props: upperProps) {
   const onChangeStatus = () => {
     if (clubStatus === ClubState.AllClubs) {
       setClubs(false);
+      setClubStatus(ClubState.MyClubs);
     } else {
       setClubs(true);
+      setClubStatus(ClubState.AllClubs);
     }
   };
 

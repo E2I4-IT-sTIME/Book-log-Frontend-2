@@ -31,7 +31,7 @@ export default function Home(props: serversideProps) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
-    const clubsRes = await axios.get("http://43.200.85.245:8080/meetings", {
+    const clubsRes = await axios.get("http://15.165.100.90:8080/meetings", {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",

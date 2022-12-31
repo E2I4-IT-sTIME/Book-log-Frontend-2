@@ -19,9 +19,9 @@ export default function CarouselItem(props: itemProps) {
           {item.onoff ? "온라인 모임" : "오프라인 모임"}
         </span>
         <div className="tags">
-          {item.tags.map((tag, index) => (
-            <span key={tag}>#{tag}</span>
-          ))}
+          {item.tags.map((tag, index) =>
+            tag !== null ? <span key={tag}>#{tag}</span> : <></>
+          )}
         </div>
         <div className="nums">
           <span>모집인원 : {item.max_num}명</span>

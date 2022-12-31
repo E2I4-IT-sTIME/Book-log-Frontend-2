@@ -14,7 +14,6 @@ interface serversideProps {
 
 export default function BookClub(props: serversideProps) {
   const { clubs } = props;
-  console.log(clubs);
   const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
   const [isRedirection, setIsRedirection] = useRecoilState(recoilKakakoState);
 
@@ -79,7 +78,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     //   tmp,
     //   tmp,
     // ];
-    const clubsRes = await axios.get("http://43.200.85.245:8080/meetings", {
+    const clubsRes = await axios.get("http://15.165.100.90:8080/meetings", {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",

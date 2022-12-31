@@ -34,7 +34,7 @@ export default function ClubLayout(props: clubProps) {
       const jwt = localStorage.getItem("access_token");
       if (uid && jwt) {
         axios
-          .get(`http://43.200.85.245:8080/auth/user/${uid}/meetings`, {
+          .get(`http://15.165.100.90:8080/auth/user/${uid}/meetings`, {
             headers: {
               "Content-type": "application/json",
               Accept: "application/json",
@@ -57,7 +57,7 @@ export default function ClubLayout(props: clubProps) {
 
   const getAllClubs = () => {
     const clubsRes = axios
-      .get("http://43.200.85.245:8080/meetings", {
+      .get("http://15.165.100.90:8080/meetings", {
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",
@@ -73,7 +73,7 @@ export default function ClubLayout(props: clubProps) {
 
   const searchBookClubByTag = () => {
     axios
-      .get(`http://43.200.85.245:8080/auth/meeting/searchCategory`, {
+      .get(`http://15.165.100.90:8080/auth/meeting/searchCategory`, {
         params: { category: tagKeyword },
       })
       .then((res) => {
@@ -86,7 +86,7 @@ export default function ClubLayout(props: clubProps) {
 
   const searchBookClubByName = () => {
     axios
-      .get(`http://43.200.85.245:8080/auth/meeting/searchName`, {
+      .get(`http://15.165.100.90:8080/auth/meeting/searchName`, {
         params: { name: nameKeyword },
       })
       .then((res) => {
