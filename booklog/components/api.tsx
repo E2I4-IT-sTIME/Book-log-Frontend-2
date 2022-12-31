@@ -9,7 +9,7 @@ const API = axios.create({
 });
 
 // 유저 정보 받아오기
-export const getUserInfo = async () => {
+export const fetchUserInfo = async () => {
   try {
     const uid = localStorage.getItem('uid');
     const res = await API.get(`/auth/user/${uid}`, {
@@ -139,6 +139,28 @@ export const postPortfolioData = async (formData) => {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },
     });
+    if (res.status === 200) {
+      return true;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// 포트폴리오 수정
+export const patchPortfolioData = async (formData, portId) => {
+  try {
+    const userIndex = localStorage.getItem('uid');
+    const res = await API.patch(
+      `/auth/user/${userIndex}/portfolio/${portId}`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      }
+    );
     if (res.status === 200) {
       return true;
     }
