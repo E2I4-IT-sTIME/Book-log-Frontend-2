@@ -5,6 +5,7 @@ import ProfileBox from "./ProfileBox";
 import RightBox from "./RightBox";
 import TitleBox from "./TitleBox";
 import axios from "axios";
+import BottomBox from "./BottomBox";
 
 interface infoProps {
   id: number;
@@ -12,15 +13,10 @@ interface infoProps {
   isAdmin: boolean;
 }
 
-const tmpImages = [
-  "https://i.pinimg.com/564x/42/0d/e8/420de8cce15c86343592a7a5c5929956.jpg",
-  "https://i.pinimg.com/564x/42/0d/e8/420de8cce15c86343592a7a5c5929956.jpg",
-  "https://i.pinimg.com/564x/42/0d/e8/420de8cce15c86343592a7a5c5929956.jpg",
-];
-
 export default function Layout(props: infoProps) {
   const { id, info, isAdmin } = props;
   const [userList, setUserList] = useState<Array<string>>([]);
+  const [updatedInfo, setUpdatedInfo] = useState(info);
 
   const getUserList = () => {
     const jwt = localStorage.getItem("access_token");
@@ -34,6 +30,22 @@ export default function Layout(props: infoProps) {
       })
       .then((res) => {
         setUserList(res.data.userImage);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const infoUpdate = () => {
+    axios
+      .get(`http://15.165.100.90:8080/meetings/${id}`, {
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+        },
+      })
+      .then((res) => {
+        setUpdatedInfo(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -58,9 +70,11 @@ export default function Layout(props: infoProps) {
         <RightBox id={id} isAdmin={isAdmin} />
       </div>
       <div className="top-box">
-        <TitleBox info={info} />
+        <TitleBox info={updatedInfo} />
       </div>
-      <div className="bottom-box"></div>
+      <div className="bottom-box">
+        <BottomBox id={id} dates={updatedInfo.dates} infoUpdate={infoUpdate} />
+      </div>
       <style jsx>{`
         .container {
           width: 100vw;
@@ -97,11 +111,12 @@ export default function Layout(props: infoProps) {
         }
         .right-box {
           width: 25%;
+          min-width: 300px;
           height: 85vh;
           background-color: white;
           position: absolute;
           bottom: 0px;
-          right: 0px;
+          right: -5px;
           border-radius: 8vh 0px 0px 0px;
           box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px,
             rgba(0, 0, 0, 0.23) 0px 6px 6px;
@@ -125,6 +140,13 @@ export default function Layout(props: infoProps) {
           flex-direction: column;
           align-items: flex-start;
           justify-content: center;
+        }
+        .bottom-box {
+          width: 68%;
+          height: 68vh;
+          position: absolute;
+          bottom: 0px;
+          left: 100px;
         }
       `}</style>
     </div>

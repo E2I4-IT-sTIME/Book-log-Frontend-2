@@ -43,7 +43,6 @@ export default function RightBox(props: noticeProps) {
       .then((res) => {
         console.log(res);
         setNotice(res.data);
-        res.data.notice !== null ? setNotice(res.data.notice) : null;
       })
       .catch((err) => {
         console.log(err);
@@ -87,7 +86,7 @@ export default function RightBox(props: noticeProps) {
       .patch(
         `http://15.165.100.90:8080/auth/meeting/${id}/notice`,
         {
-          content: inputNotice,
+          notice: inputNotice,
         },
         {
           headers: {
