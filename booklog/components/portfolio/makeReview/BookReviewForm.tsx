@@ -1,23 +1,31 @@
-import BookSearch from "./BookSearch";
-import Button from "../common/Button";
-import { useState } from "react";
-import { userIndexState } from "../../../states/recoilUserIndex";
-import { useRecoilState } from "recoil";
-import { postReveiwData } from "../../api";
+import BookSearch from './BookSearch';
+import Button from '../common/Button';
+import { useState } from 'react';
+import { postReveiwData } from '../../api';
+import { useRouter } from 'next/router';
 
 const BookReviewForm = () => {
-  const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [isbn, setIsbn] = useState("");
-  const titleChangeHandler = (e: any) => {
-    setTitle(e.target.value);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [isbn, setIsbn] = useState('');
+  const router = useRouter();
+
+  const inputChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
+    const { name, value } = e.currentTarget;
+    switch (name) {
+      case 'title': {
+        setTitle(value);
+        break;
+      }
+      case 'content': {
+        setContent(value);
+        break;
+      }
+    }
   };
-  const contentChangeHandler = (e: any) => {
-    setContent(e.target.value);
-  };
-  const isbnChangeHandler = (isbn) => {
-    setIsbn(isbn.split(" ")[0]);
+
+  const isbnChangeHandler = (isbn: string) => {
+    setIsbn(isbn.split(' ')[0] || isbn.split(' ')[1]);
   };
 
   const postReview = async () => {
@@ -26,9 +34,14 @@ const BookReviewForm = () => {
       content: content,
       isbn: isbn,
     };
-
-    const IsOk = await postReveiwData(postData, userIndex);
-    if (IsOk) alert("서평이 생성되었습니다!");
+    console.log(postData);
+    const IsOk = await postReveiwData(postData);
+    if (IsOk) {
+      alert('서평이 생성되었습니다!');
+      setTitle('');
+      setContent('');
+      router.push('/portfolio/new');
+    } else alert('잠시후 다시 시도해 주세요!');
   };
 
   return (
@@ -39,9 +52,11 @@ const BookReviewForm = () => {
           <label className="title">서평 제목</label>
           <input
             type="text"
+            name="title"
             className="title-input"
+            value={title}
             placeholder="서평 제목을 입력해주세요"
-            onChange={titleChangeHandler}
+            onChange={inputChangeHandler}
           />
         </div>
         <div className="review">
@@ -49,7 +64,9 @@ const BookReviewForm = () => {
           <textarea
             className="content-input"
             placeholder="서평의 내용을 입력해주세요"
-            onChange={contentChangeHandler}
+            name="content"
+            value={content}
+            onChange={inputChangeHandler}
           ></textarea>
         </div>
         <div className="btn-div">

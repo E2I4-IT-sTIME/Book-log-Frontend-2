@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import Button from "../common/Button";
-import BookReviewCard from "./BookReviewCard";
-import review from "./../../../pages/portfolio/review/index";
+import { useState, useEffect } from 'react';
+import Button from '../common/Button';
+import BookReviewCard from './BookReviewCard';
+import review from './../../../pages/portfolio/review/index';
 
 interface modalState {
   open: boolean;
@@ -20,7 +20,7 @@ export default function BasicModal(props: modalState) {
   }, [checkReviews]);
 
   return (
-    <div className={open ? "openModal modal" : "modal"} onClick={close}>
+    <div className={open ? 'openModal modal' : 'modal'} onClick={close}>
       {open ? (
         <section onClick={(e) => e.stopPropagation()}>
           <main>
@@ -73,6 +73,7 @@ export default function BasicModal(props: modalState) {
           column-gap: 2rem;
           padding-right: 10px;
           overflow-y: scroll;
+          padding: 20px 10px;
         }
         .card-box {
           width: 48%;
