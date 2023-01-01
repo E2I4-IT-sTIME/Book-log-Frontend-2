@@ -2,7 +2,7 @@ import { IReview } from '../../../res/interface/PortfolioInterfaces';
 import ReviewCard from './ReviewCard';
 
 const ReviewList = (props: any) => {
-  const { reviews } = props;
+  const { reviews, onChangeSelectedState } = props;
 
   return (
     <>
@@ -13,7 +13,9 @@ const ReviewList = (props: any) => {
             <ReviewCard
               key={review.review_id}
               review={review}
-              onClick={() => {}}
+              onClick={() => {
+                onChangeSelectedState(review.review_id);
+              }}
             />
           </div>
         ))}

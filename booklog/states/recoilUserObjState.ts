@@ -10,7 +10,7 @@ export const recoilUserObjState = atom<IUserObj>({
   key: 'userObj',
   default: {
     id: -1,
-    image: '',
-    username: '',
+    image: '/noSign.svg',
+    username: 'User',
   },
 });
