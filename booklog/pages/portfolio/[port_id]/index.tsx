@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next/types';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import {
   deletePortfolio,
@@ -23,7 +23,11 @@ import {
 import { recoilLoginedState } from '../../../states/recoilLogiendState';
 import { recoilUserObjState } from '../../../states/recoilUserObjState';
 
-const Portfolio: NextPage = () => {
+export const getServerSideProps = async (context) => ({
+  props: { host: context.req.headers.host },
+});
+
+const Portfolio: NextPage = ({ host }) => {
   const router = useRouter();
   const portId = router.query.port_id;
 
@@ -36,7 +40,7 @@ const Portfolio: NextPage = () => {
     content: '',
     reviewResList: [],
   });
-  const [userObj, setUserObj] = useRecoilState(recoilUserObjState);
+
   const [reviews, setReviews] = useState([]);
 
   const fetchData = async () => {
@@ -51,15 +55,14 @@ const Portfolio: NextPage = () => {
     setPortfolio(portfolio);
     setReviews(selectedReveiws);
   };
-
-  const initUserReviews = async (reviewArr: []) => {
+  const initUserReviews = useCallback(async (reviewArr: []) => {
     const newReviewArr = reviewArr.map((review) => {
       return { ...review, selected: false };
     });
     return newReviewArr;
-  };
+  }, []);
 
-  const delPortfolio = async () => {
+  const delPortfolio = useCallback(async () => {
     const req = await deletePortfolio(portId);
     if (req) {
       alert('포트폴리오가 삭제되었습니다!');
@@ -67,18 +70,18 @@ const Portfolio: NextPage = () => {
     } else {
       alert('잠시후 다시 시도해주세요');
     }
-  };
-  const copyUrl = async () => {
+  }, []);
+  const copyUrl = useCallback(async () => {
     const { asPath } = router;
     try {
-      await navigator.clipboard.writeText(asPath);
+      await navigator.clipboard.writeText(`http://${host}${asPath}`);
       alert('현재 페이지 주소가 복사되었습니다!');
     } catch (error) {
       console.error(error);
     }
-  };
+  }, []);
 
-  const setSelectedReviews = (initReviewArr: [], reviewArr: []) => {
+  const setSelectedReviews = useCallback((initReviewArr: [], reviewArr: []) => {
     const reviews = initReviewArr;
     reviewArr.forEach((selectedReview: IReview) => {
       for (let i = 0; i < reviews.length; i++) {
@@ -90,22 +93,22 @@ const Portfolio: NextPage = () => {
       }
     });
     return reviews;
-  };
+  }, []);
 
-  const reviewArrHandler = (reviewArr: []) => {
+  const reviewArrHandler = useCallback((reviewArr: []) => {
     setReviews(reviewArr);
-  };
+  }, []);
 
-  const dataURLtoFile = async (url, fileName) => {
-    const res = await fetch(url).then(async (response) => {
-      const contentType = response.headers.get('content-type');
-      console.log(contentType);
-      const blob = await response.blob();
-      const file = new File([blob], fileName, { type: contentType });
-      return file;
-    });
-    return res;
-  };
+  // const dataURLtoFile = async (url, fileName) => {
+  //   const res = await fetch(url).then(async (response) => {
+  //     const contentType = response.headers.get('content-type');
+  //     console.log(contentType);
+  //     const blob = await response.blob();
+  //     const file = new File([blob], fileName, { type: contentType });
+  //     return file;
+  //   });
+  //   return res;
+  // };
 
   const savePortfolio = async () => {
     const reviewsIdArr = reviews
@@ -114,12 +117,10 @@ const Portfolio: NextPage = () => {
 
     const formData = new FormData();
     const { image, title, content } = portfolio;
-    console.log(reviewsIdArr);
-
-    const imageFile = dataURLtoFile(image, 'icebear.jpg');
-    formData.append('image', imageFile);
-    formData.append('title', title);
-    formData.append('content', content);
+    //const imageFile = dataURLtoFile(image, 'icebear.jpg');
+    //formData.append('image', imageFile);
+    //formData.append('title', title);
+    //formData.append('content', content);
     formData.append('reviews_id', reviewsIdArr);
 
     const res = await patchPortfolioData(formData, portId);
@@ -130,6 +131,15 @@ const Portfolio: NextPage = () => {
       alert('잠시후 다시 시도해 주세요');
     }
   };
+
+  const onChangeSelectedState = useCallback((id: number) => {
+    const newReviews = reviews.map((review: IReview) => {
+      if (review.review_id === id) {
+        return { ...review, selected: !review.selected };
+      } else return { ...review };
+    });
+    setReviews(newReviews);
+  }, []);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -146,7 +156,7 @@ const Portfolio: NextPage = () => {
         <main className="main">
           <div className="text-box">
             <div className="title">{brText(portfolio.title)}</div>
-            <UserInfo image={userObj.image} username={userObj.username} />
+            <UserInfo />
             <div className="sub">{brText(portfolio.content)}</div>
           </div>
           <div className="side-box">
@@ -179,7 +189,10 @@ const Portfolio: NextPage = () => {
           </div>
         </main>
         <div className="content">
-          <ReviewList reviews={reviews} />
+          <ReviewList
+            reviews={reviews}
+            onChangeSelectedState={onChangeSelectedState}
+          />
           {isLogined ? (
             <div
               className="add-reveiw"
