@@ -21,7 +21,7 @@ export default function BottomBoxItem(props: itemProps) {
   const getMyRight = () => {
     const jwt = localStorage.getItem("access_token");
     axios
-      .get(`http://43.200.85.245:8080/auth/meeting/${item.id}/check`, {
+      .get(`http://15.165.100.90:8080/auth/meeting/${item.id}/check`, {
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",
@@ -29,11 +29,14 @@ export default function BottomBoxItem(props: itemProps) {
         },
       })
       .then((res) => {
+        console.log(res);
         const right = res.data;
         if (right === 0) {
           setMyState(MyStateInClub.NoMember);
         } else if (right === 1) {
+          setMyState(MyStateInClub.Waiting);
         } else if (right === 2) {
+          setMyState(MyStateInClub.Member);
         } else if (right === 3) {
           setMyState(MyStateInClub.Member);
         }
@@ -57,11 +60,15 @@ export default function BottomBoxItem(props: itemProps) {
             {item.max_num})
           </span>
           <div className="tag-box">
-            {item.tags.map((tag, index) => (
-              <span key={tag} className="tag">
-                #{tag}
-              </span>
-            ))}
+            {item.tags.map((tag, index) =>
+              tag !== null ? (
+                <span key={tag} className="tag">
+                  #{tag}
+                </span>
+              ) : (
+                <></>
+              )
+            )}
           </div>
         </div>
         <div className="trans-box" />
