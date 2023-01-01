@@ -1,55 +1,141 @@
-import { GetServerSideProps } from "next";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { fetchPortfolio, request } from "../../../components/api";
-import { brText } from "../../../components/portfolio/common/brText";
-import ThumnailCard from "../../../components/portfolio/common/thumnailCard";
-import BookReviewsModal from "../../../components/portfolio/makePortfolio/BookReviewsModal";
-import ReviewCard from "../../../components/portfolio/portfolioPage/ReviewCard";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { NextPage } from 'next/types';
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import {
+  deletePortfolio,
+  fetchPortfolio,
+  fetchReviewList,
+  patchPortfolioData,
+} from '../../../components/api';
+import { brText } from '../../../components/portfolio/common/brText';
+import ThumnailCard from '../../../components/portfolio/common/ThumnailCard';
+import BookReviewsModal from '../../../components/portfolio/makePortfolio/BookReviewsModal';
+import PortfolioButton from '../../../components/portfolio/portfolioPage/PortfolioButton';
+import ReviewList from '../../../components/portfolio/portfolioPage/ReviewList';
+import UserInfo from '../../../components/portfolio/portfolioPage/UserInfo';
+import { IReview, IUserInfo } from '../../../res/interface/PortfolioInterfaces';
 import {
   ClubLayoutState,
   CurrentLayout,
-} from "../../../states/recoilLayoutState";
-import { recoilLoginedState } from "../../../states/recoilLogiendState";
-import { userIndexState } from "../../../states/recoilUserIndex";
+} from '../../../states/recoilLayoutState';
+import { recoilLoginedState } from '../../../states/recoilLogiendState';
+import { recoilUserObjState } from '../../../states/recoilUserObjState';
 
-const portfolio = () => {
-  const [isSearch, setIsSearch] = useState(false);
-  const [isLogined, setisLogined] = useRecoilState(recoilLoginedState);
-  const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
-  const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
-  const [portfolio, setPortfolio] = useState({
-    title: "",
-    image: "",
-    content: "",
-    reviewResList: [],
-  });
-  const [checkReviews, setCheckReviews] = useState([]);
-
+const Portfolio: NextPage = () => {
   const router = useRouter();
   const portId = router.query.port_id;
 
-  const getPortfolio = async () => {
-    const portfolio = await fetchPortfolio(userIndex, portId);
-    setPortfolio(portfolio);
-    setCheckReviews(
-      portfolio.reviewResList.map((ele) => {
-        return { ...ele, selected: true };
-      })
+  const [isSearch, setIsSearch] = useState(false);
+  const [isLogined, setisLogined] = useRecoilState(recoilLoginedState);
+  const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
+  const [portfolio, setPortfolio] = useState({
+    title: '',
+    image: '',
+    content: '',
+    reviewResList: [],
+  });
+  const [userObj, setUserObj] = useRecoilState(recoilUserObjState);
+  const [reviews, setReviews] = useState([]);
+
+  const fetchData = async () => {
+    const reviewArr = await fetchReviewList();
+    const initReviewArr = await initUserReviews(reviewArr);
+    const portfolio = await fetchPortfolio(portId);
+    const selectedReveiws = setSelectedReviews(
+      initReviewArr,
+      portfolio.reviewResList
     );
+
+    setPortfolio(portfolio);
+    setReviews(selectedReveiws);
+  };
+
+  const initUserReviews = async (reviewArr: []) => {
+    const newReviewArr = reviewArr.map((review) => {
+      return { ...review, selected: false };
+    });
+    return newReviewArr;
+  };
+
+  const delPortfolio = async () => {
+    const req = await deletePortfolio(portId);
+    if (req) {
+      alert('포트폴리오가 삭제되었습니다!');
+      router.push('/portfolio');
+    } else {
+      alert('잠시후 다시 시도해주세요');
+    }
+  };
+  const copyUrl = async () => {
+    const { asPath } = router;
+    try {
+      await navigator.clipboard.writeText(asPath);
+      alert('현재 페이지 주소가 복사되었습니다!');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const setSelectedReviews = (initReviewArr: [], reviewArr: []) => {
+    const reviews = initReviewArr;
+    reviewArr.forEach((selectedReview: IReview) => {
+      for (let i = 0; i < reviews.length; i++) {
+        const review: IReview = reviews[i];
+        if (selectedReview.review_id === review.review_id) {
+          reviews[i] = { ...reviews[i], selected: true };
+          break;
+        }
+      }
+    });
+    return reviews;
+  };
+
+  const reviewArrHandler = (reviewArr: []) => {
+    setReviews(reviewArr);
+  };
+
+  const dataURLtoFile = async (url, fileName) => {
+    const res = await fetch(url).then(async (response) => {
+      const contentType = response.headers.get('content-type');
+      console.log(contentType);
+      const blob = await response.blob();
+      const file = new File([blob], fileName, { type: contentType });
+      return file;
+    });
+    return res;
+  };
+
+  const savePortfolio = async () => {
+    const reviewsIdArr = reviews
+      .filter((e) => e.selected)
+      .map((e) => e.review_id);
+
+    const formData = new FormData();
+    const { image, title, content } = portfolio;
+    console.log(reviewsIdArr);
+
+    const imageFile = dataURLtoFile(image, 'icebear.jpg');
+    formData.append('image', imageFile);
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('reviews_id', reviewsIdArr);
+
+    const res = await patchPortfolioData(formData, portId);
+    if (res) {
+      alert('포트폴리오가 저장되었습니다!');
+      router.reload();
+    } else {
+      alert('잠시후 다시 시도해 주세요');
+    }
   };
 
   useEffect(() => {
     if (!router.isReady) return;
-    getPortfolio(portId);
+    fetchData();
     setLayoutState(CurrentLayout.WhiteHeader);
-  }, [router.isReady]);
-
-  const reviewArrHandler = (reviewArr) => {
-    setCheckReviews(reviewArr);
-  };
+  }, [router.isReady, setLayoutState, portId]);
 
   return (
     <>
@@ -57,39 +143,43 @@ const portfolio = () => {
         <header>
           <Link href="/">BOOKLOG.</Link>
         </header>
-        <div className="main">
+        <main className="main">
           <div className="text-box">
             <div className="title">{brText(portfolio.title)}</div>
-            <div className="user">
-              <img className="userimg" src={portfolio.image}></img>
-              <div className="username">이름</div>
-            </div>
+            <UserInfo image={userObj.image} username={userObj.username} />
             <div className="sub">{brText(portfolio.content)}</div>
           </div>
           <div className="side-box">
             {isLogined ? (
               <div className="buttons">
-                <button className="del">삭제</button>
-                <button className="share">공유</button>
+                <PortfolioButton
+                  text="삭제"
+                  color="#ff6363"
+                  onClick={delPortfolio}
+                />
+                <PortfolioButton
+                  text="저장"
+                  color="#6380ff"
+                  onClick={savePortfolio}
+                />
+                <PortfolioButton
+                  text="공유"
+                  color="#125b50"
+                  onClick={copyUrl}
+                />
               </div>
             ) : (
-              ""
+              ''
             )}
             <div className="bookimges">
-              {portfolio.reviewResList.map((review) => (
-                <ThumnailCard isbn={review.isbn} />
+              {portfolio.reviewResList.map(({ id, isbn }) => (
+                <ThumnailCard key={id} isbn={isbn} />
               ))}
             </div>
           </div>
-        </div>
+        </main>
         <div className="content">
-          {checkReviews
-            .filter((review) => review.selected)
-            .map((review) => (
-              <div className="card-box">
-                <ReviewCard review={review} />
-              </div>
-            ))}
+          <ReviewList reviews={reviews} />
           {isLogined ? (
             <div
               className="add-reveiw"
@@ -100,7 +190,7 @@ const portfolio = () => {
               서평 추가하기
             </div>
           ) : (
-            ""
+            ''
           )}
         </div>
       </div>
@@ -109,7 +199,7 @@ const portfolio = () => {
         close={() => {
           setIsSearch(false);
         }}
-        checkReviews={checkReviews}
+        checkReviews={reviews}
         reviewArrHandler={reviewArrHandler}
         header="서평모달"
       />
@@ -128,7 +218,7 @@ const portfolio = () => {
               rgba(0, 0, 0, 1) 75%,
               rgba(0, 0, 0, 1) 100%
             ),
-            url(${portfolio.image || "/portBackground.png"}) no-repeat;
+            url(${portfolio.image || '/portBackground.png'}) no-repeat;
           background-size: 100% auto;
         }
         header {
@@ -142,7 +232,7 @@ const portfolio = () => {
         .main {
           display: flex;
           justify-content: space-between;
-          font-family: "Pretendard-Regular";
+          font-family: 'Pretendard-Regular';
         }
         .text-box {
           display: flex;
@@ -150,10 +240,7 @@ const portfolio = () => {
           gap: 20px;
           color: white;
         }
-        .card-box {
-          width: 48%;
-          height: 300px;
-        }
+
         .side-box {
           display: flex;
           flex-direction: column;
@@ -166,40 +253,18 @@ const portfolio = () => {
         .sub {
           font-size: 14px;
         }
-        .user {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-        }
+
         img {
           width: 50px;
         }
         .content {
-          height: 600px;
+          min-height: 600px;
           display: flex;
           flex-direction: row;
           flex-wrap: wrap;
           row-gap: 3rem;
           column-gap: 3rem;
           padding-right: 10px;
-        }
-        button {
-          font-size: 14px;
-          font-weight: 700;
-          padding: 8px 15px;
-          margin-left: 10px;
-          border-radius: 10px;
-          color: white;
-          border: none;
-          cursor: pointer;
-        }
-        .del {
-          background-color: #ff6363;
-        }
-        .share {
-          background-color: #125b50;
-        }
-        .bookimges {
         }
         .add-reveiw {
           height: 300px;
@@ -211,10 +276,18 @@ const portfolio = () => {
           line-height: 300px;
           font-weight: 800;
           cursor: pointer;
+          transition: background 0.2s;
+        }
+        .add-reveiw:hover {
+          background-color: #616161;
+        }
+        .bookimges {
+          display: flex;
+          justify-content: flex-end;
         }
       `}</style>
     </>
   );
 };
 
-export default portfolio;
+export default Portfolio;
