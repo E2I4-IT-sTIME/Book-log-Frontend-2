@@ -3,12 +3,11 @@
 # 독서하고, 포트폴리오 채우고! Booklog
 
 ## 🎉 Index
-
-- [🎊 Getting Started](#🎊-getting-started)
-- [🎠 About](#🎠-about)
-- [✨ Overview](#✨-overview)
-- [🏆 Contributing](#🏆-contributing)
-- [🕶 Team](#🕶-team)
+- [🎊 Getting Started](##🎊-getting-started)
+- [🎠 About](##🎠-about)
+- [✨ Overview](##✨-overview)
+- [🏆 Contributing](##🏆-contributing)
+- [🕶 Team](##🕶-team)
 
 ## 🎊 Getting Started
 
