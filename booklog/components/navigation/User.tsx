@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import noSign from '../../res/noSign.svg';
 import Image from 'next/image';
 import { useRecoilState } from 'recoil';
 import { recoilLoginedState } from '../../states/recoilLogiendState';
@@ -8,7 +7,6 @@ import Router from 'next/router';
 import axios from 'axios';
 import ProfileEditModal from './ProfileEditModal';
 import { recoilUserObjState } from '../../states/recoilUserObjState';
-
 
 interface UserInfo {
   id: number;
@@ -21,9 +19,10 @@ export default function User() {
   const [isLogined, setIsLogined] = useRecoilState<boolean>(recoilLoginedState);
   const [isRedirection, setIsRedirection] = useRecoilState(recoilKakakoState);
   const [userObj, setUserObj] = useRecoilState(recoilUserObjState);
-  //const [userObj, setUserObj] = useState<UserInfo>();
   const [openModal, setOpenModal] = useState(false); //프로필 이미지 눌렀을 때 나오는 모달
   const [openEditModal, setOpenEditModal] = useState(false); //프로필 수정 눌렀을 때 나오는 모달
+
+  console.log(userObj);
 
   const induceSign = '북로그에 가입하고,\n서평으로 내 이력서를 채워보세요!';
 
@@ -42,8 +41,8 @@ export default function User() {
       })
       .catch((error) => {
         setIsLogined(false);
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("uid");
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('uid');
         console.log(error);
       });
   };
@@ -58,21 +57,21 @@ export default function User() {
 
   const withDraw = () => {
     if (
-      confirm("정말 탈퇴하시겠습니까?\n탈퇴 이후 계정을 복구할 수 없습니다.")
+      confirm('정말 탈퇴하시겠습니까?\n탈퇴 이후 계정을 복구할 수 없습니다.')
     ) {
-      const uid = localStorage.getItem("uid");
+      const uid = localStorage.getItem('uid');
       axios
         .patch(`http://15.165.100.90:8080/auth/user/delete/${uid}`, {
           headers: {
-            "Content-type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            'Content-type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('access_token')}`,
           },
         })
         .then((res) => {
           setIsLogined(false);
-          localStorage.removeItem("access_token");
-          localStorage.removeItem("uid");
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('uid');
         })
         .catch((error) => {
           console.log(error);
@@ -106,10 +105,9 @@ export default function User() {
               className="profile-box"
               onClick={() => setOpenModal((prev) => !prev)}
             >
-              <Image
+              <img
                 src={userObj.image}
-                layout="fill"
-                objectFit="cover"
+                style={{ objectFit: 'cover' }}
                 alt="profile-img"
               />
             </div>

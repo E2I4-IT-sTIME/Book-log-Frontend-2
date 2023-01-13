@@ -42,7 +42,7 @@ const signup: NextPage = () => {
 
   const sendTokenToServer = (token: string) => {
     axios
-      .get(`http://15.165.100.90:8080/api/access_token?token=${token}`, {
+      .get(`https://booklog.site/api/access_token?token=${token}`, {
         headers: {
           'Content-type': 'application/json',
           Accept: 'application/json',
