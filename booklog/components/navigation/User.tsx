@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { useRecoilState } from 'recoil';
-import { recoilLoginedState } from '../../states/recoilLogiendState';
-import { recoilKakakoState } from '../../states/recoilKakaoRedirection';
-import Router from 'next/router';
-import axios from 'axios';
-import ProfileEditModal from './ProfileEditModal';
-import { recoilUserObjState } from '../../states/recoilUserObjState';
+import { useState, useEffect } from "react";
+import noSign from "../../res/noSign.svg";
+import Image from "next/image";
+import { useRecoilState } from "recoil";
+import { recoilLoginedState } from "../../states/recoilLogiendState";
+import { recoilKakakoState } from "../../states/recoilKakaoRedirection";
+import Router from "next/router";
+import axios from "axios";
+import ProfileEditModal from "./ProfileEditModal";
+import { recoilUserObjState } from "../../states/recoilUserObjState";
 
 interface UserInfo {
   id: number;
@@ -19,21 +20,20 @@ export default function User() {
   const [isLogined, setIsLogined] = useRecoilState<boolean>(recoilLoginedState);
   const [isRedirection, setIsRedirection] = useRecoilState(recoilKakakoState);
   const [userObj, setUserObj] = useRecoilState(recoilUserObjState);
+  // const [userObj, setUserObj] = useState<UserInfo>();
   const [openModal, setOpenModal] = useState(false); //프로필 이미지 눌렀을 때 나오는 모달
   const [openEditModal, setOpenEditModal] = useState(false); //프로필 수정 눌렀을 때 나오는 모달
 
-  console.log(userObj);
-
-  const induceSign = '북로그에 가입하고,\n서평으로 내 이력서를 채워보세요!';
+  const induceSign = "북로그에 가입하고,\n서평으로 내 이력서를 채워보세요!";
 
   const getUserInfo = () => {
-    const uid = localStorage.getItem('uid');
+    const uid = localStorage.getItem("uid");
     axios
       .get(`http://15.165.100.90:8080/auth/user/${uid}`, {
         headers: {
-          'Content-type': 'application/json',
-          Accept: 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+          "Content-type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
       })
       .then((res) => {
@@ -48,9 +48,9 @@ export default function User() {
   };
 
   const signOut = () => {
-    if (confirm('정말 로그아웃 하시겠습니까?')) {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('uid');
+    if (confirm("정말 로그아웃 하시겠습니까?")) {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("uid");
       setIsLogined(false);
     }
   };
@@ -80,9 +80,9 @@ export default function User() {
   };
 
   useEffect(() => {
-    const uid = localStorage.getItem('uid');
-    const jwt = localStorage.getItem('access_token');
-    if (uid && uid !== '' && jwt && jwt !== '') {
+    const uid = localStorage.getItem("uid");
+    const jwt = localStorage.getItem("access_token");
+    if (uid && uid !== "" && jwt && jwt !== "") {
       setIsLogined(true);
     }
   }, []);
@@ -105,9 +105,14 @@ export default function User() {
               className="profile-box"
               onClick={() => setOpenModal((prev) => !prev)}
             >
-              <img
-                src={userObj.image}
-                style={{ objectFit: 'cover' }}
+              <Image
+                src={
+                  userObj.image !== ""
+                    ? userObj.image
+                    : "https://i.pinimg.com/564x/69/50/1b/69501b91b9aad7e2e62819ba91ca7ffe.jpg"
+                }
+                layout="fill"
+                objectFit="cover"
                 alt="profile-img"
               />
             </div>
