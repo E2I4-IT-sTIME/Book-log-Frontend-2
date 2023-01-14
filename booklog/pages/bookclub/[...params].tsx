@@ -22,7 +22,7 @@ export default function BookClubDynamicPage(props: serversideProps) {
   const rightCheck = () => {
     const jwt = localStorage.getItem("access_token");
     axios
-      .get(`http://15.165.100.90:8080/auth/meeting/${id}/check`, {
+      .get(`https://booklog.site/auth/meeting/${id}/check`, {
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",
@@ -66,7 +66,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   try {
     const clubId = query.params;
     const clubsRes = await axios.get(
-      `http://15.165.100.90:8080/meetings/${clubId}`,
+      `https://booklog.site/meetings/${clubId}`,
       {
         headers: {
           "Content-type": "application/json",

@@ -25,7 +25,7 @@ export default function BottomBox(props: bottomProps) {
       const jwt = localStorage.getItem("access_token");
       axios
         .post(
-          `http://15.165.100.90:8080/auth/meeting/${id}/attendance?date=${moment(
+          `https://booklog.site/auth/meeting/${id}/attendance?date=${moment(
             new Date()
           ).format("YYYY-MM-DD HH:mm:ss.SSS")}`,
           {},
