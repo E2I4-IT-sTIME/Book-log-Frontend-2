@@ -103,12 +103,7 @@ const PortfolioForm = () => {
           <div className="cover-img-box" onClick={onUploadImageButtonClick}>
             <div className="img-text">커버 이미지 추가하기</div>
             {attachment && (
-              <Image
-                src={attachment}
-                alt=""
-                layout="fill"
-                objectFit="contain"
-              />
+              <Image src={attachment} alt="" layout="fill" objectFit="cover" />
             )}
           </div>
           <input
@@ -259,7 +254,7 @@ const PortfolioForm = () => {
             background-color: #d6d6d6;
           }
           .cover-img {
-            object-fit: cover;
+            object-fit: contain;
             width: 100%;
           }
           .add-review {

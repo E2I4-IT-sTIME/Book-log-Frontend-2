@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 
 const API = axios.create({
-  baseURL: 'http://15.165.100.90:8080',
+  baseURL: 'https://booklog.site',
   headers: {
     'Content-Type': 'application/json',
   },
