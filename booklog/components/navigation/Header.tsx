@@ -36,11 +36,6 @@ const Header = () => {
               <div className={`link ${className("/bookclub")}`}>BOOK CLUB</div>
             </Link>
           </li>
-          <li>
-            <Link href="/community">
-              <div className={`link ${className("/community")}`}>COMMUNITY</div>
-            </Link>
-          </li>
         </ul>
       </div>
       <style jsx>{`
