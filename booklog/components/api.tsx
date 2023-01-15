@@ -116,11 +116,7 @@ export const fetchPortfolioList = async () => {
 export const fetchPortfolio = async (port_id) => {
   try {
     const userIndex = localStorage.getItem('uid');
-    const res = await API.get(`/auth/user/${userIndex}/portfolios/${port_id}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-      },
-    });
+    const res = await API.get(`/user/${userIndex}/portfolios/${port_id}`, {});
     if (res.status === 200) {
       return res.data;
     }
