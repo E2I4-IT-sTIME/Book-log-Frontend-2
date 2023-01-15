@@ -7,6 +7,7 @@ const nextConfig = {
       "i.pinimg.com",
       "k.kakaocdn.net",
       "mybooklog.s3.ap-northeast-2.amazonaws.com",
+      "booklog-deploy.s3.ap-northeast-2.amazonaws.com",
     ],
   },
 };

@@ -39,7 +39,7 @@ export default function ProfileBox(props: profileProps) {
   const getUserInfo = () => {
     const uid = localStorage.getItem("uid");
     axios
-      .get(`http://15.165.100.90:8080/auth/user/${uid}`, {
+      .get(`https://booklog.site/auth/user/${uid}`, {
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",
@@ -61,7 +61,7 @@ export default function ProfileBox(props: profileProps) {
 
   const getUserAnswers = () => {
     axios
-      .get(`http://15.165.100.90:8080/auth/meetings/${id}/answers`, {
+      .get(`https://booklog.site/auth/meetings/${id}/answers`, {
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",
@@ -83,7 +83,7 @@ export default function ProfileBox(props: profileProps) {
       )
     ) {
       axios
-        .delete(`http://15.165.100.90:8080/auth/meeting/${id}`, {
+        .delete(`https://booklog.site/auth/meeting/${id}`, {
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
@@ -104,7 +104,7 @@ export default function ProfileBox(props: profileProps) {
   const withDraw = () => {
     if (confirm("정말 모임을 탈퇴하시겠습니까?\n복구가 불가능합니다.")) {
       axios
-        .delete(`http://15.165.100.90:8080/auth/meeting/${id}/out`, {
+        .delete(`https://booklog.site/auth/meeting/${id}/out`, {
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",

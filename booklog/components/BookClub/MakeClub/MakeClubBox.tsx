@@ -142,7 +142,7 @@ export default function MakeClubBox(props: boxProps) {
       multipartFile.append("hashtags", tags.join(","));
 
       axios
-        .post("http://15.165.100.90:8080/auth/meeting", multipartFile, {
+        .post("https://booklog.site/auth/meeting", multipartFile, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },

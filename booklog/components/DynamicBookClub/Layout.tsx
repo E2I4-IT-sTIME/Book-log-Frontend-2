@@ -21,7 +21,7 @@ export default function Layout(props: infoProps) {
   const getUserList = () => {
     const jwt = localStorage.getItem("access_token");
     axios
-      .get(`http://15.165.100.90:8080/auth/meeting/${id}`, {
+      .get(`https://booklog.site/auth/meeting/${id}`, {
         headers: {
           "Content-Type": `application/json`,
           Accept: "application/json",
@@ -39,7 +39,7 @@ export default function Layout(props: infoProps) {
 
   const infoUpdate = () => {
     axios
-      .get(`http://15.165.100.90:8080/meetings/${id}`, {
+      .get(`https://booklog.site/meetings/${id}`, {
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",

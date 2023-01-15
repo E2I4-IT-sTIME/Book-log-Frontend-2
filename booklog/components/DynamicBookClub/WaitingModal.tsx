@@ -45,16 +45,13 @@ export default function WaitingModal(props: waitingProps) {
 
   const reject = (answer_id: number) => {
     axios
-      .delete(
-        `http://15.165.100.90:8080/auth/${meetingId}/answer/${answer_id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      .delete(`https://booklog.site/auth/${meetingId}/answer/${answer_id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
       .then((res) => {
         alert("거절이 완료되었습니다.");
         update();
@@ -67,7 +64,7 @@ export default function WaitingModal(props: waitingProps) {
   const allow = (answer_id: number) => {
     axios
       .post(
-        `http://15.165.100.90:8080/auth/${meetingId}/answer/${answer_id}`,
+        `https://booklog.site/auth/${meetingId}/answer/${answer_id}`,
         {},
         {
           headers: {

@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { bookSearch } from '../common/fetchBook';
-import BookInfoPrev from './BookInfoPrev';
-import Image from 'next/image';
+import { useState } from "react";
+import { bookSearch } from "../common/fetchBook";
+import BookInfoPrev from "./BookInfoPrev";
+import Image from "next/image";
 
 export default function BasicModal(props: any) {
   const { open, closeModal, fetchBookInfo, isbnChangeHandler } = props;
   const [books, setBooks] = useState(null);
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState("");
 
   const onChangeKeword = (e: any) => {
     setKeyword(e.target.value);
@@ -29,7 +29,7 @@ export default function BasicModal(props: any) {
   };
 
   return (
-    <div className={open ? 'openModal modal' : 'modal'} onClick={closeModal}>
+    <div className={open ? "openModal modal" : "modal"} onClick={closeModal}>
       {open ? (
         <section onClick={(e) => e.stopPropagation()}>
           <main>
@@ -88,8 +88,8 @@ export default function BasicModal(props: any) {
       ) : null}
       <style jsx>{`
         .title {
-          font-size: 36px;
-          font-weight: bold;
+          font-size: 24px;
+          font-weight: 900;
           margin-bottom: 20px;
         }
         input {
@@ -207,7 +207,7 @@ export default function BasicModal(props: any) {
         }
 
         .modal > section > main {
-          height: 800px;
+          height: 90vh;
           border-bottom: 1px solid #dee2e6;
           border-top: 1px solid #dee2e6;
           padding: 40px;

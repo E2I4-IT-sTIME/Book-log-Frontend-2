@@ -35,7 +35,7 @@ export default function ClubModalJoinBox(props: joinProps) {
 
   const getQuestions = () => {
     axios
-      .get(`http://15.165.100.90:8080/auth/${id}/question`, {
+      .get(`https://booklog.site/auth/${id}/question`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           "Content-type": "application/json",
@@ -60,7 +60,7 @@ export default function ClubModalJoinBox(props: joinProps) {
   const register = () => {
     axios
       .post(
-        `http://15.165.100.90:8080/auth/meetings/${id}`,
+        `https://booklog.site/auth/meetings/${id}`,
         {
           answers: answers,
         },

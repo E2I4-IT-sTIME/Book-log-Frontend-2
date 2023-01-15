@@ -33,7 +33,7 @@ export default function RightBox(props: noticeProps) {
   const getNotice = () => {
     const jwt = localStorage.getItem("access_token");
     axios
-      .get(`http://15.165.100.90:8080/auth/meeting/${id}/notice`, {
+      .get(`https://booklog.site/auth/meeting/${id}/notice`, {
         headers: {
           "Content-Type": `application/json`,
           Accept: "application/json",
@@ -58,7 +58,7 @@ export default function RightBox(props: noticeProps) {
     const jwt = localStorage.getItem("access_token");
     axios
       .post(
-        `http://15.165.100.90:8080/auth/meeting/${id}/comment`,
+        `https://booklog.site/auth/meeting/${id}/comment`,
         {
           content: inputComment,
         },
@@ -84,7 +84,7 @@ export default function RightBox(props: noticeProps) {
     const jwt = localStorage.getItem("access_token");
     axios
       .patch(
-        `http://15.165.100.90:8080/auth/meeting/${id}/notice`,
+        `https://booklog.site/auth/meeting/${id}/notice`,
         {
           notice: inputNotice,
         },

@@ -21,7 +21,7 @@ export default function BottomBoxItem(props: itemProps) {
   const getMyRight = () => {
     const jwt = localStorage.getItem("access_token");
     axios
-      .get(`http://15.165.100.90:8080/auth/meeting/${item.id}/check`, {
+      .get(`https://booklog.site/auth/meeting/${item.id}/check`, {
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",

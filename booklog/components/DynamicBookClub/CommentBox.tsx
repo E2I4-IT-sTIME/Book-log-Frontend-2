@@ -18,7 +18,7 @@ export default function CommentBox(props: commentProps) {
       const jwt = localStorage.getItem("access_token");
       axios
         .delete(
-          `http://15.165.100.90:8080/auth/meeting/${id}/comment/${comment.comment_id}`,
+          `https://booklog.site/auth/meeting/${id}/comment/${comment.comment_id}`,
           {
             headers: {
               "Content-Type": `application/json`,
