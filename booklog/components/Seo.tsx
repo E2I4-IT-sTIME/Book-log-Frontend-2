@@ -45,6 +45,10 @@ export default function Seo(props: headProps) {
         name="twitter:image"
         content="https://booklog-deploy.s3.ap-northeast-2.amazonaws.com/main.png"
       />
+      <script
+        defer
+        src="https://cdn.swygbro.com/public/widget/swyg-widget.js"
+      ></script>
     </Head>
   );
 }
