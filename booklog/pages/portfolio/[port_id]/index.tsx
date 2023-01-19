@@ -1,27 +1,28 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { NextPage } from 'next/types';
-import { useCallback, useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { NextPage } from "next/types";
+import { useCallback, useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import {
   deletePortfolio,
   fetchPortfolio,
   fetchReviewList,
   patchPortfolioData,
-} from '../../../components/api';
-import { brText } from '../../../components/portfolio/common/brText';
-import ThumnailCard from '../../../components/portfolio/common/ThumnailCard';
-import BookReviewsModal from '../../../components/portfolio/makePortfolio/BookReviewsModal';
-import PortfolioButton from '../../../components/portfolio/portfolioPage/PortfolioButton';
-import ReviewList from '../../../components/portfolio/portfolioPage/ReviewList';
-import UserInfo from '../../../components/portfolio/portfolioPage/UserInfo';
-import { IReview, IUserInfo } from '../../../res/interface/PortfolioInterfaces';
+} from "../../../components/api";
+import { brText } from "../../../components/portfolio/common/brText";
+import ThumnailCard from "../../../components/portfolio/common/ThumnailCard";
+import BookReviewsModal from "../../../components/portfolio/makePortfolio/BookReviewsModal";
+import PortfolioButton from "../../../components/portfolio/portfolioPage/PortfolioButton";
+import ReviewList from "../../../components/portfolio/portfolioPage/ReviewList";
+import UserInfo from "../../../components/portfolio/portfolioPage/UserInfo";
+import { IReview, IUserInfo } from "../../../res/interface/PortfolioInterfaces";
 import {
   ClubLayoutState,
   CurrentLayout,
-} from '../../../states/recoilLayoutState';
-import { recoilLoginedState } from '../../../states/recoilLogiendState';
-import { recoilUserObjState } from '../../../states/recoilUserObjState';
+} from "../../../states/recoilLayoutState";
+import { recoilLoginedState } from "../../../states/recoilLogiendState";
+import { recoilUserObjState } from "../../../states/recoilUserObjState";
+import Seo from "../../../components/Seo";
 
 export const getServerSideProps = async (context) => ({
   props: { host: context.req.headers.host },
@@ -35,9 +36,9 @@ const Portfolio: NextPage = ({ host }) => {
   const [isLogined, setisLogined] = useRecoilState(recoilLoginedState);
   const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
   const [portfolio, setPortfolio] = useState({
-    title: '',
-    image: '',
-    content: '',
+    title: "",
+    image: "",
+    content: "",
     reviewResList: [],
   });
 
@@ -65,17 +66,17 @@ const Portfolio: NextPage = ({ host }) => {
   const delPortfolio = useCallback(async () => {
     const req = await deletePortfolio(portId);
     if (req) {
-      alert('포트폴리오가 삭제되었습니다!');
-      router.push('/portfolio');
+      alert("포트폴리오가 삭제되었습니다!");
+      router.push("/portfolio");
     } else {
-      alert('잠시후 다시 시도해주세요');
+      alert("잠시후 다시 시도해주세요");
     }
   }, []);
   const copyUrl = useCallback(async () => {
     const { asPath } = router;
     try {
       await navigator.clipboard.writeText(`http://${host}${asPath}`);
-      alert('현재 페이지 주소가 복사되었습니다!');
+      alert("현재 페이지 주소가 복사되었습니다!");
     } catch (error) {
       console.error(error);
     }
@@ -121,14 +122,14 @@ const Portfolio: NextPage = ({ host }) => {
     //formData.append('image', imageFile);
     //formData.append('title', title);
     //formData.append('content', content);
-    formData.append('reviews_id', reviewsIdArr);
+    formData.append("reviews_id", reviewsIdArr);
 
     const res = await patchPortfolioData(formData, portId);
     if (res) {
-      alert('포트폴리오가 저장되었습니다!');
+      alert("포트폴리오가 저장되었습니다!");
       router.reload();
     } else {
-      alert('잠시후 다시 시도해 주세요');
+      alert("잠시후 다시 시도해 주세요");
     }
   };
 
@@ -149,6 +150,10 @@ const Portfolio: NextPage = ({ host }) => {
 
   return (
     <>
+      <Seo
+        title="Portfolio"
+        content="Booklog - 포트폴리오를 채워줄 나의 서평들!"
+      />
       <div className="portfolio-container">
         <header>
           <Link href="/">BOOKLOG.</Link>
@@ -179,7 +184,7 @@ const Portfolio: NextPage = ({ host }) => {
                 />
               </div>
             ) : (
-              ''
+              ""
             )}
             <div className="bookimges">
               {portfolio.reviewResList.map(({ id, isbn }) => (
@@ -203,7 +208,7 @@ const Portfolio: NextPage = ({ host }) => {
               서평 추가하기
             </div>
           ) : (
-            ''
+            ""
           )}
         </div>
       </div>
@@ -231,7 +236,7 @@ const Portfolio: NextPage = ({ host }) => {
               rgba(0, 0, 0, 1) 75%,
               rgba(0, 0, 0, 1) 100%
             ),
-            url(${portfolio.image || '/portBackground.png'}) no-repeat;
+            url(${portfolio.image || "/portBackground.png"}) no-repeat;
           background-size: 100% auto;
         }
         header {
@@ -245,7 +250,7 @@ const Portfolio: NextPage = ({ host }) => {
         .main {
           display: flex;
           justify-content: space-between;
-          font-family: 'Pretendard-Regular';
+          font-family: "Pretendard-Regular";
         }
         .text-box {
           display: flex;
