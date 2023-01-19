@@ -26,7 +26,7 @@ const signup: NextPage = () => {
       params: {
         grant_type: "authorization_code",
         client_id: "13ceafa8d13d6bd8104550a84132db96",
-        redirect_uri: "http://localhost:3000/signup",
+        redirect_uri: "https://booklog.swygbro.com/signup",
         code: request_code,
         client_secret: "Hzxodlq6y3ivzB7a8kRPzCGvGi7J5TIg",
       },
