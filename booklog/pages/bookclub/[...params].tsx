@@ -52,7 +52,10 @@ export default function BookClubDynamicPage(props: serversideProps) {
 
   return (
     <>
-      <Seo title={item.name} />
+      <Seo
+        title={item.name}
+        content="Booklog - 취향에 맞는 독서모임을 찾아, 함께해봐요!"
+      />
       {myRight === MyStateInClub.Member ? (
         <Layout id={id} info={item} isAdmin={isAdmin} />
       ) : (

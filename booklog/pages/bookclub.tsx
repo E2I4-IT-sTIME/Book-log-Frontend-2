@@ -24,7 +24,10 @@ export default function BookClub(props: serversideProps) {
 
   return (
     <>
-      <Seo title="Book Club" />
+      <Seo
+        title="Book Club"
+        content="Booklog - 나만의 독서 모임을 만들고, 동료를 구해보세요!"
+      />
       <ClubLayout clubs={clubs} />
     </>
   );

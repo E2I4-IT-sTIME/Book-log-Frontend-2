@@ -1,22 +1,23 @@
-import { NextPage } from 'next';
-import BookReviewForm from '../components/portfolio/makeReview/BookReviewForm';
-import PageTitle from '../components/portfolio/common/PageTitle';
-import PortfolioNav from '../components/portfolio/common/PortfolioNav';
-import { useRecoilState } from 'recoil';
-import { CurrentLayout, ClubLayoutState } from '../states/recoilLayoutState';
-import { useEffect, useState } from 'react';
-import PortfolioCard from '../components/portfolio/portfolioList/PortfolioCard';
-import { fetchPortfolioList } from '../components/api';
-import { userIndexState } from '../states/recoilUserIndex';
-import { recoilKakakoState } from '../states/recoilKakaoRedirection';
+import { NextPage } from "next";
+import BookReviewForm from "../components/portfolio/makeReview/BookReviewForm";
+import PageTitle from "../components/portfolio/common/PageTitle";
+import PortfolioNav from "../components/portfolio/common/PortfolioNav";
+import { useRecoilState } from "recoil";
+import { CurrentLayout, ClubLayoutState } from "../states/recoilLayoutState";
+import { useEffect, useState } from "react";
+import PortfolioCard from "../components/portfolio/portfolioList/PortfolioCard";
+import { fetchPortfolioList } from "../components/api";
+import { userIndexState } from "../states/recoilUserIndex";
+import { recoilKakakoState } from "../states/recoilKakaoRedirection";
+import Seo from "../components/Seo";
 
 const dummy = [
   {
     id: 1,
-    title: '안녕',
-    content: 'ddddddddd',
-    image: '/portBackground.png',
-    isbn: ['8934908068', '8934908068', '8934908068'],
+    title: "안녕",
+    content: "ddddddddd",
+    image: "/portBackground.png",
+    isbn: ["8934908068", "8934908068", "8934908068"],
   },
 ];
 
@@ -33,18 +34,22 @@ const portfolio: NextPage = () => {
   };
 
   useEffect(() => {
-    userIndex = localStorage.getItem('uid');
+    userIndex = localStorage.getItem("uid");
     getPortfolios();
     setIsRedirection(false);
     setLayoutState(CurrentLayout.Header);
   }, []);
 
   //portfolio 페이지
-  const title = '포트폴리오 확인하기';
+  const title = "포트폴리오 확인하기";
   const sub =
-    '내가 엮은 포트폴리오를 확인하고,\n링크를 복사해 필요한 곳에 첨부해보세요!';
+    "내가 엮은 포트폴리오를 확인하고,\n링크를 복사해 필요한 곳에 첨부해보세요!";
   return (
     <>
+      <Seo
+        title="Portfolio"
+        content="Booklog - 포트폴리오를 채워줄 나의 서평들!"
+      />
       <div className="container">
         <PortfolioNav />
         <PageTitle title={title} sub={sub} />
@@ -62,7 +67,7 @@ const portfolio: NextPage = () => {
                   />
                 );
               })
-            : '등록된 포트폴리오가 없습니다.'}
+            : "등록된 포트폴리오가 없습니다."}
         </div>
       </div>
       <style jsx>{`
@@ -72,7 +77,7 @@ const portfolio: NextPage = () => {
           padding-top: 10%;
           padding-bottom: 20%;
           background: linear-gradient(#faf5e4 35%, #fff 10%);
-          font-family: 'Pretendard-Regular';
+          font-family: "Pretendard-Regular";
         }
         .portfolio-list {
           display: flex;

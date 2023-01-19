@@ -23,7 +23,10 @@ export default function Home(props: serversideProps) {
   }, []);
   return (
     <>
-      <Seo title="Home" />
+      <Seo
+        title="Home"
+        content="Booklog - 북로그, 포트폴리오에 나의 서평을 담다."
+      />
       <HomeLayout clubs={clubs} />
     </>
   );
