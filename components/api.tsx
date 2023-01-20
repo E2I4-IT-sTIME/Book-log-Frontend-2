@@ -28,7 +28,7 @@ export const fetchUserInfo = async () => {
 };
 
 // 서평 추가
-export const addReviewtoPort = async (postData) => {
+export const addReviewtoPort = async (postData: any) => {
   try {
     const userIndex = localStorage.getItem('uid');
     const res = await API.post(`/auth/user/${userIndex}/review`, postData, {
@@ -45,7 +45,7 @@ export const addReviewtoPort = async (postData) => {
 };
 
 // 서평 생성
-export const postReveiwData = async (postData) => {
+export const postReveiwData = async (postData: any) => {
   try {
     const userIndex = localStorage.getItem('uid');
     const res = await API.post(`/auth/user/${userIndex}/review`, postData, {
@@ -62,7 +62,7 @@ export const postReveiwData = async (postData) => {
 };
 
 // 서평 삭제
-export const deleteReveiwData = async (reviewId) => {
+export const deleteReveiwData = async (reviewId: any) => {
   try {
     const userIndex = localStorage.getItem('uid');
     const res = await API.delete(`/auth/user/${userIndex}/review/${reviewId}`, {
@@ -113,7 +113,7 @@ export const fetchPortfolioList = async () => {
 };
 
 // 포트폴리오 개별 조회
-export const fetchPortfolio = async (port_id) => {
+export const fetchPortfolio = async (port_id: string) => {
   try {
     const userIndex = localStorage.getItem('uid');
     const res = await API.get(`/user/${userIndex}/portfolios/${port_id}`, {});
@@ -126,7 +126,7 @@ export const fetchPortfolio = async (port_id) => {
 };
 
 // 포트폴리오 생성
-export const postPortfolioData = async (formData) => {
+export const postPortfolioData = async (formData: any) => {
   try {
     const userIndex = localStorage.getItem('uid');
     const res = await API.post(`/auth/user/${userIndex}/portfolio`, formData, {
@@ -144,7 +144,7 @@ export const postPortfolioData = async (formData) => {
 };
 
 // 포트폴리오 수정
-export const patchPortfolioData = async (formData, portId) => {
+export const patchPortfolioData = async (formData: any, portId: string) => {
   try {
     const userIndex = localStorage.getItem('uid');
     const res = await API.patch(
@@ -166,7 +166,7 @@ export const patchPortfolioData = async (formData, portId) => {
 };
 
 // 포트폴리오 삭제
-export const deletePortfolio = async (portId) => {
+export const deletePortfolio = async (portId: string) => {
   try {
     const userIndex = localStorage.getItem('uid');
     const res = await API.delete(

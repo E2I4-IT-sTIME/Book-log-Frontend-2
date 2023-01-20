@@ -1,10 +1,10 @@
-import { NextPage } from "next";
-import { useRecoilState } from "recoil";
-import { useEffect } from "react";
-import { recoilKakakoState } from "../states/recoilKakaoRedirection";
-import { CurrentLayout, ClubLayoutState } from "../states/recoilLayoutState";
+import { NextPage } from 'next';
+import { useRecoilState } from 'recoil';
+import { useEffect } from 'react';
+import { recoilKakakoState } from '../states/recoilKakaoRedirection';
+import { CurrentLayout, ClubLayoutState } from '../states/recoilLayoutState';
 
-const community: NextPage = () => {
+const Community: NextPage = () => {
   //community 페이지
   const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
   const [isRedirection, setIsRedirection] = useRecoilState(recoilKakakoState);
@@ -16,4 +16,4 @@ const community: NextPage = () => {
   return <></>;
 };
 
-export default community;
+export default Community;

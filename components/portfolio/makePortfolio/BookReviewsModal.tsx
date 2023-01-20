@@ -28,8 +28,9 @@ export default function BasicModal(props: modalState) {
               내가 작성한 서평 {checkReviews.length}건
             </div>
             <div className="review-list">
-              {newCheckReviews.map((review) => (
+              {newCheckReviews.map((review, idx: string) => (
                 <div
+                  key={idx}
                   className="card-box"
                   onClick={() => {
                     review.selected = !review.selected;
