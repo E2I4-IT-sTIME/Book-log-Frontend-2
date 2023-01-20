@@ -48,6 +48,9 @@ const Portfolio: NextPage = ({ host }) => {
     const reviewArr = await fetchReviewList();
     const initReviewArr = await initUserReviews(reviewArr);
     const portfolio = await fetchPortfolio(portId);
+
+    console.log(portfolio);
+
     const selectedReveiws = setSelectedReviews(
       initReviewArr,
       portfolio.reviewResList

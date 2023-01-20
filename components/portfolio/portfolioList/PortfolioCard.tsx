@@ -10,6 +10,7 @@ import ThumnailCard from '../common/ThumnailCard';
 const PortfolioCard = (props: any) => {
   const { title, content, backgroundImg, isbnArr, id } = props;
   const [userObj, setUserObj] = useRecoilState(recoilUserObjState);
+  const src = userObj.image;
 
   return (
     <>
@@ -22,7 +23,7 @@ const PortfolioCard = (props: any) => {
           <div className="img-box">
             <div className="profile-box">
               <Image
-                src={userObj.image}
+                src={src}
                 width="40px"
                 height="40px"
                 alt="프로필이미지"
