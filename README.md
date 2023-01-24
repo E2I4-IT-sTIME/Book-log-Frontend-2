@@ -3,6 +3,7 @@
 # 독서하고, 포트폴리오 채우고! Booklog
 
 ## 🎉 Index
+
 - [🎊 Getting Started](#-getting-started)
 - [🎠 About](#-about)
 - [✨ Overview](#-overview)
@@ -32,8 +33,7 @@
 <img src="https://img.shields.io/badge/TypeScript-3178C6?style=plastic-square&logo=TypeScript&logoColor=white"/> <img src="https://img.shields.io/badge/Next.js-000000?style=plastic-square&logo=Next.js&logoColor=white"/> <img src="https://img.shields.io/badge/axios-5A29E4?style=plastic-square&logo=axios&logoColor=white"/> <img src="https://img.shields.io/badge/recoil-007AF4?style=plastic-square&logo=redux&logoColor=white"/> <img src="https://img.shields.io/badge/Figma-F24E1E?style=plastic&logo=Figma&logoColor=white"/><br/>
 <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=plastic-square&logo=Spring Boot&logoColor=white"/> <img src="https://img.shields.io/badge/MySQL-4479A1?style=plastic-square&logo=MySQL&logoColor=white"/> <img src="https://img.shields.io/badge/Gradle-02303A?style=plastic-square&logo=Gradle&logoColor=white"/> <img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=plastic-square&logo=Amazon RDS&logoColor=white"/> <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=plastic-square&logo=Amazon EC2&logoColor=white"/> <img src="https://img.shields.io/badge/NGINX-009639?style=plastic-square&logo=NGINX&logoColor=white"/>
 
-> **웹 서비스 원스톱 스타트업 SWYG**와 파트너십을 맺은 프로젝트입니다.<br/>
-> Booklog 서비스는 SWYG에 호스팅될 예정입니다.
+> **메타 콘텐츠 원스톱 호스팅 스타트업 SWYG**와 파트너십을 맺은 프로젝트입니다.<br/>
 
 - 인증
   - OAuth 기반 카카오 로그인을 제공합니다.
