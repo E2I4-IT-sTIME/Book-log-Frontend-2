@@ -1,28 +1,27 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { NextPage } from "next/types";
-import { useCallback, useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { NextPage } from 'next/types';
+import { useCallback, useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import {
   deletePortfolio,
   fetchPortfolio,
   fetchReviewList,
   patchPortfolioData,
-} from "../../../components/api";
-import { brText } from "../../../components/portfolio/common/brText";
-import ThumnailCard from "../../../components/portfolio/common/ThumnailCard";
-import BookReviewsModal from "../../../components/portfolio/makePortfolio/BookReviewsModal";
-import PortfolioButton from "../../../components/portfolio/portfolioPage/PortfolioButton";
-import ReviewList from "../../../components/portfolio/portfolioPage/ReviewList";
-import UserInfo from "../../../components/portfolio/portfolioPage/UserInfo";
-import { IReview, IUserInfo } from "../../../res/interface/PortfolioInterfaces";
+} from '../../../components/api';
+import { brText } from '../../../components/portfolio/common/brText';
+import ThumnailCard from '../../../components/portfolio/common/ThumnailCard';
+import BookReviewsModal from '../../../components/portfolio/makePortfolio/BookReviewsModal';
+import PortfolioButton from '../../../components/portfolio/portfolioPage/PortfolioButton';
+import ReviewList from '../../../components/portfolio/portfolioPage/ReviewList';
+import UserInfo from '../../../components/portfolio/portfolioPage/UserInfo';
+import { IReview } from '../../../res/interface/PortfolioInterfaces';
 import {
   ClubLayoutState,
   CurrentLayout,
-} from "../../../states/recoilLayoutState";
-import { recoilLoginedState } from "../../../states/recoilLogiendState";
-import { recoilUserObjState } from "../../../states/recoilUserObjState";
-import Seo from "../../../components/Seo";
+} from '../../../states/recoilLayoutState';
+import { recoilLoginedState } from '../../../states/recoilLogiendState';
+import Seo from '../../../components/Seo';
 
 export const getServerSideProps = async (context: any) => ({
   props: { host: context.req.headers.host },
@@ -36,21 +35,19 @@ const Portfolio: NextPage = ({ host }: any) => {
   const [isLogined, setisLogined] = useRecoilState(recoilLoginedState);
   const [layoutState, setLayoutState] = useRecoilState(ClubLayoutState);
   const [portfolio, setPortfolio] = useState({
-    title: "",
-    image: "",
-    content: "",
+    title: '',
+    image: '',
+    content: '',
     reviewResList: [],
   });
 
   const [reviews, setReviews] = useState([]);
 
   const fetchData = async () => {
-    if (typeof portId === "string") {
+    if (typeof portId === 'string') {
       const reviewArr = await fetchReviewList();
       const initReviewArr: any = await initUserReviews(reviewArr);
       const portfolio = await fetchPortfolio(portId);
-
-      console.log(portfolio);
 
       const selectedReveiws = setSelectedReviews(
         initReviewArr,
@@ -69,13 +66,13 @@ const Portfolio: NextPage = ({ host }: any) => {
   }, []);
 
   const delPortfolio = useCallback(async () => {
-    if (typeof portId === "string") {
+    if (typeof portId === 'string') {
       const req = await deletePortfolio(portId);
       if (req) {
-        alert("포트폴리오가 삭제되었습니다!");
-        router.push("/portfolio");
+        alert('포트폴리오가 삭제되었습니다!');
+        router.push('/portfolio');
       } else {
-        alert("잠시후 다시 시도해주세요");
+        alert('잠시후 다시 시도해주세요');
       }
     }
   }, []);
@@ -83,7 +80,7 @@ const Portfolio: NextPage = ({ host }: any) => {
     const { asPath } = router;
     try {
       await navigator.clipboard.writeText(`http://${host}${asPath}`);
-      alert("현재 페이지 주소가 복사되었습니다!");
+      alert('현재 페이지 주소가 복사되었습니다!');
     } catch (error) {
       console.error(error);
     }
@@ -110,37 +107,21 @@ const Portfolio: NextPage = ({ host }: any) => {
     setReviews(reviewArr);
   }, []);
 
-  // const dataURLtoFile = async (url, fileName) => {
-  //   const res = await fetch(url).then(async (response) => {
-  //     const contentType = response.headers.get('content-type');
-  //     console.log(contentType);
-  //     const blob = await response.blob();
-  //     const file = new File([blob], fileName, { type: contentType });
-  //     return file;
-  //   });
-  //   return res;
-  // };
-
   const savePortfolio = async () => {
-    if (typeof portId === "string") {
+    if (typeof portId === 'string') {
       const reviewsIdArr: any = reviews
         .filter((e: any) => e.selected)
         .map((e: any) => e.review_id);
 
       const formData = new FormData();
-      const { image, title, content } = portfolio;
-      //const imageFile = dataURLtoFile(image, 'icebear.jpg');
-      //formData.append('image', imageFile);
-      //formData.append('title', title);
-      //formData.append('content', content);
-      formData.append("reviews_id", reviewsIdArr);
+      formData.append('reviews_id', reviewsIdArr);
 
       const res = await patchPortfolioData(formData, portId);
       if (res) {
-        alert("포트폴리오가 저장되었습니다!");
+        alert('포트폴리오가 저장되었습니다!');
         router.reload();
       } else {
-        alert("잠시후 다시 시도해 주세요");
+        alert('잠시후 다시 시도해 주세요');
       }
     }
   };
@@ -196,7 +177,7 @@ const Portfolio: NextPage = ({ host }: any) => {
                 />
               </div>
             ) : (
-              ""
+              ''
             )}
             <div className="bookimges">
               {portfolio.reviewResList.map(({ id, isbn }) => (
@@ -220,7 +201,7 @@ const Portfolio: NextPage = ({ host }: any) => {
               서평 추가하기
             </div>
           ) : (
-            ""
+            ''
           )}
         </div>
       </div>
@@ -248,7 +229,7 @@ const Portfolio: NextPage = ({ host }: any) => {
               rgba(0, 0, 0, 1) 75%,
               rgba(0, 0, 0, 1) 100%
             ),
-            url(${portfolio.image || "/portBackground.png"}) no-repeat;
+            url(${portfolio.image || '/portBackground.png'}) no-repeat;
           background-size: 100% auto;
         }
         header {
@@ -262,7 +243,7 @@ const Portfolio: NextPage = ({ host }: any) => {
         .main {
           display: flex;
           justify-content: space-between;
-          font-family: "Pretendard-Regular";
+          font-family: 'Pretendard-Regular';
         }
         .text-box {
           display: flex;
