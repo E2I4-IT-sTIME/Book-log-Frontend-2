@@ -1,15 +1,28 @@
 import readingBook from "../../res/readingBook.svg";
 import Image from "next/image";
+import Router from "next/router";
 
 export default function MainBanner() {
+  const router = Router;
+
   return (
     <div className="container">
       <div className="left-box">
         <span className="sub-content">{"독서도\n스펙이 될 수 있다."}</span>
         <span className="main-content">{"북로그와 함께라면-"}</span>
         <div className="btns">
-          <button>포트폴리오 작성하기</button>
-          <button>북로그 사용법</button>
+          <button onClick={() => router.push("/portfolio")}>
+            포트폴리오 작성하기
+          </button>
+          <button
+            onClick={() =>
+              window.open(
+                "https://velog.io/@igun0423/Booklog-%EC%82%AC%EC%9A%A9%EB%B2%95"
+              )
+            }
+          >
+            북로그 사용법
+          </button>
         </div>
       </div>
       <div className="right-box">

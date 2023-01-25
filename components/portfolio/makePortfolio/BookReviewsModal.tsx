@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import Button from '../common/Button';
-import BookReviewCard from './BookReviewCard';
-import review from './../../../pages/portfolio/review/index';
+import { useState, useEffect } from "react";
+import Button from "../common/Button";
+import BookReviewCard from "./BookReviewCard";
+import review from "./../../../pages/portfolio/review/index";
 
 interface modalState {
   open: boolean;
   close: () => void;
   header: string;
   checkReviews: any;
-  reviewArrHandler: (reviewArr) => void;
+  reviewArrHandler: (reviewArr: any) => void;
 }
 
 export default function BasicModal(props: modalState) {
@@ -20,7 +20,7 @@ export default function BasicModal(props: modalState) {
   }, [checkReviews]);
 
   return (
-    <div className={open ? 'openModal modal' : 'modal'} onClick={close}>
+    <div className={open ? "openModal modal" : "modal"} onClick={close}>
       {open ? (
         <section onClick={(e) => e.stopPropagation()}>
           <main>
@@ -28,7 +28,7 @@ export default function BasicModal(props: modalState) {
               내가 작성한 서평 {checkReviews.length}건
             </div>
             <div className="review-list">
-              {newCheckReviews.map((review, idx: string) => (
+              {newCheckReviews.map((review: any, idx) => (
                 <div
                   key={idx}
                   className="card-box"

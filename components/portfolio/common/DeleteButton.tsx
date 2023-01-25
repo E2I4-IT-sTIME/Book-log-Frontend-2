@@ -2,11 +2,12 @@ interface IdeleteButton {
   id?: string;
   text: string;
   color?: string;
-  onClick: () => void;
+  onClick: (id: any) => void;
 }
 
 const DeleteButton = (props: IdeleteButton) => {
   const { id, text, color, onClick } = props;
+
   return (
     <>
       <div
@@ -19,7 +20,7 @@ const DeleteButton = (props: IdeleteButton) => {
       </div>
       <style jsx>{`
         .delete {
-          background-color: ${color || '#ff8396'};
+          background-color: ${color || "#ff8396"};
           border-radius: 50%;
           color: white;
           height: 20px;

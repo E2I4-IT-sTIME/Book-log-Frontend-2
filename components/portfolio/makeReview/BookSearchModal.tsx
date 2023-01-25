@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function BasicModal(props: any) {
   const { open, closeModal, fetchBookInfo, isbnChangeHandler } = props;
-  const [books, setBooks] = useState(null);
+  const [books, setBooks] = useState<any>(null);
   const [keyword, setKeyword] = useState("");
 
   const onChangeKeword = (e: any) => {
@@ -45,7 +45,7 @@ export default function BasicModal(props: any) {
               </button>
             </div>
             <div className="book-list">
-              {Array.isArray(books) ? (
+              {books && Array.isArray(books) ? (
                 books.length ? (
                   <div className="list-box">
                     {books.map((book: any) => (

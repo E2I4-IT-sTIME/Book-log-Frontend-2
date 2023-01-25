@@ -1,21 +1,21 @@
-import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { recoilLoginedState } from '../../../states/recoilLogiendState';
-import DeleteButton from '../common/DeleteButton';
-import { bookImgSearch } from '../common/fetchBook';
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { recoilLoginedState } from "../../../states/recoilLogiendState";
+import DeleteButton from "../common/DeleteButton";
+import { bookImgSearch } from "../common/fetchBook";
 
-const ReviewCard = (props) => {
+const ReviewCard = (props: any) => {
   const [isLogined, setisLogined] = useRecoilState(recoilLoginedState);
   const { review_id, title, content, createDate, isbn } = props.review;
   const date = createDate.substr(0, 10);
 
   const subConent = () => {
     if (content.length > 220) {
-      return content.substr(0, 220) + '...';
+      return content.substr(0, 220) + "...";
     } else return content;
   };
 
-  const [bookImgSrc, setBookImgSrc] = useState('');
+  const [bookImgSrc, setBookImgSrc] = useState("");
 
   const srcHandler = async () => {
     setBookImgSrc(await bookImgSearch(isbn));
@@ -29,7 +29,7 @@ const ReviewCard = (props) => {
     <>
       <div className="review-container">
         <div className="img-box">
-          <img src={bookImgSrc || '/defaultBookImg.jpg'}></img>
+          <img src={bookImgSrc || "/defaultBookImg.jpg"}></img>
         </div>
         <div className="text-box">
           <div className="main">
@@ -40,7 +40,7 @@ const ReviewCard = (props) => {
           {isLogined ? (
             <DeleteButton id={review_id} text="-" onClick={props.onClick} />
           ) : (
-            ''
+            ""
           )}
         </div>
       </div>
@@ -64,7 +64,7 @@ const ReviewCard = (props) => {
         .img-box {
           width: 30%;
           height: 100%;
-          background: url('/defaultBookImg.jpg') no-repeat;
+          background: url("/defaultBookImg.jpg") no-repeat;
           padding: 15px;
           border-radius: 10px 0 0 10px;
         }

@@ -24,11 +24,11 @@ import { recoilLoginedState } from "../../../states/recoilLogiendState";
 import { recoilUserObjState } from "../../../states/recoilUserObjState";
 import Seo from "../../../components/Seo";
 
-export const getServerSideProps = async (context) => ({
+export const getServerSideProps = async (context: any) => ({
   props: { host: context.req.headers.host },
 });
 
-const Portfolio: NextPage = ({ host }) => {
+const Portfolio: NextPage = ({ host }: any) => {
   const router = useRouter();
   const portId = router.query.port_id;
 
@@ -45,34 +45,38 @@ const Portfolio: NextPage = ({ host }) => {
   const [reviews, setReviews] = useState([]);
 
   const fetchData = async () => {
-    const reviewArr = await fetchReviewList();
-    const initReviewArr = await initUserReviews(reviewArr);
-    const portfolio = await fetchPortfolio(portId);
+    if (typeof portId === "string") {
+      const reviewArr = await fetchReviewList();
+      const initReviewArr: any = await initUserReviews(reviewArr);
+      const portfolio = await fetchPortfolio(portId);
 
-    console.log(portfolio);
+      console.log(portfolio);
 
-    const selectedReveiws = setSelectedReviews(
-      initReviewArr,
-      portfolio.reviewResList
-    );
+      const selectedReveiws = setSelectedReviews(
+        initReviewArr,
+        portfolio.reviewResList
+      );
 
-    setPortfolio(portfolio);
-    setReviews(selectedReveiws);
+      setPortfolio(portfolio);
+      setReviews(selectedReveiws);
+    }
   };
-  const initUserReviews = useCallback(async (reviewArr: []) => {
-    const newReviewArr = reviewArr.map((review) => {
+  const initUserReviews = useCallback(async (reviewArr: any) => {
+    const newReviewArr = reviewArr.map((review: any) => {
       return { ...review, selected: false };
     });
     return newReviewArr;
   }, []);
 
   const delPortfolio = useCallback(async () => {
-    const req = await deletePortfolio(portId);
-    if (req) {
-      alert("포트폴리오가 삭제되었습니다!");
-      router.push("/portfolio");
-    } else {
-      alert("잠시후 다시 시도해주세요");
+    if (typeof portId === "string") {
+      const req = await deletePortfolio(portId);
+      if (req) {
+        alert("포트폴리오가 삭제되었습니다!");
+        router.push("/portfolio");
+      } else {
+        alert("잠시후 다시 시도해주세요");
+      }
     }
   }, []);
   const copyUrl = useCallback(async () => {
@@ -85,19 +89,22 @@ const Portfolio: NextPage = ({ host }) => {
     }
   }, []);
 
-  const setSelectedReviews = useCallback((initReviewArr: [], reviewArr: []) => {
-    const reviews = initReviewArr;
-    reviewArr.forEach((selectedReview: IReview) => {
-      for (let i = 0; i < reviews.length; i++) {
-        const review: IReview = reviews[i];
-        if (selectedReview.review_id === review.review_id) {
-          reviews[i] = { ...reviews[i], selected: true };
-          break;
+  const setSelectedReviews = useCallback(
+    (initReviewArr: any, reviewArr: any) => {
+      const reviews = initReviewArr;
+      reviewArr.forEach((selectedReview: IReview) => {
+        for (let i = 0; i < reviews.length; i++) {
+          const review: IReview = reviews[i];
+          if (selectedReview.review_id === review.review_id) {
+            reviews[i] = { ...reviews[i], selected: true };
+            break;
+          }
         }
-      }
-    });
-    return reviews;
-  }, []);
+      });
+      return reviews;
+    },
+    []
+  );
 
   const reviewArrHandler = useCallback((reviewArr: []) => {
     setReviews(reviewArr);
@@ -115,29 +122,31 @@ const Portfolio: NextPage = ({ host }) => {
   // };
 
   const savePortfolio = async () => {
-    const reviewsIdArr = reviews
-      .filter((e) => e.selected)
-      .map((e) => e.review_id);
+    if (typeof portId === "string") {
+      const reviewsIdArr: any = reviews
+        .filter((e: any) => e.selected)
+        .map((e: any) => e.review_id);
 
-    const formData = new FormData();
-    const { image, title, content } = portfolio;
-    //const imageFile = dataURLtoFile(image, 'icebear.jpg');
-    //formData.append('image', imageFile);
-    //formData.append('title', title);
-    //formData.append('content', content);
-    formData.append("reviews_id", reviewsIdArr);
+      const formData = new FormData();
+      const { image, title, content } = portfolio;
+      //const imageFile = dataURLtoFile(image, 'icebear.jpg');
+      //formData.append('image', imageFile);
+      //formData.append('title', title);
+      //formData.append('content', content);
+      formData.append("reviews_id", reviewsIdArr);
 
-    const res = await patchPortfolioData(formData, portId);
-    if (res) {
-      alert("포트폴리오가 저장되었습니다!");
-      router.reload();
-    } else {
-      alert("잠시후 다시 시도해 주세요");
+      const res = await patchPortfolioData(formData, portId);
+      if (res) {
+        alert("포트폴리오가 저장되었습니다!");
+        router.reload();
+      } else {
+        alert("잠시후 다시 시도해 주세요");
+      }
     }
   };
 
   const onChangeSelectedState = useCallback((id: number) => {
-    const newReviews = reviews.map((review: IReview) => {
+    const newReviews: any = reviews.map((review: IReview) => {
       if (review.review_id === id) {
         return { ...review, selected: !review.selected };
       } else return { ...review };
