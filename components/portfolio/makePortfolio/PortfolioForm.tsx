@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState, useCallback } from "react";
-import BookReviewsModal from "./BookReviewsModal";
-import Button from "../common/Button";
-import ReviewCard from "../portfolioPage/ReviewCard";
-import { fetchReviewList, postPortfolioData } from "../../api";
-import Image from "next/image";
-import { useRouter } from "next/router";
+import { useEffect, useRef, useState, useCallback } from 'react';
+import BookReviewsModal from './BookReviewsModal';
+import Button from '../common/Button';
+import ReviewCard from '../portfolioPage/ReviewCard';
+import { fetchReviewList, postPortfolioData } from '../../api';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const PortfolioForm = () => {
   const [isSearch, setIsSearch] = useState(false);
@@ -27,12 +27,10 @@ const PortfolioForm = () => {
   const reviewArrHandler = (reviewArr: any) => {
     setCheckReviews(reviewArr);
   };
-
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [imageUrl, setImageFile] = useState("");
 
-  const [profile, setProfile] = useState("");
-  const [attachment, setAttachment] = useState("");
+  const [profile, setProfile] = useState('');
+  const [attachment, setAttachment] = useState('');
   const [imgFile, setImgFile] = useState<File>();
 
   const onUploadImageButtonClick = useCallback(() => {
@@ -59,8 +57,8 @@ const PortfolioForm = () => {
     reader.readAsDataURL(theFile);
   };
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
 
   const titleChangeHandler = (e: any) => {
     setTitle(e.target.value);
@@ -78,18 +76,18 @@ const PortfolioForm = () => {
     console.log(imgFile);
 
     if (imgFile && reviewsIdArr) {
-      formData.append("image", imgFile);
-      formData.append("title", title);
-      formData.append("content", content);
-      formData.append("reviews_id", reviewsIdArr.toString());
+      formData.append('image', imgFile);
+      formData.append('title', title);
+      formData.append('content', content);
+      formData.append('reviews_id', reviewsIdArr.toString());
     }
 
     const res = await postPortfolioData(formData);
     if (res) {
-      alert("포트폴리오가 생성되었습니다!");
-      router.push("/portfolio");
+      alert('포트폴리오가 생성되었습니다!');
+      router.push('/portfolio');
     } else {
-      alert("잠시후 다시 시도해 주세요");
+      alert('잠시후 다시 시도해 주세요');
     }
   };
 
@@ -115,7 +113,7 @@ const PortfolioForm = () => {
             ref={inputRef}
             onChange={onImageHandler}
             value={profile}
-            style={{ display: "none" }}
+            style={{ display: 'none' }}
           />
         </div>
         <div className="portfolio">
@@ -197,7 +195,7 @@ const PortfolioForm = () => {
             padding: 50px;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
             gap: 50px;
-            font-family: "Pretendard-Regular";
+            font-family: 'Pretendard-Regular';
           }
           .portfolio {
             display: flex;

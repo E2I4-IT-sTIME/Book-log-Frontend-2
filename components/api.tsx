@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useEffect } from 'react';
 
 const API = axios.create({
   baseURL: 'https://booklog.site',
@@ -62,7 +61,7 @@ export const postReveiwData = async (postData: any) => {
 };
 
 // 서평 삭제
-export const deleteReveiwData = async (reviewId: any) => {
+export const deleteReveiwData = async (reviewId: number) => {
   try {
     const userIndex = localStorage.getItem('uid');
     const res = await API.delete(`/auth/user/${userIndex}/review/${reviewId}`, {
@@ -99,7 +98,7 @@ export const fetchReviewList = async () => {
 export const fetchPortfolioList = async () => {
   try {
     const userIndex = localStorage.getItem('uid');
-    const res = await API.get(`/auth/user/${userIndex}/portfolios`, {
+    const res = await API.get(`/user/${userIndex}/portfolios`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },
