@@ -142,7 +142,7 @@ export default function User() {
             <span className="no-hover">Sign In</span>
             <a
               className="hover"
-              href="https://kauth.kakao.com/oauth/authorize?client_id=13ceafa8d13d6bd8104550a84132db96&redirect_uri=http://localhost:3000/signup&response_type=code"
+              href="https://kauth.kakao.com/oauth/authorize?client_id=13ceafa8d13d6bd8104550a84132db96&redirect_uri=https://booklog.swygbro.com/signup&response_type=code"
             >
               Login with Kakao
             </a>
