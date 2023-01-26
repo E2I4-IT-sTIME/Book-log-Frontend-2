@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Script from "next/script";
 
 interface headProps {
   title: string;
@@ -45,10 +46,10 @@ export default function Seo(props: headProps) {
         name="twitter:image"
         content="https://booklog-deploy.s3.ap-northeast-2.amazonaws.com/main.png"
       />
-      <script
+      <Script
         defer
         src="https://cdn.swygbro.com/public/widget/swyg-widget.js"
-      ></script>
+      ></Script>
     </Head>
   );
 }
